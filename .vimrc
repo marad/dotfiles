@@ -1,13 +1,28 @@
+" This is Marcin Radoszewski's .vimrc file
+" See other dotfiles at https://github.com/marad/dotfiles
+
+let mapleader=","
+
+set autoread
+set hidden
+set history=1000
 set syntax=on
 set sw=2 sts=2
 set number
 set hlsearch
+set incsearch
+set showmatch
+set ignorecase smartcase
 
 set expandtab
 set shiftwidth=2
 set softtabstop=2
 set smartindent
 set clipboard=unnamedplus
+
+set winwidth=79
+set wildmode="list:longest"
+set wildmenu
 
 filetype plugin indent on
 
@@ -18,6 +33,7 @@ cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " Setup CTRL-P plugin
 """"""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_custom_ignore = '/node_modules/'
+
 
 if has('gui_running')
   """""""""""""""""""""""""""""""""""""""""""""""
@@ -33,9 +49,14 @@ if has('gui_running')
   set guioptions-=m " Get rid of the menu
   set guioptions-=T " Get rid of the toolbar
 
+  set cursorline
   set background=dark
   colorscheme solarized
-
+else
+  set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
+  set t_Co=256
+  set background=dark
+  color grb256
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Custom Auto commands
