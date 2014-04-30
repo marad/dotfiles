@@ -1,0 +1,23 @@
+[submodule ".vim/bundle/ctrlp.vim"]
+  path = .vim/bundle/ctrlp.vim
+  url = git@github.com:kien/ctrlp.vim.git
+
+[submodule ".vim/bundle/vim-airline"]
+  path = .vim/bundle/vim-airline
+  url = git@github.com:bling/vim-airline.git
+
+[submodule ".vim/bundle/vim-arduino-ino"]
+  path = .vim/bundle/vim-arduino-ino
+  url = git@github.com:jplaut/vim-arduino-ino.git
+
+[submodule ".vim/bundle/vim-coffee-script"]
+  path = .vim/bundle/vim-coffee-script
+  url = git@github.com:kchmck/vim-coffee-script.git
+
+[submodule ".vim/bundle/vim-colors-solarized"]
+  path = .vim/bundle/vim-colors-solarized
+  url = git@github.com:altercation/vim-colors-solarized.git
+
+[submodule ".vim/bundle/vim-jade"]
+  path = .vim/bundle/vim-jade
+  url = git@github.com:digitaltoad/vim-jade.git
