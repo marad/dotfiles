@@ -8,7 +8,7 @@ set hidden
 set history=1000
 set syntax=on
 set sw=2 sts=2
-set number
+"set number
 set hlsearch
 set incsearch
 set showmatch
@@ -26,7 +26,10 @@ set wildmenu
 
 filetype plugin indent on
 
+" Insert current filename base dir after pressing %% in command mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
+
+nnoremap \ :CtrlPBuffer<cr>
 
 " let g:airline#extensions#tabline#enable = 1
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -48,6 +51,8 @@ if has('gui_running')
   set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
   set guioptions-=m " Get rid of the menu
   set guioptions-=T " Get rid of the toolbar
+  set guioptions-=L " Get rid of the toolbar
+  set guioptions-=r " Get rid of the toolbar
 
   set cursorline
   set background=dark
