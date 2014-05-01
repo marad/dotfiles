@@ -12,3 +12,5 @@
   aa = add --all
   di = diff
   dc = diff --cached  
+[color]
+	ui = true
