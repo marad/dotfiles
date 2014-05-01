@@ -29,7 +29,12 @@ filetype plugin indent on
 " Insert current filename base dir after pressing %% in command mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 
+" Create mapping to generate the mapping for running test on current file
+" It generates the command :nnoremap <c-z> :!node [spec-file]<cr>
+nnoremap <s-z> :nnoremap <c-z> :!node <c-r>=substitute(substitute(expand('%'), "^src", "app", "g"), ".coffee$", ".js", "g")<cr><s-<>cr<s->>
+
 nnoremap \ :CtrlPBuffer<cr>
+nnoremap ; :
 
 " let g:airline#extensions#tabline#enable = 1
 """"""""""""""""""""""""""""""""""""""""""""""""
