@@ -20,7 +20,7 @@ set softtabstop=2
 set smartindent
 set clipboard=unnamedplus
 
-set winwidth=79
+"set winwidth=79
 set wildmode="list:longest"
 set wildmenu
 
@@ -35,12 +35,14 @@ nnoremap <s-z> :nnoremap <c-z> :!node <c-r>=substitute(substitute(expand('%'), "
 
 nnoremap \ :CtrlPBuffer<cr>
 nnoremap ; :
+nnoremap <leader>, :w<cr>
 
 " let g:airline#extensions#tabline#enable = 1
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Setup CTRL-P plugin
 """"""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_custom_ignore = '/node_modules/'
+"let g:ctrlp_custom_ignore = 'node_modules'
+let g:ctrlp_custom_ignore = 'app/\|node_modules\|.js$\|.map$'
 
 
 if has('gui_running')
@@ -83,8 +85,7 @@ augroup vimrcEx
   " For python set tabs to 4 spaces
   autocmd FileType python set sw=4 sts=4 et
 
-  " autocmd FileType coffee let g:ctrlp_custom_ignore = '*.js' et
-
+  " autocmd FileType coffee let g:ctrlp_custom_ignore = '*.js' et 
   autocmd BufRead,BufNewFile *.ino set filetype=c
 augroup END
 
@@ -103,3 +104,39 @@ nnoremap <c-l> <c-w>l
 " Install plugins
 """"""""""""""""""""""""""""""""""""""""""""""""
 call pathogen#infect()
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" CoffeeScript - switch to alternative file 
+" switches between coffee / js files
+""""""""""""""""""""""""""""""""""""""""""""""""
+function! FindMapping(operation)
+  let l:path = substitute(substitute(substitute(expand('%'), "^src", "app", "g"), "js$", "map", "g"), "coffee$", "map", "g")
+  let l:line = line(".")
+  let l:column = col(".")
+  "echo "Getting " . a:operation . " position for position " . l:line . "/" . l:column
+  let l:out = system("bash sourcemap ". l:path ." ". a:operation ." ". l:line ." ". l:column)
+  "echo "Position is " . l:out
+  return split(l:out)
+endfunction
+
+function! NodeSwitch()
+  let l:path = expand('%')
+  if match(l:path, "^src/.*coffee$") >= 0
+    let l:open = substitute(substitute(l:path, "^src", "app", "g"), ".coffee$", ".js", "g")
+    let l:mapping = FindMapping('target')
+    exec "e " . l:open
+    call cursor(l:mapping[0], l:mapping[1])
+  endif
+  if match(l:path, "^app/.*js$") >= 0
+    let l:open = substitute(substitute(l:path, "^app", "src", "g"), ".js$", ".coffee", "g")
+    let l:mapping = FindMapping('source')
+    exec "e " . l:open
+    call cursor(l:mapping[0], l:mapping[1])
+  endif
+endfunction
+
+nnoremap <leader>s :call NodeSwitch()<cr>
+"nnoremap <leader>s :call FindMapping("target")<cr>
+
+"autocmd BufWritePost *.coffee silent make -m
+
