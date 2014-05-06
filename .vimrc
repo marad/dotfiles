@@ -228,4 +228,7 @@ autocmd BufWritePre *.java :%s/\s\+$//e
 autocmd BufWritePre *.jsp :%s/\s\+$//e
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 
-source ~/.vimrc_local
+if filereadable("~/.vimrc_local")
+  source ~/.vimrc_local
+endif
+
