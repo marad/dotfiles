@@ -105,15 +105,15 @@ if has('gui_running')
   let g:airline_powerline_fonts = 1
   let g:Powerline_symbols = 'fancy'
 
-"  function! AirlineInit()
-"    let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
-"    let g:airline_section_b = airline#section#create(['filetype'])
-"    let g:airline_section_c = airline#section#create(['%t'])
-"    " let g:airline_section_x = airline#section#create(['%P'])
-"    let g:airline_section_y = airline#section#create(['%p%%'])
-"    let g:airline_section_z = airline#section#create(['%l', ' ', '%c'])
-"  endfunction
-"  autocmd VimEnter * call AirlineInit()
+  function! AirlineInit()
+    let g:airline_section_a = airline#section#create(['mode', ' ', 'branch'])
+    let g:airline_section_b = airline#section#create(['filetype'])
+    let g:airline_section_c = airline#section#create(['%t'])
+    " let g:airline_section_x = airline#section#create(['%P'])
+    let g:airline_section_y = airline#section#create(['%p%%'])
+    let g:airline_section_z = airline#section#create(['%l', ' ', '%c'])
+  endfunction
+  autocmd VimEnter * call AirlineInit()
 else
   set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
   set t_Co=256
