@@ -228,6 +228,8 @@ autocmd BufWritePre *.java :%s/\s\+$//e
 autocmd BufWritePre *.jsp :%s/\s\+$//e
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 
+autocmd BufWritePost *.coffee silent make! -m
+
 if filereadable("~/.vimrc_local")
   source ~/.vimrc_local
 endif
