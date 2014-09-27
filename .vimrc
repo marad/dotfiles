@@ -57,9 +57,9 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Setup folding
-set foldmethod=indent
-set foldlevel=99
-set foldenable
+"set foldmethod=indent
+"set foldlevel=99
+"set foldenable
 nnoremap <leader><f1> :set foldlevel=0<cr>
 nnoremap <leader><f2> :set foldlevel=1<cr>
 nnoremap <leader><f3> :set foldlevel=2<cr>
