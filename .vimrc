@@ -75,7 +75,7 @@ nnoremap <leader><f9> :set foldlevel=999<cr>
 " Setup CTRL-P plugin
 """"""""""""""""""""""""""""""""""""""""""""""""
 "let g:ctrlp_custom_ignore = 'node_modules'
-let g:ctrlp_custom_ignore = 'app/\|node_modules\|.js$\|.map$'
+"let g:ctrlp_custom_ignore = 'app/\|node_modules\|.js$\|.map$'
 
 
 if has('gui_running')
