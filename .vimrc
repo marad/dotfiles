@@ -7,7 +7,6 @@ let g:mapleader=","
 set autoread
 set hidden
 set history=1000
-set syntax=on
 set sw=2 sts=2
 "set number
 set hlsearch
@@ -32,7 +31,9 @@ set magic
 set scrolloff=2
 set gdefault " set default /g on substitutions
 
+filetype plugin on
 filetype plugin indent on
+syntax on
 
 " Insert current filename base dir after pressing %% in command mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
