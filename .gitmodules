@@ -42,3 +42,6 @@
   path = .vim/bundle/vim-scala
   url = https://github.com/derekwyatt/vim-scala.git
 
+[submodule ".vim/bundle/play2vim.git"]
+  path = .vim/bundle/play2vim
+  url = https://github.com/gre/play2vim.git
