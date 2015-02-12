@@ -89,7 +89,8 @@ if has('gui_running')
   """"""""""""""""""""""""""""""""""""""""""""""""
   " Setup editor
   """"""""""""""""""""""""""""""""""""""""""""""""
-  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
+  set guifont=Monofur\ for\ Powerline\ 12
   set guioptions-=m " Get rid of the menu
   set guioptions-=T " Get rid of the toolbar
   set guioptions-=L " Get rid of the toolbar
