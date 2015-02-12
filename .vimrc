@@ -89,8 +89,8 @@ if has('gui_running')
   """"""""""""""""""""""""""""""""""""""""""""""""
   " Setup editor
   """"""""""""""""""""""""""""""""""""""""""""""""
-  "set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
-  set guifont=Monofur\ for\ Powerline\ 12
+  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  "set guifont=Monofur\ for\ Powerline\ 13
   set guioptions-=m " Get rid of the menu
   set guioptions-=T " Get rid of the toolbar
   set guioptions-=L " Get rid of the toolbar
@@ -137,7 +137,7 @@ augroup vimrcEx
   " For python set tabs to 4 spaces
   autocmd FileType python set sw=4 sts=4 et
 
-  " autocmd FileType coffee let g:ctrlp_custom_ignore = '*.js' et 
+  " autocmd FileType coffee let g:ctrlp_custom_ignore = '*.js' et
   autocmd BufRead,BufNewFile *.ino set filetype=c
 augroup END
 
@@ -158,7 +158,7 @@ nnoremap <c-l> <c-w>l
 call pathogen#infect()
 
 """"""""""""""""""""""""""""""""""""""""""""""""
-" CoffeeScript - switch to alternative file 
+" CoffeeScript - switch to alternative file
 " switches between coffee / js files
 """"""""""""""""""""""""""""""""""""""""""""""""
 function! FindMapping(operation)
