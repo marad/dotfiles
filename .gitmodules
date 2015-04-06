@@ -58,4 +58,7 @@
   path = .vim/bundle/vim-fireplace
   url = https://github.com/tpope/vim-fireplace.git
 
+[submodule ".vim/bundle/nerdtree"]
+  path = .vim/bundle/nerdtree
+  url = https://github.com/scrooloose/nerdtree.git
 
