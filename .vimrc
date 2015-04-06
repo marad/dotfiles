@@ -71,6 +71,12 @@ nnoremap <leader><f7> :set foldlevel=7<cr>
 nnoremap <leader><f8> :set foldlevel=8<cr>
 nnoremap <leader><f9> :set foldlevel=999<cr>
 
+" Markdown filter mapping
+nnoremap <leader>md :%! markdown<cr>
+vnoremap <leader>md :%! markdown<cr>
+
+nnoremap <c-\> :NERDTreeToggle<cr>
+
 " let g:airline#extensions#tabline#enable = 1
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Setup CTRL-P plugin
@@ -78,6 +84,11 @@ nnoremap <leader><f9> :set foldlevel=999<cr>
 "let g:ctrlp_custom_ignore = 'node_modules'
 "let g:ctrlp_custom_ignore = 'app/\|node_modules\|.js$\|.map$'
 
+
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Setup Emmet Vim
+""""""""""""""""""""""""""""""""""""""""""""""""
+let g:user_emmet_leader_key='<C-Z>'
 
 if has('gui_running')
   """""""""""""""""""""""""""""""""""""""""""""""
@@ -89,7 +100,7 @@ if has('gui_running')
   """"""""""""""""""""""""""""""""""""""""""""""""
   " Setup editor
   """"""""""""""""""""""""""""""""""""""""""""""""
-  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
   "set guifont=Monofur\ for\ Powerline\ 13
   set guioptions-=m " Get rid of the menu
   set guioptions-=T " Get rid of the toolbar
@@ -228,9 +239,13 @@ autocmd BufWritePre *.js :%s/\s\+$//e
 autocmd BufWritePre *.coffee :%s/\s\+$//e
 autocmd BufWritePre *.java :%s/\s\+$//e
 autocmd BufWritePre *.jsp :%s/\s\+$//e
+autocmd BufWritePre *.html :%s/\s\+$//e
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 
 autocmd BufWritePost *.coffee silent make! -m
+
+autocmd BufWritePost *.md silent ! markdown % > /tmp/markdown.html
+autocmd FileType markdown setlocal spell spelllang=en_us
 
 if filereadable("~/.vimrc_local")
   source ~/.vimrc_local
