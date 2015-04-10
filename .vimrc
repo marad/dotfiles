@@ -240,12 +240,16 @@ autocmd BufWritePre *.coffee :%s/\s\+$//e
 autocmd BufWritePre *.java :%s/\s\+$//e
 autocmd BufWritePre *.jsp :%s/\s\+$//e
 autocmd BufWritePre *.html :%s/\s\+$//e
+autocmd BufWritePre *.md :%s/\s\+$//e
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 
 autocmd BufWritePost *.coffee silent make! -m
 
 autocmd BufWritePost *.md silent ! markdown % > /tmp/markdown.html
 autocmd FileType markdown setlocal spell spelllang=en_us
+autocmd FileType markdown setlocal fo=aw2tq tw=100
+"autocmd FileType markdown nnoremap <leader>r vipgq
+autocmd FileType markdown nnoremap <leader>r vipJ
 
 if filereadable("~/.vimrc_local")
   source ~/.vimrc_local

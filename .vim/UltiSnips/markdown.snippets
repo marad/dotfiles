@@ -1,0 +1,15 @@
+snippet hl "Create code highlight" b
+{% highlight ${1:scala} %}
+${2://code}
+{% endhighlight %}
+endsnippet
+
+snippet hl*
+{% highlight ${1:scala} %}
+${2:`xclip -o`}
+{% endhighlight %}
+endsnippet
+
+snippet time
+`date "+%Y-%m-%d %H:%M:%S"`
+endsnippet
