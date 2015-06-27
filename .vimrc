@@ -107,7 +107,7 @@ if has('gui_running')
   """"""""""""""""""""""""""""""""""""""""""""""""
   " Setup editor
   """"""""""""""""""""""""""""""""""""""""""""""""
-  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
   "set guifont=Monofur\ for\ Powerline\ 13
   set guioptions-=m " Get rid of the menu
   set guioptions-=T " Get rid of the toolbar
@@ -217,6 +217,19 @@ nnoremap <leader>s :call NodeSwitch()<cr>
 "autocmd BufWritePost *.coffee silent make -m
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" NEOCOMPLETE + ECLIM
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:EclimCompletionMethod = "omnifunc"
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.java = '\k\.\k*'
+let g:neocomplete#force_omni_input_patterns.scala = '\k\.\k*'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TAGS FILE
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>tg :!ctags -R --language-force=java -f.tags<cr>
@@ -260,9 +273,10 @@ autocmd BufWritePost *.coffee silent make! -m
 
 autocmd BufWritePost *.md silent ! markdown % > /tmp/markdown.html
 autocmd FileType markdown setlocal spell spelllang=en_us
-autocmd FileType markdown setlocal fo=aw2tq tw=100
+autocmd FileType markdown setlocal formatoptions=w2tq tw=100 nosi
 "autocmd FileType markdown nnoremap <leader>r vipgq
-autocmd FileType markdown nnoremap <leader>r vipJ
+autocmd FileType markdown nnoremap <leader>r vipJ0gqap
+"autocmd FileType markdown nnoremap <leader>r gqap
 
 if filereadable("~/.vimrc_local")
   source ~/.vimrc_local
