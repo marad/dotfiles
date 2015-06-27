@@ -37,13 +37,15 @@ syntax on
 
 " Insert current filename base dir after pressing %% in command mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
+cnoreabbrev wq w<bar>bd
+cnoreabbrev q bd
 
 " Create mapping to generate the mapping for running test on current file
 " It generates the command :nnoremap <c-z> :!node [spec-file]<cr>
 nnoremap <s-z> :nnoremap <c-z> :!node <c-r>=substitute(substitute(expand('%'), "^src", "app", "g"), ".coffee$", ".js", "g")<cr><s-<>cr<s->>
 
 nnoremap \ :CtrlPBuffer<cr>
-nnoremap ; :
+"nnoremap ; :
 nnoremap <leader>w :w!<cr>
 
 nnoremap ,, :bp<cr>
@@ -53,9 +55,11 @@ nnoremap ,. :bn<cr>
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
 " Fix space
-nnoremap <space> i<space><esc>l
+" nnoremap <space> i<space><esc>l
 vnoremap < <gv
 vnoremap > >gv
+nnoremap > >>
+nnoremap < <<
 
 " Setup folding
 "set foldmethod=indent
@@ -84,6 +88,9 @@ nnoremap <c-\> :NERDTreeToggle<cr>
 "let g:ctrlp_custom_ignore = 'node_modules'
 "let g:ctrlp_custom_ignore = 'app/\|node_modules\|.js$\|.map$'
 
+let g:ctrlp_match_window_bottom = 0
+let g:ctrlp_match_window_reversed = 0
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Setup Emmet Vim
@@ -97,9 +104,9 @@ if has('gui_running')
   set laststatus=2
   let g:airline_powerline_fonts=1
 
-  """"""""""""""""""""""""""""""""""""""""""""""""
-  " Setup editor
-  """"""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Setup editor
+""""""""""""""""""""""""""""""""""""""""""""""""
   set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
   "set guifont=Monofur\ for\ Powerline\ 13
   set guioptions-=m " Get rid of the menu
@@ -161,7 +168,13 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
+nnoremap j gj
+nnoremap k gk
 
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Keybindings
+""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <c-e> :e#<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Install plugins
