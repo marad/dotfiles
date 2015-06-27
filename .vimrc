@@ -104,9 +104,9 @@ if has('gui_running')
   set laststatus=2
   let g:airline_powerline_fonts=1
 
-""""""""""""""""""""""""""""""""""""""""""""""""
-" Setup editor
-""""""""""""""""""""""""""""""""""""""""""""""""
+  """"""""""""""""""""""""""""""""""""""""""""""""
+  " Setup editor
+  """"""""""""""""""""""""""""""""""""""""""""""""
   set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
   "set guifont=Monofur\ for\ Powerline\ 13
   set guioptions-=m " Get rid of the menu

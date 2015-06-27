@@ -70,3 +70,7 @@
     path = .vim/bundle/emmet-vim
     url = https://github.com/mattn/emmet-vim.git
 
+[submodule ".vim/bundle/neocomplete.vim"]
+    path = .vim/bundle/neocomplete.vim
+    url = https://github.com/Shougo/neocomplete.vim
+
