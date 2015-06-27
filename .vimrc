@@ -7,16 +7,17 @@ let g:mapleader=","
 set autoread
 set hidden
 set history=1000
-set sw=2 sts=2
+set sw=4 sts=4
 "set number
 set hlsearch
 set incsearch
+nnoremap <leader>h :nohl<cr>
 set showmatch
 set ignorecase smartcase
 
 set expandtab
-set shiftwidth=2
-set softtabstop=2
+set shiftwidth=4
+set softtabstop=4
 set smartindent
 set clipboard=unnamedplus
 
@@ -56,6 +57,8 @@ nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <space> i<space><esc>l
 vnoremap < <gv
 vnoremap > >gv
+nnoremap > >>
+nnoremap < <<
 
 " Setup folding
 "set foldmethod=indent
@@ -83,6 +86,9 @@ nnoremap <c-\> :NERDTreeToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""
 "let g:ctrlp_custom_ignore = 'node_modules'
 "let g:ctrlp_custom_ignore = 'app/\|node_modules\|.js$\|.map$'
+
+let g:ctrlp_match_window_bottom = 0
+let g:ctrlp_match_window_reversed = 0
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""
@@ -161,7 +167,13 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
+nnoremap j gj
+nnoremap k gk
 
+""""""""""""""""""""""""""""""""""""""""""""""""
+" Keybindings
+""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <C-e> :e#<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Install plugins
