@@ -38,7 +38,9 @@ syntax on
 " Insert current filename base dir after pressing %% in command mode
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 cnoreabbrev wq w<bar>bd
+cnoreabbrev wqq w<bar>:quit
 cnoreabbrev q bd
+cnoreabbrev qq :quit
 
 " Create mapping to generate the mapping for running test on current file
 " It generates the command :nnoremap <c-z> :!node [spec-file]<cr>
