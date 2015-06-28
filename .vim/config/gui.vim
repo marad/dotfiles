@@ -13,7 +13,8 @@ nnoremap <C-w>m :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
 
 set cursorline
 set background=dark
-colorscheme solarized
+"colorscheme solarized
+colorscheme oxeded
 
 """""""""""""""""""""""""""""""""""""""""""""""
 " Setup air-line plugin

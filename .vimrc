@@ -24,6 +24,7 @@ call pathogen#infect()
 " Auto trim trailing whitespace on save
 autocmd BufWritePre *.md :%s/\s\+$//e
 autocmd BufWritePre *.java :%s/\s\+$//e
+autocmd BufWritePre *.scala :%s/\s\+$//e
 autocmd BufWritePre *.js :%s/\s\+$//e
 autocmd BufWritePre *.coffee :%s/\s\+$//e
 autocmd BufWritePre *.jsp :%s/\s\+$//e
@@ -32,6 +33,7 @@ autocmd BufWritePre *.html :%s/\s\+$//e
 " Load FileType-specific settings
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
 autocmd FileType java source ~/.vim/config/file_types/java.vim
+autocmd FileType scala source ~/.vim/config/file_types/scala.vim
 autocmd FileType markdown source ~/.vim/config/file_types/markdown.vim
 autocmd FileType javascript source ~/.vim/config/file_types/javascript.vim
 autocmd FileType coffee source ~/.vim/config/file_types/coffee.vim

@@ -4,7 +4,7 @@ nnoremap <silent> <buffer> <Leader>o :JavaImportOrganize<cr>
 nnoremap <silent> <buffer> <Leader>d :JavaDocSearch -x declarations<cr>
 nnoremap <silent> <buffer> <cr> :JavaSearchContext<cr>
 nnoremap <silent> <buffer> <Leader>c :JavaCorrect<cr>
-nnoremap <silent> <buffer> <c-l> :%JavaFormat<cr>
+nnoremap <silent> <buffer> <c-f> :%JavaFormat<cr>
 nnoremap <silent> <buffer> <F6> :JavaRename<cr>
 
 " Tags file

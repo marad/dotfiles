@@ -18,7 +18,7 @@ set ignorecase smartcase
 set clipboard=unnamedplus
 set autoread
 set history=1000
-"set hidden
+set hidden
 "set number
 
 " completion menu
@@ -34,6 +34,8 @@ set gdefault " set default /g on substitutions
 set backspace=eol,start,indent
 set scrolloff=2
 "set winwidth=79
+set noswapfile
 
 filetype plugin indent on
 syntax on
+
