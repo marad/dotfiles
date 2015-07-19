@@ -7,10 +7,11 @@ rm -rf $HOME/.vim
 rm -rf $HOME/.vimrc
 rm -rf $HOME/.gitconfig
 rm -rf $HOME/.gitignore_global
-
+rm -rf $HOME/.i3
 
 ln -s $DIR/.vim $HOME/.vim
 ln -s $DIR/.vimrc $HOME/.vimrc
 ln -s $DIR/.gitconfig $HOME/.gitconfig
 ln -s $DIR/.gitignore_global $HOME/.gitignore_global
+ln -s $DIR/i3 $HOME/.i3
 
