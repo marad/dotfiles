@@ -154,6 +154,7 @@ new_float normal
 # for_window [class="..."] border normal
 for_window [class="xfce4-notifyd"] floating enable
 for_window [class="Xfce4-notifyd"] floating enable
+for_window [class="Gnomoria.bin.x86_64"] floating disable
 
 
 # Windows on workspaces
@@ -166,10 +167,11 @@ assign [class="Thunderbird"] 4
 workspace_auto_back_and_forth yes
 
 # Set last wallpaper
-exec "cat ~/.fehbg | bash"
 exec "nm-applet" # NetworkManager applet
 exec "gnome-sound-applet"
 exec "gnome-settings-daemon"
+
+exec "xrandr --output DVI-0 --auto --output DVI-1 --auto --right-of DVI-0 && cat ~/.fehbg | bash"
 
 mode "apps" {
     bindsym c exec google-chrome
@@ -199,8 +201,10 @@ bar {
         font pango:DejaVu Sans Mono 10
         colors {
             # Whole color settings
-            background #000000
-            statusline #ffffff
+            #background #000000
+            #statusline #ffffff
+            background #232323
+            statusline #DCDCDC
             separator  #666666
 
             # Type             border  background font
@@ -211,3 +215,4 @@ bar {
         }
         #position top
 }
+
