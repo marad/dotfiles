@@ -77,3 +77,7 @@
 [submodule ".vim/bundle/neocomplete.vim"]
     path = .vim/bundle/neocomplete.vim
     url = https://github.com/Shougo/neocomplete.vim
+
+[submodule ".vim/bundle/python-mode"]
+    path = .vim/bundle/python-mode
+    url = https://github.com/klen/python-mode.git
