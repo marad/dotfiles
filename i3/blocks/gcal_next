@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcalcli agenda `date "+%H:%M:%S"` --cal=marcin.radoszewski@allegrogroup.com --nocolor | head -n2 | tail -n1
