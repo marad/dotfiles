@@ -11,7 +11,7 @@ nnoremap <leader>r vipJ0gqap
 setlocal spell spelllang=en_us
 
 " Setup proper paragraph auto formatting
-setlocal formatoptions=w2tq tw=100 nosi
+"setlocal formatoptions=w2tq tw=100 nosi
 
 " Convert current file to HTML and save to /tmp/markdown.html on save
 " autocmd BufWritePost *.md silent ! markdown % > /tmp/markdown.html
