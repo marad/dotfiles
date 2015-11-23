@@ -270,6 +270,8 @@ bar {
     tray_output eDP1
 }
 
+focus_follows_mouse no
+
 exec "cat $HOME/.fehbg | bash"
 #fake-outputs 1366x768+0+0,1680x1050+1366+0,1680x1050+3046+0
 exec "bash -c 'sleep 1 && (xrandr --output eDP1 --auto --output DP1 --mode 1680x1050 --right-of eDP1 || xrandr --output --output eDP1 --auto) && cat $HOME/.fehbg | bash' &"
