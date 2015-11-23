@@ -1,0 +1,33 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import requests
+
+def readApiKey(path):
+    with open(path, 'r') as f:
+        return f.read().strip()
+
+# OpenWeatherMap city id
+city = 3083271
+# OpenWeatherMap api key
+apiKey = readApiKey(os.path.expanduser('~/.open_weather_map_api_key'))
+
+
+if (apiKey == ''):
+    print("No Api Key")
+    sys.exit(33)
+
+url = 'http://api.openweathermap.org/data/2.5/weather?id=%s&APPID=%s&units=metric' %\
+    (city, apiKey)
+
+response = requests.get(url)
+
+if response.status_code != 200:
+    print('Request error')
+    print(response.text)
+    sys.exit(33)
+
+data = response.json()
+
+print(data['name'], str(data['main']['temp']) + '°C')

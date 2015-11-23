@@ -10,10 +10,12 @@ then
 
     case "$status" in
         "Discharging")
-            symbol='↓'
+            #symbol='↓'
+            symbol=''
             ;;
         "Charging")
-            symbol='↑'
+            #symbol='↑'
+            symbol=''
             ;;
         "Full")
             exit

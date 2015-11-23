@@ -264,7 +264,10 @@ bindsym $mod+m mode "move workspace"
 #}
 
 bar {
-    status_command i3blocks
+    #status_command ~/mydev/go/bin/i3cat -cmd-file="$HOME/.i3/i3cat.conf"
+    status_command i3blocks -c ~/.i3/i3blocks.conf
+    font pango:DejaVu Sans Mono, FontAwesome 10
+    tray_output eDP1
 }
 
 exec "cat $HOME/.fehbg | bash"
