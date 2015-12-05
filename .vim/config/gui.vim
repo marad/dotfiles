@@ -1,8 +1,9 @@
 """"""""""""""""""""""""""""""""""""""""""""""""
 " Setup editor
 """"""""""""""""""""""""""""""""""""""""""""""""
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
+"set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
 "set guifont=Monofur\ for\ Powerline\ 13
+set guifont=Iosevka\ 13
 set guioptions-=m " Get rid of the menu
 set guioptions-=T " Get rid of the toolbar
 set guioptions-=L " Get rid of the toolbar
