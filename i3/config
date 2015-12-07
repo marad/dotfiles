@@ -189,7 +189,10 @@ for_window [class="chrome_app_list"] floating enable
 
 # Windows on workspaces
 # assign [class="..."] 2
+assign [class="jetbrains-idea-ce"] 2
+assign [class="google-chrome"] 3
 assign [class="Thunderbird"] 4
+assign [class="Firefox"] 4
 
 # Put workspace on screen
 # workspace <WORKSPACE> output <SCREEN>
