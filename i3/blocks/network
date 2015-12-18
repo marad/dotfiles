@@ -24,7 +24,8 @@ for INTERFACE in $(ls /sys/class/net/); do
                 ;;
         esac
 
-        text="$text | $symbol $ipaddr"
+        text="$text | $symbol"
+        #text="$text | $symbol $ipaddr"
     fi
 done
 
