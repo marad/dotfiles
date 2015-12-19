@@ -5,7 +5,7 @@ text=''
 for INTERFACE in $(ls /sys/class/net/); do
     state="$(cat /sys/class/net/$INTERFACE/operstate)"
 
-    if [ "$state" = "up" ]; then
+    if [ "$state" = "up" ] || [ "$INTERFACE" = "ppp0" ]; then
         ipaddr="$(ip addr show $INTERFACE | perl -n -e'/inet (.+)\// && print $1')"
         ipaddr="${ipaddr:-0.0.0.0}"
 
@@ -16,15 +16,16 @@ for INTERFACE in $(ls /sys/class/net/); do
             "em1")
                 symbol=
                 ;;
-            "usb-stick")
+            "ppp0")
                 symbol=
                 ;;
             *)
                 symbol=$INTERFACE
+                #symbol=?
                 ;;
         esac
 
-        text="$text | $symbol"
+        text="$text $symbol"
         #text="$text | $symbol $ipaddr"
     fi
 done
