@@ -1,0 +1,34 @@
+#! /bin/bash
+
+cd $(dirname $0)
+source ./profile
+source ./panel_colors
+
+if [ $(pgrep -cx panel) -gt 1 ] ; then
+	printf "%s\n" "The panel is already running." >&2
+	exit 1
+fi
+
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+bspc config top_padding $PANEL_HEIGHT
+bspc control --subscribe > "$PANEL_FIFO" &
+xtitle -sf 'T%s' > "$PANEL_FIFO" &
+#./time > "$PANEL_FIFO" &
+../blocks/time > "$PANEL_FIFO" &
+../blocks/battery > "$PANEL_FIFO" &
+../blocks/network > "$PANEL_FIFO" &
+#python3 ../blocks/weather > "$PANEL_FIFO" &
+
+cat "$PANEL_FIFO" | ./panel_bar | lemonbar \
+    -n "$PANEL_WM_NAME" \
+    -g x$PANEL_HEIGHT \
+    -f "$PANEL_FONT_FAMILY" \
+    -f "FontAwesome-14" \
+    -F "$COLOR_FOREGROUND" \
+    -B "$COLOR_BACKGROUND" &
+
+wait

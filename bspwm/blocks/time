@@ -1,0 +1,15 @@
+#!/bin/bash
+
+function status {
+    DATE=$(date '+%Y-%m-%d')
+    TIME=$(date '+%H:%M:%S')
+
+    #echo "S $DATE   $TIME"
+    echo "S$DATE $TIME"
+}
+
+while :
+do
+    status
+    sleep 1
+done

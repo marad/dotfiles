@@ -1,0 +1,48 @@
+#!/bin/bash
+
+function status {
+    text=''
+
+    for INTERFACE in $(ls /sys/class/net/); do
+        state="$(cat /sys/class/net/$INTERFACE/operstate)"
+
+        if [ "$state" = "up" ] || [ "$INTERFACE" = "ppp0" ]; then
+            ipaddr="$(ip addr show $INTERFACE | perl -n -e'/inet (.+)\// && print $1')"
+            ipaddr="${ipaddr:-0.0.0.0}"
+
+            case "$INTERFACE" in
+                "wlan0")
+                    symbol=
+                    ;;
+                "em1")
+                    symbol=
+                    ;;
+                "ppp0")
+                    symbol=
+                    ;;
+                *)
+                    symbol=$INTERFACE
+                    #symbol=?
+                    ;;
+            esac
+
+            text="$text $symbol"
+            #text="$text | $symbol $ipaddr"
+        fi
+    done
+
+    if [ -n "$text" ]; then
+        text=$(echo $text | sed "s/^| //")
+        echo N$text
+    else
+        echo "-/->"
+        echo "none"
+        echo "#FF0000"
+    fi
+} 
+
+while :
+do
+    status
+    sleep 10
+done
