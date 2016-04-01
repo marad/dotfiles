@@ -1,8 +1,4 @@
 # I3 Config
-
-gaps inner 5
-gaps outer 10
-
 set $bg-color #2f343f
 set $inactive-bg-color #2f343f
 set $text-color #f3f4f5
@@ -186,8 +182,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-new_window pixel 5
-new_float pixel 5
+#new_window pixel 10
+new_window normal
+new_float normal
 hide_edge_borders none
 
 # for_window [class="XTerm"] floating enable
@@ -204,8 +201,8 @@ for_window [class="Tilda"] border pixel 1
 # assign [class="..."] 2
 assign [class="jetbrains-idea"] ide1
 assign [class="jetbrains-idea-ce"] ide1
-assign [class="Gvim"] ide2
-assign [class="Emacs"] ide2
+assign [class="gvim"] ide2
+assing [class="emacs"] ide2
 assign [class="google-chrome"] 10
 assign [class="Thunderbird"] 4
 assign [class="Firefox"] 2
@@ -284,7 +281,7 @@ bindsym $mod+m mode "move workspace"
 #}
 
 #                       border              background          text                    indicator
-client.focused          #33cccc             #33cccc             $text-color             #33cccc
+client.focused          $bg-color           $bg-color           $text-color             #00ff00
 client.unfocused        $inactive-bg-color  $inactive-bg-color  $inactive-text-color    #00ff00
 client.focused_inactive $inactive-bg-color  $inactive-bg-color  $inactive-text-color    #00ff00
 client.urgent           $urgent-bg-color    $urgent-bg-color    $text-color             #00ff00
@@ -312,6 +309,22 @@ focus_follows_mouse no
 
 exec "cat $HOME/.fehbg | bash"
 exec "setxkbmap -option ctrl:nocaps" # caps lock is ctrl
-exec "setxkbmap pl"
 exec_always "~/.i3/noctrl.sh"
 exec_always "~/.i3/xinput.sh"
+fake-outputs 1366x768+0+0,1680x1050+1366+0,1680x1050+3046+0
+exec "bash -c 'sleep 1 && xrandr --output eDP1 --auto --output DP1 --mode 3360x1050 --right-of eDP1 && cat $HOME/.fehbg | bash' &"
+
+workspace 1 output fake-0
+workspace 2 output fake-0
+workspace 3 output fake-0
+workspace 4 output fake-0
+workspace 5 output fake-0
+
+workspace ide1 output fake-1
+workspace ide2 output fake-1
+
+workspace 6 output fake-2
+workspace 7 output fake-2
+workspace 8 output fake-2
+workspace 9 output fake-2
+workspace 10 output fake-2

@@ -3,6 +3,7 @@
 DIR=$(dirname $0)
 cp $DIR/config-base $DIR/config
 cat $DIR/config-docked >> $DIR/config
+cat $DIR/config-tail >> $DIR/config
 xrandr --output eDP1 --auto --output DP1 --mode 3360x1050 --right-of eDP1 && cat $HOME/.fehbg | bash
 i3-msg restart
 

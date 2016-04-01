@@ -1,2 +1,17 @@
 fake-outputs 1366x768+0+0,1680x1050+1366+0,1680x1050+3046+0
 exec "bash -c 'sleep 1 && xrandr --output eDP1 --auto --output DP1 --mode 3360x1050 --right-of eDP1 && cat $HOME/.fehbg | bash' &"
+
+workspace 1 output fake-0
+workspace 2 output fake-0
+workspace 3 output fake-0
+workspace 4 output fake-0
+workspace 5 output fake-0
+
+workspace ide1 output fake-1
+workspace ide2 output fake-1
+
+workspace 6 output fake-2
+workspace 7 output fake-2
+workspace 8 output fake-2
+workspace 9 output fake-2
+workspace 10 output fake-2

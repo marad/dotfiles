@@ -1,9 +1,14 @@
 # I3 Config
+
+gaps inner 5
+gaps outer 10
+
 set $bg-color #2f343f
 set $inactive-bg-color #2f343f
 set $text-color #f3f4f5
 set $inactive-text-color #676e7d
 set $urgent-bg-color #e53935
+set $active-workspace-fg-color #66ccff
 
 set $mod Mod4
 #font pango:Ubuntu, Light 11
@@ -43,7 +48,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-bindsym $mod+p focus parent
+#bindsym $mod+p focus parent
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -104,6 +109,9 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
+bindsym $mod+i workspace ide1
+bindsym $mod+o workspace ide2
+#bindsym $mod+p workspace ide3
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -116,6 +124,9 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+i move container to workspace ide1
+bindsym $mod+Shift+o move container to workspace ide2
+#bindsym $mod+Shift+p move container to workspace ide3
 
 # Multimedia keys
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blodks
@@ -175,9 +186,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-#new_window pixel 10
-new_window normal
-new_float normal
+new_window pixel 5
+new_float pixel 5
 hide_edge_borders none
 
 # for_window [class="XTerm"] floating enable
@@ -192,11 +202,13 @@ for_window [class="Tilda"] border pixel 1
 
 # Windows on workspaces
 # assign [class="..."] 2
-assign [class="jetbrains-idea"] 2
-assign [class="jetbrains-idea-ce"] 2
-assign [class="google-chrome"] 3
+assign [class="jetbrains-idea"] ide1
+assign [class="jetbrains-idea-ce"] ide1
+assign [class="Gvim"] ide2
+assign [class="Emacs"] ide2
+assign [class="google-chrome"] 10
 assign [class="Thunderbird"] 4
-assign [class="Firefox"] 4
+assign [class="Firefox"] 2
 
 # Put workspace on screen
 # workspace <WORKSPACE> output <SCREEN>
@@ -208,23 +220,24 @@ force_xinerama no
 exec "cat ~/.fehbg | bash"
 exec "nm-applet" # NetworkManager applet
 exec "gnome-sound-applet"
-exec compton -f
+exec "dropbox start"
+exec compton -b
 #exec "gnome-settings-daemon"
 
 
 bindsym $mod+c exec google-chrome --show-app-list
 
-mode "apps" {
-    bindsym c exec google-chrome
-    bindsym f exec firefox
-    bindsym i exec intelij
-    bindsym t exec thunderbird
+#mode "apps" {
+#    bindsym c exec google-chrome
+#    bindsym f exec firefox
+#    bindsym i exec intelij
+#    bindsym t exec thunderbird
+#
+#    bindsym Return mode "default"
+#    bindsym Escape mode "default"
+#}
 
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym $mod+o mode "apps"
+#bindsym $mod+o mode "apps"
 
 mode "move workspace" {
     bindsym h move workspace to output left
@@ -271,7 +284,7 @@ bindsym $mod+m mode "move workspace"
 #}
 
 #                       border              background          text                    indicator
-client.focused          $bg-color           $bg-color           $text-color             #00ff00
+client.focused          #33cccc             #33cccc             $text-color             #33cccc
 client.unfocused        $inactive-bg-color  $inactive-bg-color  $inactive-text-color    #00ff00
 client.focused_inactive $inactive-bg-color  $inactive-bg-color  $inactive-text-color    #00ff00
 client.urgent           $urgent-bg-color    $urgent-bg-color    $text-color             #00ff00
@@ -288,7 +301,7 @@ bar {
         background $bg-color
         statusline $aaaaaa
 
-        focused_workspace $bg-color $bg-color $text-color
+        focused_workspace $bg-color $bg-color $active-workspace-fg-color
         inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
         urgent_workspace $urgent-bg-color $urgent-bg-color $text-color
     }
@@ -299,7 +312,21 @@ focus_follows_mouse no
 
 exec "cat $HOME/.fehbg | bash"
 exec "setxkbmap -option ctrl:nocaps" # caps lock is ctrl
-#fake-outputs 1366x768+0+0,1680x1050+1366+0,1680x1050+3046+0
-#exec "bash -c 'sleep 1 && (xrandr --output eDP1 --auto --output DP1 --mode 1680x1050 --right-of eDP1 || xrandr --output --output eDP1 --auto) && cat $HOME/.fehbg | bash' &"
-fake-outputs 1366x768+0+0,1680x1050+1366+0,1680x1050+3046+0
-exec "bash -c 'sleep 1 && xrandr --output eDP1 --auto --output DP1 --mode 3360x1050 --right-of eDP1 && cat $HOME/.fehbg | bash' &"
+exec "setxkbmap pl"
+exec_always "~/.i3/noctrl.sh"
+exec_always "~/.i3/xinput.sh"
+workspace 1 output eDP1
+workspace 2 output eDP1
+workspace 3 output eDP1
+workspace 4 output eDP1
+workspace 5 output eDP1
+
+workspace ide1 output DP1
+workspace ide2 output DP1
+#workspace ide3 output DP1
+
+workspace 6 output DP1
+workspace 7 output DP1
+workspace 8 output DP1
+workspace 9 output DP1
+workspace 10 output DP1

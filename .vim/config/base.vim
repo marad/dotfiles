@@ -3,11 +3,19 @@ let mapleader=","
 let g:mapleader=","
 
 " Whitespaces
+"
 set sw=4 sts=4
 set shiftwidth=4
+set tabstop=4
 set softtabstop=4
 set expandtab
 set smartindent
+
+" Try py
+set tabstop=8
+set expandtab
+set shiftwidth=4
+set softtabstop=4 
 
 " Searching
 set hlsearch

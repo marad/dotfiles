@@ -1,10 +1,5 @@
 #!/bin/bash
 
-DIR=$(dirname $0)
-#OUT=$(lsusb -d 413c:2513 2>&1)
-#
-#echo $OUT
-#
-#notify-send -u normal "$OUT"
-
-lsusb -d 413c:2513 2>&1 > /tmp/debug && $DIR/setup_docked.sh || $DIR/setup_undocked.sh
+~/.i3/noctrl.sh
+setxkbmap pl
+(xrandr --output eDP1 --auto --output DP1 --mode 1680x1050 --right-of eDP1 || xrandr --output eDP1 --auto --output DP1 --off) && cat $HOME/.fehbg | bash
