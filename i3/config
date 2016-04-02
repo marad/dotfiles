@@ -11,11 +11,12 @@ set $urgent-bg-color #e53935
 set $active-workspace-fg-color #66ccff
 
 set $mod Mod4
-#font pango:Ubuntu, Light 11
-font pango:SFNS Display, Regular 12
+font pango:Ubuntu, Light 11
+#font pango:SFNS Display, Regular 12
 
 # Screen locking 
-bindsym $mod+Control+l exec sh ~/.i3/i3lock-fancy/lock
+#bindsym $mod+Control+l exec sh ~/.i3/i3lock-fancy/lock
+bindsym $mod+Control+l exec "gnome-screensaver-command --lock "
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
@@ -207,6 +208,7 @@ assign [class="jetbrains-idea-ce"] ide1
 assign [class="Gvim"] ide2
 assign [class="Emacs"] ide2
 assign [class="google-chrome"] 10
+assign [class="chromium-browser"] 10
 assign [class="Thunderbird"] 4
 assign [class="Firefox"] 2
 
@@ -217,11 +219,11 @@ assign [class="Firefox"] 2
 force_xinerama no
 
 # Set last wallpaper
-exec "cat ~/.fehbg | bash"
+#exec "cat ~/.fehbg | bash"
 exec "nm-applet" # NetworkManager applet
-exec "gnome-sound-applet"
+exec "pasystray"
 exec "dropbox start"
-exec compton -b
+#exec compton -b
 #exec "gnome-settings-daemon"
 
 
