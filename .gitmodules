@@ -62,10 +62,6 @@
     path = .vim/bundle/vim-snippets
     url = https://github.com/honza/vim-snippets
 
-[submodule ".vim/bundle/neocomplete.vim"]
-    path = .vim/bundle/neocomplete.vim
-    url = https://github.com/Shougo/neocomplete.vim
-
 [submodule ".vim/bundle/emmet-vim"]
     path = .vim/bundle/emmet-vim
     url = https://github.com/mattn/emmet-vim.git
@@ -73,3 +69,7 @@
 [submodule ".vim/bundle/neocomplete.vim"]
     path = .vim/bundle/neocomplete.vim
     url = https://github.com/Shougo/neocomplete.vim
+
+[submodule ".vim/bundle/elm.vim"]
+    path = .vim/bundle/elm.vim
+    url = https://github.com/ElmCast/elm-vim.git
