@@ -1,3 +1,55 @@
 #!/bin/bash
 
-gcalcli agenda `date "+%H:%M:%S"` --cal=marcin.radoszewski@allegrogroup.com --nocolor | head -n2 | tail -n1
+BUTTON=$1
+
+OUTPUT=$(gcalcli agenda "`date`" --tsv --detail_location --detail_description --calendar marcin.radoszewski@allegrogroup.com | head -n1)
+
+BEGIN_DATE=$(echo "$OUTPUT" | awk -F'\t' '{print $1}')
+BEGIN_TIME=$(echo "$OUTPUT" | awk -F'\t' '{print $2}')
+END_DATE=$(echo "$OUTPUT" | awk -F'\t' '{print $3}')
+END_TIME=$(echo "$OUTPUT" | awk -F'\t' '{print $4}')
+NAME=$(echo "$OUTPUT" | awk -F'\t' '{print $5}')
+LOCATION=$(echo "$OUTPUT" | awk -F'\t' '{print $6}' | sed -e 's/PL //g' | sed -e 's/ROOM //g')
+DESC=$(echo "$OUTPUT" | awk -F'\t' '{print $7}')
+
+case $BUTTON in
+    "") # Zwykłe odpytanie i3bara
+        ;;
+    "1") # Lewy
+        notify-send "$NAME" "$DESC"
+        ;;
+    "2") # Środkowy
+        ;;
+    "3") # Prawy
+        notify-send "Agenda" "$(gcalcli agenda "`date`" 23:59 --nocolor --tsv)"
+        ;;
+    "4") # Kółko w górę
+        ;;
+    "5") # Kółko w dół
+        ;;
+    *) # Inny button
+        ;;
+esac
+
+#gcalcli agenda `date "+%H:%M:%S"` --cal=marcin.radoszewski@allegrogroup.com --nocolor | head -n2 | tail -n1
+#gcalcli agenda `date "+%H:%M:%S"` --cal=marcin.radoszewski@allegrogroup.com --nocolor | head -n2 | tail -n1
+
+#echo $OUTPUT
+#echo $BEGIN_TIME
+#echo $END_TIME
+#echo $NAME
+#echo $LOCATION
+#echo $BEGIN_DATE
+
+TODAY=$(date -Idate)
+SHOW_DATE=""
+
+if [ "$BEGIN_DATE" != "$TODAY" ]; then
+    SHOW_DATE="$BEGIN_DATE "
+fi
+
+if [ -z $LOCATION ]; then
+    echo "$SHOW_DATE$BEGIN_TIME-$END_TIME $NAME"
+else
+    echo "$SHOW_DATE$BEGIN_TIME-$END_TIME $NAME ($LOCATION)"
+fi

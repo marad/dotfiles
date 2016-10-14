@@ -15,7 +15,7 @@ except ImportError:
     flags = None
 
 SCOPES = 'https://www.googleapis.com/auth/gmail.readonly'
-CLIENT_SECRET_FILE = '/home/local/ALLEGROGROUP/marcin.radoszewski/.i3/blocks/client_secret.json'
+CLIENT_SECRET_FILE = '/home/marcin/.i3/blocks/client_secret.json'
 APPLICATION_NAME = 'Gmail API Python Quickstart'
 
 

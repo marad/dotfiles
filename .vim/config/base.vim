@@ -17,6 +17,10 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4 
 
+" Backup directories
+set backupdir=/tmp
+set directory=/tmp
+
 " Searching
 set hlsearch
 set incsearch

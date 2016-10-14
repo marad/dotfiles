@@ -1,0 +1,1 @@
+/home/marcin/.config/dotfiles/.vimrc
