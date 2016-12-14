@@ -114,6 +114,7 @@ bindsym $mod+0 workspace 10
 bindsym $mod+i workspace ide1
 bindsym $mod+o workspace ide2
 #bindsym $mod+p workspace ide3
+bindsym $mod+p workspace hipchat
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -129,6 +130,7 @@ bindsym $mod+Shift+0 move container to workspace 10
 bindsym $mod+Shift+i move container to workspace ide1
 bindsym $mod+Shift+o move container to workspace ide2
 #bindsym $mod+Shift+p move container to workspace ide3
+bindsym $mod+Shift+p move container to workspace hipchat
 
 # Multimedia keys
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ && pkill -RTMIN+1 i3blodks
@@ -145,10 +147,10 @@ bindsym XF86MonBrightnessUp exec xbacklight -inc 20 -steps 1
 bindsym XF86MonBrightnessDown exec xbacklight -dec 20 -steps 1
 
 
-bindsym XF86AudioPlay exec "playerctl play-pause"
-bindsym XF86AudioPause exec "playerctl pause"
-bindsym XF86AudioNext exec "playerctl next"
-bindsym XF86AudioPrev exec "playerctl previous"
+bindsym XF86AudioPlay exec "/home/marcin/dev/fun/playerctl/playerctl/playerctl play-pause"
+bindsym XF86AudioPause exec "/home/marcin/dev/fun/playerctl/playerctl/playerctl pause"
+bindsym XF86AudioNext exec "/home/marcin/dev/fun/playerctl/playerctl/playerctl next"
+bindsym XF86AudioPrev exec "/home/marcin/dev/fun/playerctl/playerctl/playerctl previous"
 
 bindsym XF86TouchpadToggle exec "~/.i3/touchpadtoggle.sh"
 bindsym XF86Display exec "~/.i3/setup-monitors.sh"
@@ -215,7 +217,8 @@ assign [class="Emacs"] ide2
 assign [class="google-chrome"] 10
 assign [class="chromium-browser"] 10
 assign [class="Thunderbird"] 4
-assign [class="Firefox"] 2
+assign [class="Firefox"] 1
+assign [class="HipChat"] hipchat
 
 # Put workspace on screen
 # workspace <WORKSPACE> output <SCREEN>
@@ -230,7 +233,7 @@ exec "nm-applet" # NetworkManager applet
 exec "blueman-applet"
 exec "pasystray"
 exec "dropbox start"
-#exec compton -b
+exec compton -b
 #exec "gnome-settings-daemon"
 exec "unity-settings-daemon"
 
@@ -335,10 +338,11 @@ workspace 5 output eDP1
 
 workspace ide1 output DP1-1
 workspace ide2 output DP1-1
+workspace hipchat output DP1-1
 #workspace ide3 output DP1
 
-workspace 6 output DP1-3
-workspace 7 output DP1-3
-workspace 8 output DP1-3
-workspace 9 output DP1-3
-workspace 10 output DP1-3
+workspace 6 output DP1-2
+workspace 7 output DP1-2
+workspace 8 output DP1-2
+workspace 9 output DP1-2
+workspace 10 output DP1-2
