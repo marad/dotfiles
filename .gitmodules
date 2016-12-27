@@ -70,6 +70,10 @@
     path = .vim/bundle/neocomplete.vim
     url = https://github.com/Shougo/neocomplete.vim
 
-[submodule ".vim/bundle/elm.vim"]
-    path = .vim/bundle/elm.vim
-    url = https://github.com/ElmCast/elm-vim.git
+[submodule ".vim/bundle/paredit.vim"]
+    path = .vim/bundle/paredit.vim
+    url = https://github.com/vim-scripts/paredit.vim
+
+[submodule ".vim/bundle/vim-devicons"]
+    path = .vim/bundle/vim-devicons
+    url = https://github.com/ryanoasis/vim-devicons
