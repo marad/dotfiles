@@ -1,7 +1,0 @@
-#!/bin/bash
-
-while :
-do
-    date "+S%a %T"
-    sleep 1
-done

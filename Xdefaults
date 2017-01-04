@@ -1,0 +1,75 @@
+
+Xft.autohint:   0
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintslight
+Xft.lcdfilter: lcddefault
+
+urxvt.font: xft:DejaVu Sans Mono:pixelsize=12
+urxvt*foreground: #f3f4f5
+urxvt*background: #2f343f
+urxvt*letterSpace: -1
+urxvt*scrollBar: false
+urxvt*scrollstyle: plain
+urxvt*secondaryScroll: true
+urxvt*urgentOnBell: true
+rxvvt*transparent: true
+urxvt*shading: 50
+
+
+urxvt.perl-ext-common:  default,matcher
+urxvt.url-launcher: /usr/bin/xdg-open
+urxvt.matcher.button: 1
+
+urxvt*saveLines: 12000
+! urxvt*cursorBlink: true
+! urxvt*cursorUnderline: false
+
+*color0:  #2E3436
+*color1:  #a40000
+*color2:  #4E9A06
+*color3:  #C4A000
+*color4:  #3465A4
+*color5:  #75507B
+*color6:  #ce5c0
+
+*color7:  #babdb9
+*color8:  #55575
+*color9:  #EF2929
+*color10: #8AE234
+*color11: #FCE94F
+*color12: #729FCF
+*color13: #AD7FA8
+*color14: #fcaf3e
+*color15: #EEEEEC
+
+! extensions 
+!
+! URxvt.perl-ext-common:  default,matcher,tabbedex
+!
+! ! clickable links
+!
+! URxvt.urlLauncher:      /usr/bin/firefox
+! URxvt.matcher.button:   1 
+!
+! ! scrolling
+!
+! URxvt*saveLines: 12000
+! URxvt*scrollstyle:plain
+! URxvt*scrollBar: false
+! URxvt*cursorBlink: true
+! URxvt*cursorUnderline: false
+!
+! !  tab settings
+! urxvt.tabbed.tabbar-fg: 2
+! urxvt.tabbed.tabbar-bg: 0
+! urxvt.tabbed.tab-fg: 2
+! urxvt.tabbed.tab-bg: 8
+! Rxvt.tabbed.autohide:  no
+! URxvt.tabbed.new-button:  yes
+! URxvt.tabbed.title: yes
+!
+! Xft.dpi: 120
+!

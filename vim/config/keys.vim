@@ -1,10 +1,4 @@
 
-" Configure common abbreviations (UNPOPULAR!)
-cnoreabbrev wqq w<bar>:quit
-cnoreabbrev qq :quit
-cnoreabbrev wq w<bar>bd
-cnoreabbrev q bd
-
 " Save faster!
 nnoremap <leader>w :w!<cr>
 

@@ -1,5 +1,4 @@
 *.swp
 .sw*
 .netrwhist
-.vim/eclim/
-.vim/plugin/eclim.vim
+vim/plugged

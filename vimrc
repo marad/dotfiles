@@ -6,10 +6,6 @@ source ~/.vim/config/base.vim
 source ~/.vim/config/keys.vim
 
 " Configure plugins
-source ~/.vim/config/plugin/ctrlp.vim
-source ~/.vim/config/plugin/emmet.vim
-source ~/.vim/config/plugin/eclim.vim
-source ~/.vim/config/plugin/neocomplete.vim
 
 " Setup look & feel
 if has('gui_running')
@@ -19,7 +15,8 @@ else
 endif
 
 " Install plugins
-call pathogen#infect()
+" call pathogen#infect()
+source ~/.vim/config/plugins.vim
 
 " Auto trim trailing whitespace on save
 autocmd BufWritePre *.md :%s/\s\+$//e
@@ -30,6 +27,9 @@ autocmd BufWritePre *.coffee :%s/\s\+$//e
 autocmd BufWritePre *.jsp :%s/\s\+$//e
 autocmd BufWritePre *.html :%s/\s\+$//e
 autocmd BufWritePre *.rs :%s/\s\+$//e
+autocmd BufWritePre *.clj :%s/\s\+$//e
+autocmd BufWritePre *.boot :%s/\s\+$//e
+
 
 " Load FileType-specific settings
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
