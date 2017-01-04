@@ -16,7 +16,7 @@ Plug 'itchyny/lightline.vim'
 source ~/.vim/config/plugin/lightline.vim
 
 " Usability
-Plug 'bling/vim-airline'
+" Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-rooter'
 Plug 'sirver/ultisnips'
