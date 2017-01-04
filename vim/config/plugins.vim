@@ -26,7 +26,7 @@ Plug 'mattn/emmet-vim', { 'for': 'html' }
 source ~/.vim/config/plugin/emmet.vim
 
 " Clojure
-Plug 'luochen1990/rainbow', { 'for': 'clojure' }
+Plug 'luochen1990/rainbow'
 source ~/.vim/config/plugin/rainbow.vim
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'kovisoft/paredit', { 'for': 'clojure' }
