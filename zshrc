@@ -84,7 +84,7 @@ fi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 #
 
-alias tmux="TERM=screen-256color-bce tmux"
+# alias tmux="TERM=screen-256color-bce tmux"
 alias v="/home/morti/bin/vim-open"
 
 
