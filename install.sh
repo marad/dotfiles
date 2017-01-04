@@ -31,4 +31,8 @@ echo "Installing .Xdefaults file..."
 rm -rf $HOME/.Xdefaults
 ln -s $DIR/Xdefaults $HOME/.Xdefaults
 
+echo "Installind zsh configuration..."
+rm -rf $HOME/.zshrc
+ln -s $DIR/zshrc $HOME/.zshrc
+
 echo "Installation finished!"
