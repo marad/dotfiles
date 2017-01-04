@@ -19,7 +19,7 @@ rxvvt*transparent: true
 urxvt*shading: 50
 
 
-urxvt.perl-ext-common:  default,matcher
+urxvt.perl-ext-common:  default,matcher,clipboard
 urxvt.url-launcher: /usr/bin/xdg-open
 urxvt.matcher.button: 1
 
@@ -27,16 +27,23 @@ urxvt*saveLines: 12000
 ! urxvt*cursorBlink: true
 ! urxvt*cursorUnderline: false
 
+urxvt.iso14755: false
+XTerm*termName: xterm-256color
+
+
+urxvt.keysym.C-C: perl:clipboard:copy
+urxvt.keysym.C-V: perl:clipboard:paste
+urxvt.keysym.C-A-V: perl:clipboard:paste_escaped
+
 *color0:  #2E3436
 *color1:  #a40000
 *color2:  #4E9A06
 *color3:  #C4A000
 *color4:  #3465A4
 *color5:  #75507B
-*color6:  #ce5c0
-
+*color6:  #ce5c00
 *color7:  #babdb9
-*color8:  #55575
+*color8:  #555753
 *color9:  #EF2929
 *color10: #8AE234
 *color11: #FCE94F
@@ -44,6 +51,7 @@ urxvt*saveLines: 12000
 *color13: #AD7FA8
 *color14: #fcaf3e
 *color15: #EEEEEC
+
 
 ! extensions 
 !

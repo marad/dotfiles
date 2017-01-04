@@ -23,6 +23,10 @@ echo "Installing i3 configuration..."
 rm -rf $HOME/.i3
 ln -s $DIR/i3 $HOME/.i3
 
+echo "Installing tmux configuration..."
+rm -rf $HOME/.tmux.conf
+ln -s $DIR/tmux.conf $HOME/.tmux.conf
+
 echo "Installing .Xdefaults file..."
 rm -rf $HOME/.Xdefaults
 ln -s $DIR/Xdefaults $HOME/.Xdefaults

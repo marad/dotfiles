@@ -8,10 +8,16 @@ source ~/.vim/config/keys.vim
 " Configure plugins
 
 " Setup look & feel
+
 if has('gui_running')
     source ~/.vim/config/gui.vim
 else
-    source ~/.vim/config/terminal.vim
+    if has("termguicolors")
+        set termguicolors
+        source ~/.vim/config/gui.vim
+    else
+        source ~/.vim/config/terminal.vim
+    endif
 endif
 
 " Install plugins
