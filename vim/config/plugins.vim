@@ -25,12 +25,13 @@ Plug 'sirver/ultisnips'
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 source ~/.vim/config/plugin/emmet.vim
 
-" Clojure
+" Clojure & Racket
 Plug 'luochen1990/rainbow'
 source ~/.vim/config/plugin/rainbow.vim
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'kovisoft/paredit', { 'for': 'clojure' }
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 
 " Arduino
 Plug 'jplaut/vim-arduino-ino', { 'for': 'ino' }
