@@ -8,6 +8,11 @@
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
+set $bg-color #2f343f
+set $inactive-bg-color #2f343f
+set $text-color #f3f4f5
+set $inactive-text-color #676e7d
+set $urgent-bg-color #e53935
 
 set $mod Mod4
 
@@ -27,10 +32,12 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec gnome-terminal
 
 # kill focused window
-bindsym $mod+Shift+q kill
+bindsym $mod+q kill
+
+focus_follows_mouse no
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec dmenu_run
@@ -154,12 +161,30 @@ new_float normal
 hide_edge_borders none
 
 for_window [class="Xfce4-notifyd"] floating enable
+for_window [class="UE4Editor"] floating enable
+for_window [class="Gnomoria.bin.x86_64"] floating disable
+for_window [class="Google-chrome"] floating disable
 for_window [class="Xfce4-notifyd"] border none
 
 
 # Windows on workspaces
 # assign [class="..."] 2
 assign [class="Thunderbird"] 4
+
+# Google Chrome
+assign [instance="Google-chrome"] 2
+
+# Google Hangouts
+for_window [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] floating disable
+assign [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] 10
+
+# Spotify
+assign [class="Spotify"] 9
+
+# IntelliJ Idea
+assign [class="jetbrains-idea-ce"] 1
+
+
 
 # Put workspace on screen
 # workspace <WORKSPACE> output <SCREEN>
@@ -168,11 +193,14 @@ assign [class="Thunderbird"] 4
 force_xinerama no
 
 # Set last wallpaper
-exec "cat ~/.fehbg | bash"
 exec "nm-applet" # NetworkManager applet
 exec "gnome-sound-applet"
 exec "gnome-settings-daemon"
-exec "xcompmgr"
+exec compton -f
+exec "albert"
+
+exec "xrandr --output DVI-0 --auto --output DVI-1 --auto --right-of DVI-0 && cat ~/.fehbg | bash"
+exec "setxkbmap -option ctrl:nocaps"
 
 mode "apps" {
     bindsym c exec google-chrome
@@ -208,22 +236,33 @@ mode "move workspace" {
 
 bindsym $mod+m mode "move workspace"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+#                  
+
 bar {
-        status_command i3status -c ~/.i3/i3status.conf
-        font pango:DejaVu Sans Mono 10
-        colors {
-            # Whole color settings
-            background #000000
-            statusline #ffffff
-            separator  #666666
+    status_command i3blocks -c ~/.i3/i3blocks.conf
+    font pango:DejaVu Sans Mono, FontAwesome, Weather Icons 12
+
+    #colors {
+        # Whole color settings
+        #background #000000
+        #statusline #ffffff
+        #background #232323
+            #statusline #DCDCDC
+            #separator  #666666
 
             # Type             border  background font
-            focused_workspace  #008fff #007fff #ffffff
-            active_workspace   #333333 #5f676a #ffffff
-            inactive_workspace #333333 #222222 #888888
-            urgent_workspace   #aa0000 #990000 #ffffff
-        }
-        #position top
+            #focused_workspace  #008fff #007fff #ffffff
+            #active_workspace   #333333 #5f676a #ffffff
+            #inactive_workspace #333333 #222222 #888888
+            #urgent_workspace   #aa0000 #990000 #ffffff
+    #}
+    colors {
+        background $bg-color
+        statusline $aaaaaa
+
+        focused_workspace $bg-color $bg-color $text-color
+        inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+        urgent_workspace $urgent-bg-color $urgent-bg-color $text-color
+    }
 }
+
