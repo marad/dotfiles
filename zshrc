@@ -92,4 +92,4 @@ alias v="/home/morti/bin/vim-open"
 export SDKMAN_DIR="/home/morti/.sdkman"
 [[ -s "/home/morti/.sdkman/bin/sdkman-init.sh" ]] && source "/home/morti/.sdkman/bin/sdkman-init.sh"
 
-if [ "$TMUX" = "" ]; then exec tmux a; fi
+#if [ "$TMUX" = "" ]; then exec tmux a; fi

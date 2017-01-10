@@ -1,5 +1,14 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+INCLUDER="$DIR/includer-linux-0.1/bin/includer-linux"
+
+# Fetch includer
+if [ ! -e "$INCLUDER" ]; then
+    echo "Downloading includer..."
+    wget -q "https://github.com/marad/includer/releases/download/0.1/includer-linux-0.1.zip" || exit 0
+    echo "Unzipping includer"
+    unzip -q "includer-linux-0.1.zip" || exit 0
+fi
 
 echo "Installing vim configuration..."
 rm -rf $HOME/.vim
@@ -20,6 +29,7 @@ ln -s $DIR/gitconfig $HOME/.gitconfig
 ln -s $DIR/gitignore_global $HOME/.gitignore_global
 
 echo "Installing i3 configuration..."
+$INCLUDER $DIR/i3/config_base $DIR/i3/config
 rm -rf $HOME/.i3
 ln -s $DIR/i3 $HOME/.i3
 

@@ -266,4 +266,4 @@ bar {
     }
 }
 
-# This is additional i3 config
+#include ../active-profile/i3_config
