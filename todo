@@ -1,0 +1,9 @@
+Dodac do instalacji czcionki, ktorych uzywa lightbar w vim i i3
+Fontawesome font
+Powerline fonts
+
+Lista aplikacji wymaganych do dzialania:
+i3
+i3lock
+zsh
+

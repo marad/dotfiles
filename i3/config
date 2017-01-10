@@ -17,7 +17,8 @@ set $urgent-bg-color #e53935
 set $mod Mod4
 
 # Screen locking 
-bindsym $mod+Control+l exec sh ~/.i3/i3lock-fancy/lock
+#bindsym $mod+Control+l exec sh ~/.i3/i3lock-fancy/lock
+bindsym $mod+Control+l exec i3lock -c 888888
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
