@@ -41,5 +41,6 @@ Plug 'jplaut/vim-arduino-ino', { 'for': 'ino' }
 
 " Python
 Plug 'klen/python-mode', { 'for': 'python' }
+source ~/.vim/config/plugin/pymode.vim
 
 call plug#end()
