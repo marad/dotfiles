@@ -19,6 +19,7 @@ ln -s $DIR/vimrc $HOME/.vimrc
 echo "Installing nvim configuration..."
 rm -rf $HOME/.config/nvim/init.vim
 rm -rf $HOME/.config/nvim/colors
+mkdir -p $HOME/.config/nvim
 ln -s $DIR/vimrc $HOME/.config/nvim/init.vim
 ln -s $DIR/vim/colors $HOME/.config/nvim/colors
 
