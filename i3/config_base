@@ -51,7 +51,7 @@ bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
-bindsym $mod+p focus parent
+bindsym $mod+Ctrl+p focus parent
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -168,11 +168,11 @@ for_window [class="Xfce4-notifyd"] border none
 
 
 # Windows on workspaces
-# assign [class="..."] 2
+# assign [class="..."] 3
 assign [class="Thunderbird"] 4
 
 # Google Chrome
-assign [instance="Google-chrome"] 2
+assign [class="Google-chrome"] 2
 
 # Google Hangouts
 for_window [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] floating disable
@@ -197,22 +197,9 @@ exec "nm-applet" # NetworkManager applet
 exec "gnome-sound-applet"
 exec "gnome-settings-daemon"
 exec compton -f
-exec "albert"
 
-exec "xrandr --output DVI-0 --auto --output DVI-1 --auto --right-of DVI-0 && cat ~/.fehbg | bash"
 exec "setxkbmap -option ctrl:nocaps"
-
-mode "apps" {
-    bindsym c exec google-chrome
-    bindsym f exec firefox
-    bindsym i exec intelij
-    bindsym t exec thunderbird
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym $mod+o mode "apps"
+exec "setxkbmap pl"
 
 mode "move workspace" {
     bindsym h move workspace to output left
