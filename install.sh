@@ -1,4 +1,4 @@
-
+#!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 INCLUDER="$DIR/includer-linux-0.1/bin/includer-linux"
 
