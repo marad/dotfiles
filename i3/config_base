@@ -169,20 +169,17 @@ for_window [class="Xfce4-notifyd"] border none
 
 # Windows on workspaces
 # assign [class="..."] 3
-assign [class="Thunderbird"] 4
-
-# Google Chrome
-assign [class="Google-chrome"] 2
+#assign [class="Thunderbird"] 4
 
 # Google Hangouts
-for_window [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] floating disable
-assign [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] 10
+#for_window [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] floating disable
+#assign [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] 10
 
 # Spotify
-assign [class="Spotify"] 9
+#assign [class="Spotify"] 9
 
 # IntelliJ Idea
-assign [class="jetbrains-idea-ce"] 1
+#assign [class="jetbrains-idea-ce"] 1
 
 
 
