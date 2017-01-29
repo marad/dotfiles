@@ -85,7 +85,7 @@ fi
 #
 
 # alias tmux="TERM=screen-256color-bce tmux"
-alias v="/home/morti/bin/vim-open"
+alias v="$HOME/bin/vim-open"
 
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

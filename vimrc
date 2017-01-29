@@ -38,13 +38,15 @@ autocmd BufWritePre *.boot :%s/\s\+$//e
 
 
 " Load FileType-specific settings
-autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
-autocmd FileType java source ~/.vim/config/file_types/java.vim
-autocmd FileType scala source ~/.vim/config/file_types/scala.vim
-autocmd FileType markdown source ~/.vim/config/file_types/markdown.vim
-autocmd FileType javascript source ~/.vim/config/file_types/javascript.vim
-autocmd FileType coffee source ~/.vim/config/file_types/coffee.vim
-autocmd FileType rust source ~/.vim/config/file_types/rust.vim
+
+autocmd FileType xml        setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
+autocmd FileType java       source   ~/.vim/config/file_types/java.vim
+autocmd FileType scala      source   ~/.vim/config/file_types/scala.vim
+autocmd FileType markdown   source   ~/.vim/config/file_types/markdown.vim
+autocmd FileType javascript source   ~/.vim/config/file_types/javascript.vim
+autocmd FileType coffee     source   ~/.vim/config/file_types/coffee.vim
+autocmd FileType rust       source   ~/.vim/config/file_types/rust.vim
+autocmd FileType clojure    source   ~/.vim/config/file_types/clojure.vim
 
 " Jump to last cursor position unless it's invalid or in an event handler
 augroup moveCursorToLastPosition

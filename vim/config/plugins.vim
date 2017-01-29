@@ -34,6 +34,8 @@ source ~/.vim/config/plugin/rainbow.vim
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme', 'racket'] }
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'gregspurrier/vim-midje', { 'for': 'clojure' }
+" Plug 'gberenfield/cljfold.vim', { 'for': 'clojure' }
 Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 
 " Arduino
