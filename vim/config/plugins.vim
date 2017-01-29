@@ -23,6 +23,8 @@ let g:localvimrc_name=[".lvimrc", "project.vim"]
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-rooter'
 Plug 'sirver/ultisnips'
+source ~/.vim/config/plugin/ultisnips.vim
+
 
 " WebDev
 Plug 'mattn/emmet-vim', { 'for': 'html' }

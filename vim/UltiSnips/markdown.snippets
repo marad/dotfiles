@@ -13,3 +13,13 @@ endsnippet
 snippet time
 `date "+%Y-%m-%d %H:%M:%S"`
 endsnippet
+
+
+snippet head
+---
+title:  ${1:title}
+date: `date "+%Y-%m-%d %H:%M:%S"`
+tags: ${2:tag1, tag2}
+categories: ${3:programming}
+---
+endsnippet
