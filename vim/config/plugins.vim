@@ -34,6 +34,7 @@ source ~/.vim/config/plugin/emmet.vim
 Plug 'luochen1990/rainbow'
 source ~/.vim/config/plugin/rainbow.vim
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'typedclojure/vim-typedclojure', { 'for': 'clojure' }
 Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme', 'racket'] }
 source ~/.vim/config/plugin/paredit.vim
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
@@ -47,5 +48,13 @@ Plug 'jplaut/vim-arduino-ino', { 'for': 'ino' }
 " Python
 Plug 'klen/python-mode', { 'for': 'python' }
 source ~/.vim/config/plugin/pymode.vim
+
+" Org-Mode
+Plug 'jceb/vim-orgmode', { 'for': 'org' }
+
+Plug 'itchyny/calendar.vim'
+source ~/.vim/config/plugin/calendar.vim
+
+Plug 'vim-scripts/SyntaxRange'
 
 call plug#end()
