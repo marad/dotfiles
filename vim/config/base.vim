@@ -35,6 +35,8 @@ set backspace=eol,start,indent
 set scrolloff=2
 "set winwidth=79
 set noswapfile
+set nobackup
+set nowritebackup
 
 filetype plugin indent on
 syntax on

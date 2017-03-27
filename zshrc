@@ -87,6 +87,7 @@ fi
 # alias tmux="TERM=screen-256color-bce tmux"
 alias v="$HOME/bin/vim-open"
 alias cdp='f() { cd $(fm path "$1") };f'
+source $HOME/.cargo/env
 
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

@@ -42,6 +42,18 @@ Plug 'gregspurrier/vim-midje', { 'for': 'clojure' }
 " Plug 'gberenfield/cljfold.vim', { 'for': 'clojure' }
 Plug 'wlangstroth/vim-racket', { 'for': 'racket' }
 
+" Rust Lang
+Plug 'cespare/vim-toml', { 'for' : 'toml' }
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'racer-rust/vim-racer', { 'for': 'rust' }
+set hidden
+let g:racer_cmd = "/home/local/ALLEGROGROUP/marcin.radoszewski/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
+
 " Arduino
 Plug 'jplaut/vim-arduino-ino', { 'for': 'ino' }
 
