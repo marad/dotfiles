@@ -9,8 +9,8 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'junegunn/vim-easy-align'
 source ~/.vim/config/plugin/vim-easy-align.vim
 
-Plug 'Shougo/neocomplete.vim'
-source ~/.vim/config/plugin/neocomplete.vim
+" Plug 'Shougo/neocomplete.vim'
+" source ~/.vim/config/plugin/neocomplete.vim
 
 Plug 'itchyny/lightline.vim'
 source ~/.vim/config/plugin/lightline.vim
@@ -56,5 +56,11 @@ Plug 'itchyny/calendar.vim'
 source ~/.vim/config/plugin/calendar.vim
 
 Plug 'vim-scripts/SyntaxRange'
+
+Plug 'tpope/vim-surround'
+
+" Common Lisp
+Plug 'kovisoft/slimv', { 'for': 'lisp' }
+source ~/.vim/config/plugin/slimv.vim
 
 call plug#end()

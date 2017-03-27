@@ -215,10 +215,11 @@ force_xinerama no
 exec "nm-applet" # NetworkManager applet
 exec "gnome-sound-applet"
 exec "gnome-settings-daemon"
-exec compton -f
+#exec compton -f
 
 exec "setxkbmap -option ctrl:nocaps"
 exec "setxkbmap pl"
+exec "xmodmap ~/.Xmodmap"
 
 mode "move workspace" {
     bindsym h move workspace to output left
