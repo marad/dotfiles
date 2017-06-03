@@ -89,6 +89,9 @@ alias v="$HOME/bin/vim-open"
 alias cdp='f() { cd $(fm path "$1") };f'
 source $HOME/.cargo/env
 
+. /home/local/ALLEGROGROUP/marcin.radoszewski/.nix-profile/etc/profile.d/nix.sh
+
+
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/morti/.sdkman"

@@ -30,12 +30,13 @@ source ~/.vim/config/plugin/ultisnips.vim
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 source ~/.vim/config/plugin/emmet.vim
 
-" Clojure & Racket
+" Clojure & Racket & Lfe
 Plug 'luochen1990/rainbow'
 source ~/.vim/config/plugin/rainbow.vim
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'typedclojure/vim-typedclojure', { 'for': 'clojure' }
-Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme', 'racket'] }
+Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme', 'racket'] }
+" Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme', 'racket'] }
 source ~/.vim/config/plugin/paredit.vim
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 Plug 'gregspurrier/vim-midje', { 'for': 'clojure' }
@@ -75,4 +76,11 @@ Plug 'tpope/vim-surround'
 Plug 'kovisoft/slimv', { 'for': 'lisp' }
 source ~/.vim/config/plugin/slimv.vim
 
+
 call plug#end()
+
+" Lisp Flavoured Erlang
+augroup filetypedetect
+    au BufRead,BufNewFile *.lfe set filetype=scheme
+augroup END
+
