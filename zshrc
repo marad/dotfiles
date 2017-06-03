@@ -56,6 +56,8 @@ export PATH="$PATH:/home/morti/bin:/home/morti/.local/bin:/usr/local/sbin:/usr/l
 
 export RUST_SRC_PATH=$HOME/apps/rust/src
 
+export GOPATH="$HOME/go"
+
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
@@ -87,9 +89,9 @@ fi
 # alias tmux="TERM=screen-256color-bce tmux"
 alias v="$HOME/bin/vim-open"
 alias cdp='f() { cd $(fm path "$1") };f'
-source $HOME/.cargo/env
+[[ -s "$HOME/.cargo/env" ]] && source $HOME/.cargo/env
 
-. /home/local/ALLEGROGROUP/marcin.radoszewski/.nix-profile/etc/profile.d/nix.sh
+. $HOME/.config/dotfiles/active-profile/zshrc
 
 
 

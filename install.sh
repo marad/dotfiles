@@ -1,6 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 INCLUDER="$DIR/includer-linux-0.1/bin/includer-linux"
+OHMYZSH="$HOME/.oh-my-zsh"
 
 # Fetch includer
 if [ ! -e "$INCLUDER" ]; then
@@ -8,6 +9,10 @@ if [ ! -e "$INCLUDER" ]; then
     wget -q "https://github.com/marad/includer/releases/download/0.1/includer-linux-0.1.zip" || exit 0
     echo "Unzipping includer"
     unzip -q "includer-linux-0.1.zip" || exit 0
+fi
+
+if [ ! -e "$OHMYZSH" ]; then
+    sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
 fi
 
 echo "Installing vim configuration..."
