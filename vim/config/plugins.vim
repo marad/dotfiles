@@ -76,6 +76,9 @@ Plug 'tpope/vim-surround'
 Plug 'kovisoft/slimv', { 'for': 'lisp' }
 source ~/.vim/config/plugin/slimv.vim
 
+" Kotlin
+Plug 'udalov/kotlin-vim'
+
 
 call plug#end()
 
