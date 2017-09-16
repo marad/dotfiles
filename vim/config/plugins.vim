@@ -22,7 +22,7 @@ let g:localvimrc_name=[".lvimrc", "project.vim"]
 " Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-rooter'
-Plug 'sirver/ultisnips'
+" Plug 'sirver/ultisnips'
 
 " WebDev
 Plug 'mattn/emmet-vim', { 'for': 'html' }
