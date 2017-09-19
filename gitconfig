@@ -22,7 +22,7 @@
 [push]
     default = simple
 [core]
-    editor = vim
+    editor = nvim
     autocrlf = input
     excludesfile = ~/.gitignore_global
 

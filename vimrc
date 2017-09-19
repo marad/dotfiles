@@ -12,12 +12,12 @@ source ~/.vim/config/keys.vim
 if has('gui_running')
     source ~/.vim/config/gui.vim
 else
-    if has("termguicolors")
-        set termguicolors
-        source ~/.vim/config/gui.vim
-    else
+     if has("termguicolors")
+         set termguicolors
+         source ~/.vim/config/gui.vim
+     else
         source ~/.vim/config/terminal.vim
-    endif
+     endif
 endif
 
 " Install plugins

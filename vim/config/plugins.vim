@@ -35,8 +35,8 @@ Plug 'luochen1990/rainbow'
 source ~/.vim/config/plugin/rainbow.vim
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'typedclojure/vim-typedclojure', { 'for': 'clojure' }
-Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme', 'racket'] }
-" Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme', 'racket'] }
+" Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme', 'racket'] }
+Plug 'kovisoft/paredit', { 'for': ['clojure', 'scheme', 'racket'] }
 source ~/.vim/config/plugin/paredit.vim
 Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 Plug 'gregspurrier/vim-midje', { 'for': 'clojure' }
@@ -79,6 +79,9 @@ source ~/.vim/config/plugin/slimv.vim
 " Kotlin
 Plug 'udalov/kotlin-vim'
 
+" REST Console
+Plug 'diepm/vim-rest-console'
+source ~/.vim/config/plugin/rest.vim
 
 call plug#end()
 

@@ -47,11 +47,11 @@ ZSH_THEME="amuse"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-extras git-flow bgnotify python archlinux systemd)
+plugins=(git git-extras git-flow python systemd)
 
 # User configuration
 
-export PATH="$PATH:/home/morti/bin:/home/morti/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/share/java/gradle/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/morti/.gem/ruby/2.4.0/bin"
+export PATH="$PATH:/home/morti/bin:/home/morti/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/share/java/gradle/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/morti/.gem/ruby/2.4.0/bin:$HOME/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export RUST_SRC_PATH=$HOME/apps/rust/src
