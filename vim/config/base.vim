@@ -41,3 +41,4 @@ set nowritebackup
 filetype plugin indent on
 syntax on
 
+set inccommand=nosplit
