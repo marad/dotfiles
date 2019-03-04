@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/morti/.oh-my-zsh
+export ZSH=/home/mori/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -51,7 +51,7 @@ plugins=(git git-extras git-flow bgnotify python archlinux systemd)
 
 # User configuration
 
-export PATH="$PATH:/home/morti/bin:/home/morti/.local/bin:/home/morti/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/share/java/gradle/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/morti/.gem/ruby/2.3.0/bin"
+export PATH="$PATH:/home/mori/apps/graalvm-ce-1.0.0-rc10/bin:/home/mori/bin:/home/mori/.local/bin:/home/mori/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/share/java/gradle/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/mori/.gem/ruby/2.3.0/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export RUST_SRC_PATH=$HOME/apps/rust/src
@@ -85,11 +85,21 @@ fi
 #
 
 # alias tmux="TERM=screen-256color-bce tmux"
-alias v="/home/morti/bin/vim-open"
+alias v="/home/mori/bin/vim-open"
+
+# Bash Aliases
+alias emac="emacsclient -t"
+alias semac="sudo emacsclient -t"
+alias emacx="emacsclient -c -a emacs"
+
+# export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -t"
+export VISUAL="emacsclient -c -a emacs"
+
 
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/morti/.sdkman"
-[[ -s "/home/morti/.sdkman/bin/sdkman-init.sh" ]] && source "/home/morti/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="/home/mori/.sdkman"
+[[ -s "/home/mori/.sdkman/bin/sdkman-init.sh" ]] && source "/home/mori/.sdkman/bin/sdkman-init.sh"
 
 #if [ "$TMUX" = "" ]; then exec tmux a; fi

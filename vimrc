@@ -36,6 +36,9 @@ autocmd BufWritePre *.rs :%s/\s\+$//e
 autocmd BufWritePre *.clj :%s/\s\+$//e
 autocmd BufWritePre *.boot :%s/\s\+$//e
 
+" Auto evaluate clojure file on write
+autocmd BufWritePre *.clj :%Eval
+
 
 " Load FileType-specific settings
 autocmd FileType xml setlocal equalprg=xmllint\ --format\ --recover\ -\ 2>/dev/null
