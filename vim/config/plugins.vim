@@ -45,4 +45,19 @@ Plug 'jplaut/vim-arduino-ino', { 'for': 'ino' }
 Plug 'klen/python-mode', { 'for': 'python' }
 source ~/.vim/config/plugin/pymode.vim
 
+" Rust
+Plug 'vim-syntastic/syntastic'
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+source ~/.vim/config/plugin/rust.vim
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+
 call plug#end()
