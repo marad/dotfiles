@@ -51,7 +51,6 @@ plugins=(git git-extras git-flow python systemd)
 
 # User configuration
 
-export PATH="$PATH:/home/morti/bin:/home/morti/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/share/java/gradle/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/morti/.gem/ruby/2.4.0/bin:$HOME/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 export RUST_SRC_PATH=$HOME/apps/rust/src
@@ -91,11 +90,20 @@ alias v="$HOME/bin/vim-open"
 alias cdp='f() { cd $(fm path "$1") };f'
 [[ -s "$HOME/.cargo/env" ]] && source $HOME/.cargo/env
 
+# Bash Aliases
+alias emac="emacsclient -t"
+alias semac="sudo emacsclient -t"
+alias emacx="emacsclient -c -a emacs"
+
+# export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -t"
+export VISUAL="emacsclient -c -a emacs"
+
 . $HOME/.config/dotfiles/active-profile/zshrc
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/morti/.sdkman"
-[[ -s "/home/morti/.sdkman/bin/sdkman-init.sh" ]] && source "/home/morti/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="/home/mori/.sdkman"
+[[ -s "/home/mori/.sdkman/bin/sdkman-init.sh" ]] && source "/home/mori/.sdkman/bin/sdkman-init.sh"
 
 #if [ "$TMUX" = "" ]; then exec tmux a; fi
 

@@ -12,8 +12,10 @@ source ~/.vim/config/plugin/vim-easy-align.vim
 " Plug 'Shougo/neocomplete.vim'
 " source ~/.vim/config/plugin/neocomplete.vim
 
-Plug 'itchyny/lightline.vim'
-source ~/.vim/config/plugin/lightline.vim
+source ~/.vim/config/plugin/notes.vim
+
+" Plug 'itchyny/lightline.vim'
+" source ~/.vim/config/plugin/lightline.vim
 
 Plug 'embear/vim-localvimrc'
 let g:localvimrc_name=[".lvimrc", "project.vim"]
@@ -25,14 +27,14 @@ Plug 'airblade/vim-rooter'
 " Plug 'sirver/ultisnips'
 source ~/.vim/config/plugin/ultisnips.vim
 
-
 " WebDev
 Plug 'mattn/emmet-vim', { 'for': 'html' }
 source ~/.vim/config/plugin/emmet.vim
 
-" Clojure & Racket & Lfe
-Plug 'luochen1990/rainbow'
-source ~/.vim/config/plugin/rainbow.vim
+" Clojure & Racket
+" Plug 'luochen1990/rainbow'
+" source ~/.vim/config/plugin/rainbow.vim
+
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'typedclojure/vim-typedclojure', { 'for': 'clojure' }
 " Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme', 'racket'] }
@@ -83,10 +85,27 @@ Plug 'udalov/kotlin-vim'
 Plug 'diepm/vim-rest-console'
 source ~/.vim/config/plugin/rest.vim
 
+" Rust
+Plug 'vim-syntastic/syntastic'
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+source ~/.vim/config/plugin/rust.vim
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+let g:deoplete#enable_at_startup = 1
+
+Plug 'milkypostman/vim-togglelist'
+nmap <script> <silent> <leader>l :call ToggleLocationList()<CR>
+nmap <script> <silent> <leader>q :call ToggleQuickfixList()<CR>
+
+Plug 'neomake/neomake'
+
 call plug#end()
 
-" Lisp Flavoured Erlang
-augroup filetypedetect
-    au BufRead,BufNewFile *.lfe set filetype=scheme
-augroup END
-
+call neomake#configure#automake('w')
