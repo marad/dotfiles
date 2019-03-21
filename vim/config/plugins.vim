@@ -51,6 +51,9 @@ Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 source ~/.vim/config/plugin/rust.vim
 
+
+
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -60,4 +63,12 @@ else
 endif
 let g:deoplete#enable_at_startup = 1
 
+Plug 'milkypostman/vim-togglelist'
+nmap <script> <silent> <leader>l :call ToggleLocationList()<CR>
+nmap <script> <silent> <leader>q :call ToggleQuickfixList()<CR>
+
+Plug 'neomake/neomake'
+
 call plug#end()
+
+call neomake#configure#automake('w')
