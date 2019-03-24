@@ -54,8 +54,6 @@ plugins=(git git-extras git-flow bgnotify python archlinux systemd)
 export PATH="$PATH:/home/mori/apps/graalvm-ce-1.0.0-rc10/bin:/home/mori/bin:/home/mori/.local/bin:/home/mori/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/share/java/gradle/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/mori/.gem/ruby/2.3.0/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
-export RUST_SRC_PATH=$HOME/apps/rust/src
-
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
@@ -96,6 +94,9 @@ alias emacx="emacsclient -c -a emacs"
 export EDITOR="emacsclient -t"
 export VISUAL="emacsclient -c -a emacs"
 
+export FZF_DEFAULT_COMMAND="fd"
+
+alias cdp='f() { cd "$(fp)" };f'
 
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!

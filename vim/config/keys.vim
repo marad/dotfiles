@@ -31,9 +31,3 @@ cnoremap %% <C-R>=expand('%:h').'/'<cr>
 " Open file in current file's direcotry
 nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 
-" Map \ to show opened buffers with ctrlp plugin
-nnoremap \ :CtrlPBuffer<cr>
-
-" Toggle NERD Tree plugin
-nnoremap <c-\> :NERDTreeToggle<cr>
-

@@ -1,30 +1,30 @@
 call plug#begin()
 
 " General
-Plug 'kien/ctrlp.vim'
-source ~/.vim/config/plugin/ctrlp.vim
+Plug 'junegunn/fzf.vim'
+let $FZF_DEFAULT_COMMAND = 'fd --type f --hidden --exclude .git'
+nnoremap <C-p> :Files<CR>
+nnoremap \ :Buffers<CR>
+nnoremap L :Lines<CR>
+"nnoremap <C-m> :Marks<CR>
+nnoremap <leader>t :RustTest -- --nocapture<CR>
 
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+nnoremap <c-\> :NERDTreeToggle<cr>
+
 
 Plug 'junegunn/vim-easy-align'
 source ~/.vim/config/plugin/vim-easy-align.vim
 
-" Plug 'Shougo/neocomplete.vim'
-" source ~/.vim/config/plugin/neocomplete.vim
-
 source ~/.vim/config/plugin/notes.vim
-
-" Plug 'itchyny/lightline.vim'
-" source ~/.vim/config/plugin/lightline.vim
 
 Plug 'embear/vim-localvimrc'
 let g:localvimrc_name=[".lvimrc", "project.vim"]
 
 " Usability
-" Plug 'bling/vim-airline'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-rooter'
-" Plug 'sirver/ultisnips'
+Plug 'sirver/ultisnips'
 
 " WebDev
 Plug 'mattn/emmet-vim', { 'for': 'html' }
@@ -50,7 +50,6 @@ Plug 'vim-syntastic/syntastic'
 Plug 'rust-lang/rust.vim'
 Plug 'racer-rust/vim-racer'
 source ~/.vim/config/plugin/rust.vim
-
 
 
 
