@@ -31,8 +31,8 @@
 
     - name: Install vinote
       ansible.builtin.shell:
-        cmd: . "$HOME/.cargo/env" && cargo install vinote
-        creates: ~/.cargo/bin/vinote
+        cmd: go install github.com/marad/vinote/cmd/vn@latest
+        creates: ~/go/bin/vn
 
     - name: Set default shell to zsh
       become: true

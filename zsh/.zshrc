@@ -12,7 +12,7 @@ if [[ "$OS" == "macos" ]]; then
 fi
 
 # --- PATH ---
-export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
 if [[ "$OS" == "linux" ]]; then
     export PATH="/opt/nvim-linux64/bin:$PATH"
 fi
