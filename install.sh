@@ -124,9 +124,9 @@ echo "All packages stowed."
 read -p "Run Ansible playbook for $OS? [y/N] " -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     case "$OS" in
-        macos)  ansible-playbook "$DOTFILES_DIR/ansible/macos.yaml" ;;
-        ubuntu) ansible-playbook "$DOTFILES_DIR/ansible/ubuntu.yaml" ;;
-        arch)   ansible-playbook "$DOTFILES_DIR/ansible/arch.yaml" ;;
+        macos)  ansible-playbook -i localhost, --connection=local "$DOTFILES_DIR/ansible/macos.yaml" ;;
+        ubuntu) ansible-playbook -i localhost, --connection=local "$DOTFILES_DIR/ansible/ubuntu.yaml" ;;
+        arch)   ansible-playbook -i localhost, --connection=local "$DOTFILES_DIR/ansible/arch.yaml" ;;
         *)      echo "No playbook available for $OS" ;;
     esac
 fi

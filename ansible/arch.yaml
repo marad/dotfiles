@@ -20,6 +20,7 @@
           - github-cli
           - fontconfig
           - ttf-jetbrains-mono-nerd
+          - zoxide
         state: latest
         update_cache: yes
       become: true
@@ -28,14 +29,9 @@
       ansible.builtin.shell:
         cmd: rustup install stable
 
-    - name: Install jumper
-      ansible.builtin.shell:
-        cmd: cargo install jumper
-        creates: ~/.cargo/bin/jumper
-
     - name: Install vinote
       ansible.builtin.shell:
-        cmd: cargo install vinote
+        cmd: . "$HOME/.cargo/env" && cargo install vinote
         creates: ~/.cargo/bin/vinote
 
     - name: Set default shell to zsh

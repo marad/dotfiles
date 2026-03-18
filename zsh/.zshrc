@@ -45,18 +45,9 @@ if [[ "$OS" == "linux" ]]; then
     alias pbpaste='xsel --clipboard --output'
 fi
 
-# --- Jumper (https://github.com/marad/jumper) ---
-if (( $+commands[jumper] )); then
-    jumpLocation() {
-        if [ -z "$@" ]; then
-            selected=$(jumper list | fzf --ansi | awk -F'|' '{gsub(/^\s+/, "", $2); print $2}')
-            cd "$selected"
-        else
-            selected=$(jumper get "$@")
-            cd "$selected"
-        fi
-    }
-    alias jg="jumpLocation"
+# --- Zoxide (smart cd) ---
+if (( $+commands[zoxide] )); then
+    eval "$(zoxide init zsh)"
 fi
 
 # --- Starship prompt ---

@@ -25,6 +25,7 @@
           - node
           - ical-buddy
           - podman-compose
+          - zoxide
         state: present
 
     - name: Install Homebrew cask packages
@@ -43,12 +44,7 @@
       register: rustup_result
       changed_when: "'installed' in rustup_result.stdout"
 
-    - name: Install jumper
-      ansible.builtin.shell:
-        cmd: cargo install jumper
-        creates: ~/.cargo/bin/jumper
-
     - name: Install vinote
       ansible.builtin.shell:
-        cmd: cargo install vinote
+        cmd: . "$HOME/.cargo/env" && cargo install vinote
         creates: ~/.cargo/bin/vinote

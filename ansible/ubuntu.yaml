@@ -49,14 +49,14 @@
         cmd: cargo install bat
         creates: ~/.cargo/bin/bat
 
-    - name: Install jumper
+    - name: Install zoxide
       ansible.builtin.shell:
-        cmd: cargo install jumper
-        creates: ~/.cargo/bin/jumper
+        cmd: . "$HOME/.cargo/env" && cargo install zoxide --locked
+        creates: ~/.cargo/bin/zoxide
 
     - name: Install vinote
       ansible.builtin.shell:
-        cmd: cargo install vinote
+        cmd: . "$HOME/.cargo/env" && cargo install vinote
         creates: ~/.cargo/bin/vinote
 
     - name: Make sure that apt neovim package is absent
