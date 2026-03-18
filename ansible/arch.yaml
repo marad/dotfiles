@@ -1,0 +1,45 @@
+- name: Arch Configuration
+  hosts: localhost
+  tasks:
+    - name: Install required packages
+      pacman:
+        name:
+          - stow
+          - zsh
+          - xsel
+          - neovim
+          - tmux
+          - fzf
+          - rustup
+          - eza
+          - ripgrep
+          - bat
+          - starship
+          - sccache
+          - unzip
+          - github-cli
+          - fontconfig
+          - ttf-jetbrains-mono-nerd
+        state: latest
+        update_cache: yes
+      become: true
+
+    - name: Setup rustlang with rustup
+      ansible.builtin.shell:
+        cmd: rustup install stable
+
+    - name: Install jumper
+      ansible.builtin.shell:
+        cmd: cargo install jumper
+        creates: ~/.cargo/bin/jumper
+
+    - name: Install vinote
+      ansible.builtin.shell:
+        cmd: cargo install vinote
+        creates: ~/.cargo/bin/vinote
+
+    - name: Set default shell to zsh
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_user_id }}"
+        shell: /usr/bin/zsh

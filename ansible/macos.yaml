@@ -1,0 +1,54 @@
+- name: macOS Configuration
+  hosts: localhost
+  tasks:
+    - name: Install Homebrew packages
+      community.general.homebrew:
+        name:
+          - stow
+          - neovim
+          - neovide
+          - tmux
+          - fzf
+          - fd
+          - eza
+          - ripgrep
+          - bat
+          - jq
+          - tree
+          - watch
+          - parallel
+          - starship
+          - tree-sitter
+          - gh
+          - go
+          - rustup
+          - node
+          - ical-buddy
+          - podman-compose
+        state: present
+
+    - name: Install Homebrew cask packages
+      community.general.homebrew_cask:
+        name:
+          - font-jetbrains-mono-nerd-font
+          - ghostty
+          - karabiner-elements
+          - podman-desktop
+          - gcloud-cli
+        state: present
+
+    - name: Setup rustlang with rustup
+      ansible.builtin.shell:
+        cmd: rustup install stable
+      register: rustup_result
+      changed_when: "'installed' in rustup_result.stdout"
+
+    - name: Install jumper
+      ansible.builtin.shell:
+        cmd: cargo install jumper
+        creates: ~/.cargo/bin/jumper
+
+    - name: Install vinote
+      ansible.builtin.shell:
+        cmd: cargo install vinote
+        creates: ~/.cargo/bin/vinote

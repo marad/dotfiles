@@ -1,0 +1,41 @@
+format = '''
+$directory$git_branch$battery$memory_usage$package$time$cmd_duration
+$character'''
+
+scan_timeout = 10
+add_newline = false
+
+[directory]
+use_os_path_sep = false
+
+[battery]
+full_symbol = '🔋 '
+charging_symbol = '⚡️ '
+discharging_symbol = '💀 '
+
+[[battery.display]]
+threshold = 99
+style = 'green'
+
+[[battery.display]]
+threshold = 10
+style = 'bold red'
+
+
+[git_branch]
+symbol = '🌱 '
+truncation_symbol = ''
+#ignore_branches = ['master', 'main']
+
+[time]
+disabled = false
+
+[git_metrics]
+disabled = true
+
+[git_commit]
+commit_hash_length = 4
+tag_symbol = '🔖 '
+
+[cmd_duration]
+min_time = 1000

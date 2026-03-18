@@ -1,0 +1,3 @@
+*.swp
+.sw*
+**/.claude/settings.local.json
