@@ -66,7 +66,7 @@ else
     echo "~/.gitconfig.local already exists, skipping git email setup."
 fi
 
-# --- Backup existing configs ---
+# --- Backup existing configs (only real files, skip symlinks) ---
 backup_if_exists() {
     local target="$1"
     if [ -e "$target" ] && [ ! -L "$target" ]; then
@@ -76,8 +76,6 @@ backup_if_exists() {
         mkdir -p "$(dirname "$backup_path")"
         mv "$target" "$backup_path"
         echo "Backed up $target -> $backup_path"
-    elif [ -L "$target" ]; then
-        rm "$target"
     fi
 }
 
@@ -106,16 +104,16 @@ PACKAGES="zsh git starship tmux nvim bin"
 
 for pkg in $PACKAGES; do
     echo "  Stowing $pkg..."
-    stow --target="$HOME" "$pkg"
+    stow --restow --target="$HOME" "$pkg"
 done
 
 # Platform-specific packages
 if [ "$OS" == "macos" ]; then
     echo "  Stowing karabiner..."
-    stow --target="$HOME" karabiner
+    stow --restow --target="$HOME" karabiner
 else
     echo "  Stowing i3..."
-    stow --target="$HOME" i3
+    stow --restow --target="$HOME" i3
 fi
 
 echo "All packages stowed."
