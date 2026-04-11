@@ -16,8 +16,7 @@ sudo apt install -y \
     gettext gettext-base fontconfig libfontconfig-dev libffi-dev \
     libxml2-dev libdrm-dev libxkbcommon-x11-dev libxkbregistry-dev \
     libxkbcommon-dev libpixman-1-dev libudev-dev libseat-dev seatd \
-    libxcb-dri3-dev libvulkan-dev libvulkan-vk-layer-mesa-overlay-dev \
-    vulkan-validationlayers-dev libvulkan1 \
+    libxcb-dri3-dev libvulkan-dev vulkan-utility-libraries-dev libvulkan1 \
     glslang-tools libinput-bin libinput-dev \
     libcairo2-dev libpango1.0-dev libgbm-dev \
     check hwdata libdisplay-info-dev libliftoff-dev \
