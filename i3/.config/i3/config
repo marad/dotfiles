@@ -136,15 +136,8 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# --- App launcher mode ---
-mode "apps" {
-    bindsym f exec firefox
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-bindsym $mod+o mode "apps"
+# --- App launcher ---
+bindsym $mod+o exec --no-startup-id select-app
 
 # --- Move workspace to output ---
 mode "move workspace" {
