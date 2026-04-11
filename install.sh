@@ -93,8 +93,9 @@ else
     backup_if_exists "$HOME/.config/i3"
 fi
 
-# --- Ensure ~/.config exists (prevent stow from symlinking the whole dir) ---
+# --- Ensure directories exist (prevent stow from symlinking whole dirs) ---
 mkdir -p "$HOME/.config"
+mkdir -p "$HOME/.config/i3"
 
 # --- Stow packages ---
 echo "Stowing packages..."
@@ -139,7 +140,8 @@ echo "  Dotfiles installed successfully!"
 echo "========================================"
 echo ""
 echo "Remember to create/edit these files for machine-specific config:"
-echo "  ~/.zshrc.local     - Machine-specific shell config"
-echo "  ~/.gitconfig.local - Git email and credentials (already created if prompted)"
+echo "  ~/.zshrc.local      - Machine-specific shell config"
+echo "  ~/.gitconfig.local  - Git email and credentials (already created if prompted)"
+echo "  ~/.config/i3/local.conf - i3 machine-specific config (monitor setup, etc.)"
 echo ""
 echo "Restart your shell or run: source ~/.zshrc"
