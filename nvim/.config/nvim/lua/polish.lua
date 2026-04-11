@@ -1,4 +1,5 @@
+if true then return end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+
 -- This will run last in the setup process.
-if vim.g.neovide then
-  vim.o.guifont = "JetBrainsMono Nerd Font:h14"
-end
+-- This is just pure lua so anything that doesn't
+-- fit in the normal config locations above can go here

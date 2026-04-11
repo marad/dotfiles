@@ -1,16 +1,6 @@
 - name: Ubuntu Configuration
   hosts: localhost
   tasks:
-    - name: Install required snap packages
-      snap:
-        name:
-          - gh
-          - rustup
-          - ripgrep
-        state: present
-        classic: true
-      become: true
-
     - name: Install required apt packages
       apt:
         name:
@@ -21,38 +11,26 @@
           - xsel
           - fzf
           - unzip
+          - zip
           - fontconfig
           - libfontconfig-dev
           - build-essential
           - cmake
           - tree
-          - zip
+          - gh
+          - ripgrep
+          - eza
+          - bat
+          - zoxide
+          - git-delta
+          - i3blocks
         state: latest
       become: true
 
-    - name: Setup rustlang with rustup
+    - name: Install starship prompt
       ansible.builtin.shell:
-        cmd: rustup install stable
-
-    - name: Install starship
-      ansible.builtin.shell:
-        cmd: cargo install starship
-        creates: ~/.cargo/bin/starship
-
-    - name: Install eza
-      ansible.builtin.shell:
-        cmd: cargo install eza
-        creates: ~/.cargo/bin/eza
-
-    - name: Install bat
-      ansible.builtin.shell:
-        cmd: cargo install bat
-        creates: ~/.cargo/bin/bat
-
-    - name: Install zoxide
-      ansible.builtin.shell:
-        cmd: . "$HOME/.cargo/env" && cargo install zoxide --locked
-        creates: ~/.cargo/bin/zoxide
+        cmd: curl -sS https://starship.rs/install.sh | sh -s -- -y
+        creates: /usr/local/bin/starship
 
     - name: Install vinote
       ansible.builtin.shell:
@@ -80,7 +58,7 @@
       become: true
       ansible.builtin.script:
         cmd: ../scripts/install_nvim.sh
-        creates: /opt/nvim-linux64
+        creates: /opt/nvim-linux-x86_64
 
     - name: Install node version manager
       ansible.builtin.shell:
