@@ -1,27 +1,18 @@
 #!/bin/bash
 set -euo pipefail
 
+# Hyprland v0.41.2 -- latest version compatible with Ubuntu 24.04 system libraries.
+# Newer versions (v0.44+) require wayland-protocols >= 1.47, libinput >= 1.28,
+# xkbcommon >= 1.11, which are not available on Ubuntu 24.04 / Mint 22.
+HYPRLAND_VERSION="v0.41.2"
+
 if command -v Hyprland &>/dev/null; then
     echo "Hyprland is already installed!"
     Hyprland --version
     exit 0
 fi
 
-echo "=== Installing Hyprland ==="
-
-# --- CMake 3.30+ (required by Hyprland, Ubuntu 24.04 ships 3.28) ---
-CMAKE_VERSION=$(cmake --version 2>/dev/null | head -1 | grep -oP '\d+\.\d+' | head -1)
-if [ "$(echo "$CMAKE_VERSION < 3.30" | bc)" -eq 1 ] 2>/dev/null || [ -z "$CMAKE_VERSION" ]; then
-    echo "Installing CMake 3.30+ from Kitware APT repo..."
-    sudo apt install -y ca-certificates gpg wget
-    wget -qO - https://apt.kitware.com/keys/kitware-archive-latest.asc | \
-        gpg --dearmor | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-    echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main" | \
-        sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
-    sudo apt update
-    sudo apt install -y cmake
-    echo "CMake version: $(cmake --version | head -1)"
-fi
+echo "=== Installing Hyprland $HYPRLAND_VERSION ==="
 
 # --- Build dependencies ---
 echo "Installing build dependencies..."
@@ -35,70 +26,48 @@ sudo apt install -y \
     libcairo2-dev libpango1.0-dev libgbm-dev \
     check hwdata libdisplay-info-dev libliftoff-dev \
     libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev libpugixml-dev \
-    xwayland \
+    xwayland libxcb-ewmh-dev libxcb-composite0-dev libxcb-icccm4-dev \
+    libxcb-render0-dev libxcb-xfixes0-dev libxcb-res0-dev libxcb-errors-dev \
+    uuid-dev libxcursor-dev \
     gcc-14 g++-14
+
+CMAKE_OPTS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14"
 
 BUILD_DIR=$(mktemp -d)
 trap 'rm -rf "$BUILD_DIR"' EXIT
 cd "$BUILD_DIR"
 
-# --- Clone Hyprland with bundled dependencies ---
-# Recursive clone gets compatible versions of all deps as submodules.
-# We then build and install each submodule before building Hyprland,
-# since Hyprland's CMake expects them as system-installed libraries.
-echo "--- Cloning Hyprland (with submodules) ---"
-git clone --recursive https://github.com/hyprwm/Hyprland.git
-cd Hyprland
+# --- Build and install Hyprland dependencies ---
+# These versions are compatible with Hyprland v0.41.2 and compile with GCC 14.
 
-# Use latest stable release tag
-LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git tag -l 'v*' --sort=-v:refname | head -1)
-if [ -n "$LATEST_TAG" ]; then
-    echo "Checking out latest release: $LATEST_TAG"
-    git checkout "$LATEST_TAG"
-    git submodule update --init --recursive
-fi
+build_dep() {
+    local name=$1
+    local repo=$2
+    local tag=$3
 
-HYPRLAND_DIR="$PWD"
-CMAKE_OPTS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14"
-
-# --- Build and install submodule dependencies in order ---
-build_submodule() {
-    local dir=$1
-    local name=$(basename "$dir")
-    echo "--- Building $name ---"
-    cd "$dir"
+    echo "--- Building $name $tag ---"
+    git clone --depth 1 --branch "$tag" "https://github.com/hyprwm/$repo.git"
+    cd "$repo"
     cmake -B build $CMAKE_OPTS
     cmake --build build -j"$(nproc)"
     sudo cmake --install build
     sudo ldconfig
-    cd "$HYPRLAND_DIR"
+    cd "$BUILD_DIR"
 }
 
-build_submodule subprojects/hyprwayland-scanner
-build_submodule subprojects/hyprutils
-build_submodule subprojects/hyprlang
-build_submodule subprojects/hyprland-protocols
-build_submodule subprojects/hyprcursor
-build_submodule subprojects/aquamarine
+build_dep "hyprwayland-scanner" "hyprwayland-scanner" "v0.3.10"
+build_dep "hyprutils"           "hyprutils"           "v0.1.5"
+build_dep "hyprlang"            "hyprlang"            "v0.5.3"
+build_dep "hyprcursor"          "hyprcursor"          "v0.1.9"
 
-# --- Build Hyprland itself ---
-echo "--- Building Hyprland ---"
+# --- Clone and build Hyprland ---
+echo "--- Building Hyprland $HYPRLAND_VERSION ---"
+git clone --recursive --branch "$HYPRLAND_VERSION" --depth 1 \
+    "https://github.com/hyprwm/Hyprland.git"
+cd Hyprland
 cmake -B build $CMAKE_OPTS
 cmake --build build -j"$(nproc)"
 sudo cmake --install build
-cd "$BUILD_DIR"
-
-# --- Install xdg-desktop-portal-hyprland ---
-echo "--- Building xdg-desktop-portal-hyprland ---"
-if git clone --depth 1 "https://github.com/hyprwm/xdg-desktop-portal-hyprland.git" 2>/dev/null; then
-    cd xdg-desktop-portal-hyprland
-    cmake -B build $CMAKE_OPTS
-    cmake --build build -j"$(nproc)"
-    sudo cmake --install build
-    cd "$BUILD_DIR"
-else
-    echo "Warning: could not clone xdg-desktop-portal-hyprland, screen sharing may not work"
-fi
 
 # --- Verify ---
 sudo ldconfig
