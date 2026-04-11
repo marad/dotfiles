@@ -20,7 +20,7 @@ sudo apt install -y \
     glslang-tools libinput-bin libinput-dev \
     libcairo2-dev libpango1.0-dev libgbm-dev \
     check hwdata libdisplay-info-dev libliftoff-dev \
-    libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev \
+    libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev libpugixml-dev \
     xwayland
 
 BUILD_DIR=$(mktemp -d)
