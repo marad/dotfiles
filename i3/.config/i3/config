@@ -176,7 +176,7 @@ hide_edge_borders none
 # --- Bar ---
 bar {
     tray_output primary
-    tray_padding 5
+    tray_padding 3
     height 32
     status_command i3blocks -c ~/.config/i3/i3blocks.conf
     font pango:DejaVu Sans Mono, FontAwesome, Weather Icons 12
