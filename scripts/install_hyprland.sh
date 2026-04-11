@@ -28,7 +28,7 @@ sudo apt install -y \
     libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev libpugixml-dev \
     xwayland libxcb-ewmh-dev libxcb-composite0-dev libxcb-icccm4-dev \
     libxcb-render0-dev libxcb-xfixes0-dev libxcb-res0-dev libxcb-util-dev \
-    uuid-dev libxcursor-dev xcb-proto libxcb1-dev autoconf automake libtool \
+    uuid-dev libxcursor-dev xcb-proto libxcb1-dev autoconf automake libtool xutils-dev \
     gcc-14 g++-14
 
 CMAKE_OPTS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14"
