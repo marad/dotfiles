@@ -27,8 +27,8 @@ sudo apt install -y \
     check hwdata libdisplay-info-dev libliftoff-dev \
     libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev libpugixml-dev \
     xwayland libxcb-ewmh-dev libxcb-composite0-dev libxcb-icccm4-dev \
-    libxcb-render0-dev libxcb-xfixes0-dev libxcb-res0-dev \
-    uuid-dev libxcursor-dev \
+    libxcb-render0-dev libxcb-xfixes0-dev libxcb-res0-dev libxcb-util-dev \
+    uuid-dev libxcursor-dev xcb-proto libxcb1-dev autoconf automake libtool \
     gcc-14 g++-14
 
 CMAKE_OPTS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14"
@@ -36,6 +36,19 @@ CMAKE_OPTS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COM
 BUILD_DIR=$(mktemp -d)
 trap 'rm -rf "$BUILD_DIR"' EXIT
 cd "$BUILD_DIR"
+
+# --- Build xcb-errors from source (not packaged in Ubuntu 24.04) ---
+if ! pkg-config --exists xcb-errors 2>/dev/null; then
+    echo "--- Building xcb-errors ---"
+    git clone --depth 1 https://gitlab.freedesktop.org/xorg/lib/libxcb-errors.git
+    cd libxcb-errors
+    git submodule update --init
+    ./autogen.sh --prefix=/usr
+    make -j"$(nproc)"
+    sudo make install
+    sudo ldconfig
+    cd "$BUILD_DIR"
+fi
 
 # --- Build and install Hyprland dependencies ---
 # These versions are compatible with Hyprland v0.41.2 and compile with GCC 14.
