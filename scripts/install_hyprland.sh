@@ -85,5 +85,10 @@ sudo cmake --install build
 # --- Verify ---
 sudo ldconfig
 echo ""
-echo "=== Hyprland installed successfully ==="
-Hyprland --version
+if [ -x /usr/bin/Hyprland ]; then
+    echo "=== Hyprland installed successfully ==="
+    echo "Binary: $(which Hyprland)"
+else
+    echo "ERROR: Hyprland binary not found!"
+    exit 1
+fi
