@@ -8,7 +8,7 @@ Reboot
 Shutdown"
 
 if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-    selected=$(echo -e "$options" | rofi -dmenu -i -p "Select app:")
+    selected=$(echo -e "$options" | fuzzel --dmenu -p "Select app: ")
 else
     selected=$(echo -e "$options" | dmenu -i -p "Wybierz aplikację:" -l 10 -c -fn "monospace-12")
 fi
@@ -22,7 +22,7 @@ case "$selected" in
         ;;
     "Run an App")
         if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
-            rofi -show drun -show-icons &
+            fuzzel &
         else
             j4-dmenu-desktop &
         fi
