@@ -169,6 +169,11 @@ mode "move workspace" {
 
 bindsym $mod+m mode "move workspace"
 
+# Quick move workspace to output
+bindsym $mod+Control+Shift+h move workspace to output left
+bindsym $mod+Control+Shift+l move workspace to output right
+bindsym $mod+Shift+Tab move workspace to output next
+
 new_window normal
 new_float normal
 hide_edge_borders none
