@@ -21,7 +21,12 @@ sudo apt install -y \
     libcairo2-dev libpango1.0-dev libgbm-dev \
     check hwdata libdisplay-info-dev libliftoff-dev \
     libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev libpugixml-dev \
-    xwayland
+    xwayland \
+    gcc-14 g++-14
+
+# Use GCC 14 for C++23 support (<print> header)
+export CC=gcc-14
+export CXX=g++-14
 
 BUILD_DIR=$(mktemp -d)
 trap 'rm -rf "$BUILD_DIR"' EXIT
@@ -40,7 +45,8 @@ build_cmake() {
         git clone --depth 1 "https://github.com/hyprwm/$repo.git"
     fi
     cd "$repo"
-    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
     cmake --build build -j"$(nproc)"
     sudo cmake --install build
     cd "$BUILD_DIR"
@@ -72,7 +78,8 @@ build_cmake "aquamarine" "aquamarine"
 echo "--- Building Hyprland ---"
 git clone --depth 1 "https://github.com/hyprwm/Hyprland.git"
 cd Hyprland
-cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
 cmake --build build -j"$(nproc)"
 sudo cmake --install build
 cd "$BUILD_DIR"
@@ -81,7 +88,8 @@ cd "$BUILD_DIR"
 echo "--- Building xdg-desktop-portal-hyprland ---"
 if git clone --depth 1 "https://github.com/hyprwm/xdg-desktop-portal-hyprland.git" 2>/dev/null; then
     cd xdg-desktop-portal-hyprland
-    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release
+    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
     cmake --build build -j"$(nproc)"
     sudo cmake --install build
     cd "$BUILD_DIR"
