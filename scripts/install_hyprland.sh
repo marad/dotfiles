@@ -27,7 +27,7 @@ sudo apt install -y \
     check hwdata libdisplay-info-dev libliftoff-dev \
     libtomlplusplus-dev libmagic-dev libzip-dev librsvg2-dev libpugixml-dev \
     xwayland libxcb-ewmh-dev libxcb-composite0-dev libxcb-icccm4-dev \
-    libxcb-render0-dev libxcb-xfixes0-dev libxcb-res0-dev libxcb-errors-dev \
+    libxcb-render0-dev libxcb-xfixes0-dev libxcb-res0-dev \
     uuid-dev libxcursor-dev \
     gcc-14 g++-14
 
