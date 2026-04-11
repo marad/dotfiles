@@ -1,5 +1,5 @@
 # i3 config file (v4)
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $bg-color #2f343f
 set $inactive-bg-color #2f343f
@@ -9,26 +9,39 @@ set $urgent-bg-color #e53935
 
 set $mod Mod4
 
+font pango:DejaVu Sans Mono 12
+
+# --- Autostart ---
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id nm-applet
+
 # Screen locking
 bindsym $mod+Control+l exec i3lock -c 888888
 
-font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+# Use pactl to adjust volume in PulseAudio
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+focus_follows_mouse no
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
+tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec gnome-terminal
+bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+q kill
 
-focus_follows_mouse no
-
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec --no-startup-id dmenu_run
 
-# change focus
+# --- Focus (vi-style + arrows) ---
 bindsym $mod+h focus left
 bindsym $mod+j focus down
 bindsym $mod+k focus up
@@ -40,7 +53,7 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window
+# --- Move windows (vi-style + arrows) ---
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
@@ -58,7 +71,7 @@ bindsym $mod+g split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen
+bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -74,7 +87,7 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 
-# switch to workspace
+# --- Workspaces ---
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -103,9 +116,9 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace
 bindsym $mod+Shift+r restart
 # exit i3
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# resize window
+# --- Resize mode (vi-style) ---
 mode "resize" {
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
@@ -123,40 +136,9 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-new_window normal
-new_float normal
-hide_edge_borders none
-
-for_window [class="Xfce4-notifyd"] floating enable
-for_window [class="UE4Editor"] floating enable
-for_window [class="Gnomoria.bin.x86_64"] floating disable
-for_window [class="Google-chrome"] floating disable
-for_window [class="Xfce4-notifyd"] border none
-
-# Windows on workspaces
-assign [class="Thunderbird"] 4
-assign [instance="Google-chrome"] 2
-for_window [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] floating disable
-assign [instance="crx_knipolnnllmklapflnccelgolnpehhpl"] 10
-assign [class="Spotify"] 9
-assign [class="jetbrains-idea-ce"] 1
-
-force_xinerama no
-
-exec "nm-applet"
-exec "gnome-sound-applet"
-exec "gnome-settings-daemon"
-exec compton -f
-exec "albert"
-
-exec "xrandr --output DVI-0 --auto --output DVI-1 --auto --right-of DVI-0 && cat ~/.fehbg | bash"
-exec "setxkbmap -option ctrl:nocaps"
-
+# --- App launcher mode ---
 mode "apps" {
-    bindsym c exec google-chrome
     bindsym f exec firefox
-    bindsym i exec intelij
-    bindsym t exec thunderbird
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -164,6 +146,7 @@ mode "apps" {
 
 bindsym $mod+o mode "apps"
 
+# --- Move workspace to output ---
 mode "move workspace" {
     bindsym h move workspace to output left
     bindsym l move workspace to output right
@@ -186,16 +169,24 @@ mode "move workspace" {
 
 bindsym $mod+m mode "move workspace"
 
+new_window normal
+new_float normal
+hide_edge_borders none
+
+# --- Bar ---
 bar {
-    status_command i3blocks -c ~/.i3/i3blocks.conf
+    status_command i3blocks -c ~/.config/i3/i3blocks.conf
     font pango:DejaVu Sans Mono, FontAwesome, Weather Icons 12
 
     colors {
         background $bg-color
-        statusline $aaaaaa
+        statusline #aaaaaa
 
         focused_workspace $bg-color $bg-color $text-color
         inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
         urgent_workspace $urgent-bg-color $urgent-bg-color $text-color
     }
 }
+
+# --- Machine-specific config ---
+include ~/.config/i3/local.conf

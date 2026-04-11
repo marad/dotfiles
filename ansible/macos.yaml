@@ -21,7 +21,7 @@
           - tree-sitter
           - gh
           - go
-          - rustup
+          - git-delta
           - node
           - ical-buddy
           - podman-compose
@@ -37,12 +37,6 @@
           - podman-desktop
           - gcloud-cli
         state: present
-
-    - name: Setup rustlang with rustup
-      ansible.builtin.shell:
-        cmd: rustup install stable
-      register: rustup_result
-      changed_when: "'installed' in rustup_result.stdout"
 
     - name: Install vinote
       ansible.builtin.shell:

@@ -90,7 +90,7 @@ backup_if_exists "$HOME/.config/nvim"
 if [ "$OS" == "macos" ]; then
     backup_if_exists "$HOME/.config/karabiner"
 else
-    backup_if_exists "$HOME/.i3"
+    backup_if_exists "$HOME/.config/i3"
 fi
 
 # --- Ensure ~/.config exists (prevent stow from symlinking the whole dir) ---
