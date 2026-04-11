@@ -43,9 +43,9 @@ trap 'rm -rf "$BUILD_DIR"' EXIT
 cd "$BUILD_DIR"
 
 # --- Clone Hyprland with bundled dependencies ---
-# Using recursive clone so Hyprland builds its own compatible versions
-# of hyprutils, hyprlang, hyprcursor, etc. as submodules.
-# This avoids version mismatches between HEAD of each repo.
+# Recursive clone gets compatible versions of all deps as submodules.
+# We then build and install each submodule before building Hyprland,
+# since Hyprland's CMake expects them as system-installed libraries.
 echo "--- Cloning Hyprland (with submodules) ---"
 git clone --recursive https://github.com/hyprwm/Hyprland.git
 cd Hyprland
@@ -58,10 +58,32 @@ if [ -n "$LATEST_TAG" ]; then
     git submodule update --init --recursive
 fi
 
-# --- Build with GCC 14 (C++23 support) ---
+HYPRLAND_DIR="$PWD"
+CMAKE_OPTS="-DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14"
+
+# --- Build and install submodule dependencies in order ---
+build_submodule() {
+    local dir=$1
+    local name=$(basename "$dir")
+    echo "--- Building $name ---"
+    cd "$dir"
+    cmake -B build $CMAKE_OPTS
+    cmake --build build -j"$(nproc)"
+    sudo cmake --install build
+    sudo ldconfig
+    cd "$HYPRLAND_DIR"
+}
+
+build_submodule subprojects/hyprwayland-scanner
+build_submodule subprojects/hyprutils
+build_submodule subprojects/hyprlang
+build_submodule subprojects/hyprland-protocols
+build_submodule subprojects/hyprcursor
+build_submodule subprojects/aquamarine
+
+# --- Build Hyprland itself ---
 echo "--- Building Hyprland ---"
-cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
+cmake -B build $CMAKE_OPTS
 cmake --build build -j"$(nproc)"
 sudo cmake --install build
 cd "$BUILD_DIR"
@@ -70,8 +92,7 @@ cd "$BUILD_DIR"
 echo "--- Building xdg-desktop-portal-hyprland ---"
 if git clone --depth 1 "https://github.com/hyprwm/xdg-desktop-portal-hyprland.git" 2>/dev/null; then
     cd xdg-desktop-portal-hyprland
-    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
+    cmake -B build $CMAKE_OPTS
     cmake --build build -j"$(nproc)"
     sudo cmake --install build
     cd "$BUILD_DIR"
