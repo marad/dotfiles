@@ -9,6 +9,20 @@ fi
 
 echo "=== Installing Hyprland ==="
 
+# --- CMake 3.30+ (required by Hyprland, Ubuntu 24.04 ships 3.28) ---
+CMAKE_VERSION=$(cmake --version 2>/dev/null | head -1 | grep -oP '\d+\.\d+' | head -1)
+if [ "$(echo "$CMAKE_VERSION < 3.30" | bc)" -eq 1 ] 2>/dev/null || [ -z "$CMAKE_VERSION" ]; then
+    echo "Installing CMake 3.30+ from Kitware APT repo..."
+    sudo apt install -y ca-certificates gpg wget
+    wget -qO - https://apt.kitware.com/keys/kitware-archive-latest.asc | \
+        gpg --dearmor | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+    echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ noble main" | \
+        sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+    sudo apt update
+    sudo apt install -y cmake
+    echo "CMake version: $(cmake --version | head -1)"
+fi
+
 # --- Build dependencies ---
 echo "Installing build dependencies..."
 sudo apt install -y \
