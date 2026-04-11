@@ -91,11 +91,15 @@ if [ "$OS" == "macos" ]; then
     backup_if_exists "$HOME/.config/karabiner"
 else
     backup_if_exists "$HOME/.config/i3"
+    backup_if_exists "$HOME/.config/hypr"
+    backup_if_exists "$HOME/.config/waybar"
 fi
 
 # --- Ensure directories exist (prevent stow from symlinking whole dirs) ---
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.config/i3"
+mkdir -p "$HOME/.config/hypr"
+mkdir -p "$HOME/.config/waybar"
 
 # --- Stow packages ---
 echo "Stowing packages..."
@@ -115,6 +119,8 @@ if [ "$OS" == "macos" ]; then
 else
     echo "  Stowing i3..."
     stow --restow --target="$HOME" i3
+    echo "  Stowing hyprland..."
+    stow --restow --target="$HOME" hyprland
 fi
 
 echo "All packages stowed."
@@ -142,6 +148,7 @@ echo ""
 echo "Remember to create/edit these files for machine-specific config:"
 echo "  ~/.zshrc.local      - Machine-specific shell config"
 echo "  ~/.gitconfig.local  - Git email and credentials (already created if prompted)"
-echo "  ~/.config/i3/local.conf - i3 machine-specific config (monitor setup, etc.)"
+echo "  ~/.config/i3/local.conf  - i3 machine-specific config (monitor setup, etc.)"
+echo "  ~/.config/hypr/local.conf - Hyprland machine-specific config (monitors, etc.)"
 echo ""
 echo "Restart your shell or run: source ~/.zshrc"

@@ -43,8 +43,13 @@ alias ccy="claude --dangerously-skip-permissions"
 
 # Linux clipboard aliases
 if [[ "$OS" == "linux" ]]; then
-    alias pbcopy='xsel --clipboard --input'
-    alias pbpaste='xsel --clipboard --output'
+    if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+        alias pbcopy='wl-copy'
+        alias pbpaste='wl-paste'
+    else
+        alias pbcopy='xsel --clipboard --input'
+        alias pbpaste='xsel --clipboard --output'
+    fi
 fi
 
 # --- Zoxide (smart cd) ---

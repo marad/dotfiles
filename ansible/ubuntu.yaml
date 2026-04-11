@@ -24,6 +24,16 @@
           - zoxide
           - git-delta
           - i3blocks
+          - waybar
+          - grim
+          - slurp
+          - swaylock
+          - swayidle
+          - swaybg
+          - wl-clipboard
+          - playerctl
+          - cliphist
+          - xdg-desktop-portal-gtk
         state: latest
       become: true
 
@@ -78,6 +88,12 @@
       ansible.builtin.shell:
         cmd: curl -s "https://get.sdkman.io" | bash
         creates: ~/.sdkman
+
+    - name: Install Hyprland
+      become: true
+      ansible.builtin.script:
+        cmd: ../scripts/install_hyprland.sh
+        creates: /usr/bin/Hyprland
 
     - name: Set default shell to zsh
       become: true
