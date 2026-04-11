@@ -1,0 +1,89 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 32,
+    "spacing": 4,
+
+    "modules-left": ["hyprland/workspaces", "hyprland/submap"],
+    "modules-center": ["clock"],
+    "modules-right": [
+        "custom/weather",
+        "pulseaudio",
+        "memory",
+        "disk",
+        "network",
+        "custom/bandwidth",
+        "battery",
+        "tray"
+    ],
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate"
+    },
+
+    "hyprland/submap": {
+        "format": "mode: {}",
+        "tooltip": false
+    },
+
+    "clock": {
+        "format": "  {:%Y-%m-%d    %H:%M:%S}",
+        "interval": 1,
+        "tooltip-format": "<tt>{calendar}</tt>"
+    },
+
+    "custom/weather": {
+        "exec": "~/.config/i3/blocks/weather",
+        "interval": 600,
+        "format": "{}"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+
+    "memory": {
+        "format": "MEM {percentage}%",
+        "interval": 30
+    },
+
+    "disk": {
+        "format": " {free}",
+        "interval": 30,
+        "path": "/"
+    },
+
+    "network": {
+        "format-ethernet": " {ipaddr}",
+        "format-wifi": " {ipaddr} ({signalStrength}%)",
+        "format-disconnected": " disconnected",
+        "interval": 10,
+        "tooltip-format": "{ifname}: {ipaddr}"
+    },
+
+    "custom/bandwidth": {
+        "exec": "~/.config/i3/blocks/bandwidth",
+        "interval": 1,
+        "format": "{}"
+    },
+
+    "battery": {
+        "format": "{icon} {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "interval": 30,
+        "states": {
+            "warning": 30,
+            "critical": 15
+        }
+    },
+
+    "tray": {
+        "spacing": 10
+    }
+}

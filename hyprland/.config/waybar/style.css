@@ -1,0 +1,53 @@
+* {
+    font-family: "DejaVu Sans Mono", "FontAwesome", "Weather Icons";
+    font-size: 12px;
+}
+
+window#waybar {
+    background-color: #2f343f;
+    color: #f3f4f5;
+}
+
+#workspaces button {
+    color: #676e7d;
+    background-color: #2f343f;
+    padding: 0 5px;
+    border: none;
+    border-radius: 0;
+}
+
+#workspaces button.active {
+    color: #f3f4f5;
+    background-color: #2f343f;
+}
+
+#workspaces button.urgent {
+    background-color: #e53935;
+}
+
+#clock,
+#battery,
+#pulseaudio,
+#memory,
+#disk,
+#network,
+#custom-weather,
+#custom-bandwidth,
+#tray,
+#submap {
+    padding: 0 10px;
+    color: #aaaaaa;
+}
+
+#battery.warning {
+    color: #f3f4f5;
+}
+
+#battery.critical {
+    color: #ff0000;
+}
+
+#submap {
+    color: #e53935;
+    font-weight: bold;
+}

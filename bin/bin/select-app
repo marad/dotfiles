@@ -1,0 +1,42 @@
+#!/bin/env bash
+
+options="File Manager
+Calculator
+Run an App
+Audio Output
+Reboot
+Shutdown"
+
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    selected=$(echo -e "$options" | rofi -dmenu -i -p "Select app:")
+else
+    selected=$(echo -e "$options" | dmenu -i -p "Wybierz aplikację:" -l 10 -c -fn "monospace-12")
+fi
+
+case "$selected" in
+    "File Manager")
+        nemo &
+        ;;
+    "Calculator")
+        gnome-calculator &
+        ;;
+    "Run an App")
+        if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+            rofi -show drun -show-icons &
+        else
+            j4-dmenu-desktop &
+        fi
+        ;;
+    "Audio Output")
+        select-audio-out &
+        ;;
+    "Reboot")
+        systemctl reboot
+        ;;
+    "Shutdown")
+        systemctl poweroff
+        ;;
+    *)
+        exit 1
+        ;;
+esac
