@@ -24,67 +24,35 @@ sudo apt install -y \
     xwayland \
     gcc-14 g++-14
 
-# Use GCC 14 for C++23 support (<print> header)
-export CC=gcc-14
-export CXX=g++-14
-
 BUILD_DIR=$(mktemp -d)
 trap 'rm -rf "$BUILD_DIR"' EXIT
 cd "$BUILD_DIR"
 
-# Helper function to build a CMake project
-build_cmake() {
-    local name=$1
-    local repo=$2
-    local tag=${3:-""}
-
-    echo "--- Building $name ---"
-    if [ -n "$tag" ]; then
-        git clone --depth 1 --branch "$tag" "https://github.com/hyprwm/$repo.git"
-    else
-        git clone --depth 1 "https://github.com/hyprwm/$repo.git"
-    fi
-    cd "$repo"
-    cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
-    cmake --build build -j"$(nproc)"
-    sudo cmake --install build
-    cd "$BUILD_DIR"
-}
-
-# Helper function to build a Meson project
-build_meson() {
-    local name=$1
-    local repo=$2
-
-    echo "--- Building $name ---"
-    git clone --depth 1 "https://github.com/hyprwm/$repo.git"
-    cd "$repo"
-    meson setup build --prefix=/usr --buildtype=release
-    ninja -C build
-    sudo ninja -C build install
-    cd "$BUILD_DIR"
-}
-
-# --- Build dependency chain in order ---
-build_cmake "hyprwayland-scanner" "hyprwayland-scanner"
-build_cmake "hyprutils" "hyprutils"
-build_cmake "hyprlang" "hyprlang"
-build_cmake "hyprcursor" "hyprcursor"
-build_cmake "hyprland-protocols" "hyprland-protocols"
-build_cmake "aquamarine" "aquamarine"
-
-# --- Build Hyprland ---
-echo "--- Building Hyprland ---"
-git clone --depth 1 "https://github.com/hyprwm/Hyprland.git"
+# --- Clone Hyprland with bundled dependencies ---
+# Using recursive clone so Hyprland builds its own compatible versions
+# of hyprutils, hyprlang, hyprcursor, etc. as submodules.
+# This avoids version mismatches between HEAD of each repo.
+echo "--- Cloning Hyprland (with submodules) ---"
+git clone --recursive https://github.com/hyprwm/Hyprland.git
 cd Hyprland
+
+# Use latest stable release tag
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git tag -l 'v*' --sort=-v:refname | head -1)
+if [ -n "$LATEST_TAG" ]; then
+    echo "Checking out latest release: $LATEST_TAG"
+    git checkout "$LATEST_TAG"
+    git submodule update --init --recursive
+fi
+
+# --- Build with GCC 14 (C++23 support) ---
+echo "--- Building Hyprland ---"
 cmake -B build -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14
 cmake --build build -j"$(nproc)"
 sudo cmake --install build
 cd "$BUILD_DIR"
 
-# --- Install xdg-desktop-portal-hyprland if available ---
+# --- Install xdg-desktop-portal-hyprland ---
 echo "--- Building xdg-desktop-portal-hyprland ---"
 if git clone --depth 1 "https://github.com/hyprwm/xdg-desktop-portal-hyprland.git" 2>/dev/null; then
     cd xdg-desktop-portal-hyprland
