@@ -1,2 +1,2 @@
 gtk-titlebar = false
-window-decoration = false
+window-decoration = server

@@ -172,8 +172,14 @@ bindsym $mod+Control+Shift+h move workspace to output left
 bindsym $mod+Control+Shift+l move workspace to output right
 bindsym $mod+Shift+Tab move workspace to output next
 
-default_border pixel 2
-default_floating_border pixel 2
+default_border pixel 3
+default_floating_border pixel 3
+
+# class                 border       background   text         indicator    child_border
+client.focused          $text-color  $bg-color    $text-color  $text-color  $text-color
+client.unfocused        $bg-color    $bg-color    $inactive-text-color $bg-color $bg-color
+client.focused_inactive $bg-color    $bg-color    $inactive-text-color $bg-color $bg-color
+client.urgent           $urgent-bg-color $urgent-bg-color $text-color $urgent-bg-color $urgent-bg-color
 
 # --- Gaps ---
 gaps inner 20
