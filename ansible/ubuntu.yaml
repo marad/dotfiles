@@ -32,6 +32,7 @@
           - swayidle
           - swaybg
           - wl-clipboard
+          - rofi
           - playerctl
           - cliphist
           - xdg-desktop-portal-gtk

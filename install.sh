@@ -102,6 +102,7 @@ mkdir -p "$HOME/.config/hypr"
 mkdir -p "$HOME/.config/waybar"
 mkdir -p "$HOME/.config/picom"
 mkdir -p "$HOME/.config/ghostty"
+mkdir -p "$HOME/.config/rofi"
 
 # --- Stow packages ---
 echo "Stowing packages..."
@@ -123,6 +124,8 @@ else
     stow --restow --target="$HOME" i3
     echo "  Stowing picom..."
     stow --restow --target="$HOME" picom
+    echo "  Stowing rofi..."
+    stow --restow --target="$HOME" rofi
     echo "  Stowing hyprland..."
     stow --restow --target="$HOME" hyprland
 fi

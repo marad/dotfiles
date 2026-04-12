@@ -20,6 +20,7 @@
           - fontconfig
           - ttf-jetbrains-mono-nerd
           - zoxide
+          - rofi
           - i3blocks
         state: latest
         update_cache: yes
