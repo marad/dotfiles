@@ -18,6 +18,7 @@ exec --no-startup-id nm-applet
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
 exec --no-startup-id gnome-settings-daemon
 exec_always --no-startup-id picom --daemon
+exec --no-startup-id random-wallpaper
 
 # Screen locking
 bindsym $mod+Control+l exec i3lock -c 888888
@@ -171,8 +172,12 @@ bindsym $mod+Control+Shift+h move workspace to output left
 bindsym $mod+Control+Shift+l move workspace to output right
 bindsym $mod+Shift+Tab move workspace to output next
 
-default_border none
-default_floating_border none
+default_border pixel 2
+default_floating_border pixel 2
+
+# --- Gaps ---
+gaps inner 20
+gaps outer 10
 
 # --- Bar ---
 bar {

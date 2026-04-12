@@ -23,6 +23,7 @@
           - bat
           - zoxide
           - git-delta
+          - feh
           - i3blocks
           - waybar
           - grim

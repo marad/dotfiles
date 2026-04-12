@@ -1,0 +1,15 @@
+#!/bin/bash
+# Download a random image from Unsplash and set it as wallpaper using feh.
+# Uses picsum.photos which serves Unsplash images.
+
+set -euo pipefail
+
+WALLPAPER_DIR="$HOME/.cache/wallpaper"
+WALLPAPER_PATH="$WALLPAPER_DIR/current.jpg"
+
+mkdir -p "$WALLPAPER_DIR"
+
+# picsum.photos max is 3840 wide - use that for multi-monitor setups
+curl -sL "https://picsum.photos/3840/2160" -o "$WALLPAPER_PATH"
+
+feh --bg-fill "$WALLPAPER_PATH"

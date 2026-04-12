@@ -101,12 +101,13 @@ mkdir -p "$HOME/.config/i3"
 mkdir -p "$HOME/.config/hypr"
 mkdir -p "$HOME/.config/waybar"
 mkdir -p "$HOME/.config/picom"
+mkdir -p "$HOME/.config/ghostty"
 
 # --- Stow packages ---
 echo "Stowing packages..."
 cd "$DOTFILES_DIR"
 
-PACKAGES="zsh git starship tmux nvim bin"
+PACKAGES="zsh git starship tmux nvim bin ghostty"
 
 for pkg in $PACKAGES; do
     echo "  Stowing $pkg..."
