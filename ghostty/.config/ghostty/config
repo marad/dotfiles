@@ -1,2 +1,4 @@
 gtk-titlebar = false
 window-decoration = server
+
+keybind = ctrl+j=text:\x0a
