@@ -6,6 +6,7 @@ set $inactive-bg-color #2f343f
 set $text-color #f3f4f5
 set $inactive-text-color #676e7d
 set $urgent-bg-color #e53935
+set $focused-border #5294e2
 
 set $mod Mod4
 
@@ -176,7 +177,7 @@ default_border pixel 3
 default_floating_border pixel 3
 
 # class                 border       background   text         indicator    child_border
-client.focused          $text-color  $bg-color    $text-color  $text-color  $text-color
+client.focused          $focused-border $bg-color $text-color $focused-border $focused-border
 client.unfocused        $bg-color    $bg-color    $inactive-text-color $bg-color $bg-color
 client.focused_inactive $bg-color    $bg-color    $inactive-text-color $bg-color $bg-color
 client.urgent           $urgent-bg-color $urgent-bg-color $text-color $urgent-bg-color $urgent-bg-color
