@@ -100,6 +100,7 @@ mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.config/i3"
 mkdir -p "$HOME/.config/hypr"
 mkdir -p "$HOME/.config/waybar"
+mkdir -p "$HOME/.config/picom"
 
 # --- Stow packages ---
 echo "Stowing packages..."
@@ -119,6 +120,8 @@ if [ "$OS" == "macos" ]; then
 else
     echo "  Stowing i3..."
     stow --restow --target="$HOME" i3
+    echo "  Stowing picom..."
+    stow --restow --target="$HOME" picom
     echo "  Stowing hyprland..."
     stow --restow --target="$HOME" hyprland
 fi

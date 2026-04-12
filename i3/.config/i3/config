@@ -17,6 +17,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
 exec --no-startup-id gnome-settings-daemon
+exec_always --no-startup-id picom --daemon
 
 # Screen locking
 bindsym $mod+Control+l exec i3lock -c 888888
@@ -170,9 +171,8 @@ bindsym $mod+Control+Shift+h move workspace to output left
 bindsym $mod+Control+Shift+l move workspace to output right
 bindsym $mod+Shift+Tab move workspace to output next
 
-new_window normal
-new_float normal
-hide_edge_borders none
+default_border none
+default_floating_border none
 
 # --- Bar ---
 bar {
