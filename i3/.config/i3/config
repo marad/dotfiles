@@ -15,6 +15,8 @@ font pango:DejaVu Sans Mono 12
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
+exec_always --no-startup-id setxkbmap -option ctrl:nocaps
+exec --no-startup-id gnome-settings-daemon
 
 # Screen locking
 bindsym $mod+Control+l exec i3lock -c 888888
@@ -40,6 +42,7 @@ bindsym $mod+q kill
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run
+bindsym $mod+Shift+d exec --no-startup-id j4-dmenu-desktop
 
 # --- Focus (vi-style + arrows) ---
 bindsym $mod+h focus left
@@ -173,6 +176,7 @@ hide_edge_borders none
 
 # --- Bar ---
 bar {
+    position top
     tray_output primary
     tray_padding 3
     height 32
