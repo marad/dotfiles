@@ -38,8 +38,8 @@ alias ll="eza --icons --git -lah"
 alias grep="rg"
 alias cat="bat"
 alias ssha='eval $(ssh-agent) && ssh-add'
-alias cc="claude"
-alias ccy="claude --dangerously-skip-permissions"
+alias cc='claude --effort high'
+alias ccy='claude --effort high --dangerously-skip-permissions'
 
 # Linux clipboard aliases
 if [[ "$OS" == "linux" ]]; then
