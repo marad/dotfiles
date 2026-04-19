@@ -19,6 +19,7 @@ fi
 
 # --- Editor ---
 export EDITOR=nvim
+export TERMINAL=alacritty
 
 # --- History ---
 HISTFILE=~/.zsh_history
@@ -75,3 +76,6 @@ fi
 
 # --- Machine-specific config ---
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+
+# Added by LM Studio CLI tool (lms)
+export PATH="$PATH:/home/marad/.lmstudio/bin"

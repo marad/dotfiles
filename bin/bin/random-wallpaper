@@ -9,6 +9,12 @@ WALLPAPER_PATH="$WALLPAPER_DIR/current.jpg"
 
 mkdir -p "$WALLPAPER_DIR"
 
+# Wait for network to be available (up to 30 seconds)
+for i in $(seq 1 30); do
+    curl -s --head --max-time 2 "https://picsum.photos" > /dev/null && break
+    sleep 1
+done
+
 # picsum.photos max is 3840 wide - use that for multi-monitor setups
 curl -sL "https://picsum.photos/3840/2160" -o "$WALLPAPER_PATH"
 

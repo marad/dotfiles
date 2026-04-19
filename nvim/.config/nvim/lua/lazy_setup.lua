@@ -1,5 +1,5 @@
 require("lazy").setup({
-  { "rktjmp/hotpot.nvim" },
+  { "rktjmp/hotpot.nvim", tag = "v0.14.8" },
   {
     "AstroNvim/AstroNvim",
     version = "^5", -- Remove version tracking to elect for nightly AstroNvim

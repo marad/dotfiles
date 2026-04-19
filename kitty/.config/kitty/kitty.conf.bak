@@ -1,0 +1,3 @@
+hide_window_decorations yes
+
+map ctrl+j send_text all \x0a

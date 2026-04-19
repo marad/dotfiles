@@ -101,14 +101,14 @@ mkdir -p "$HOME/.config/i3"
 mkdir -p "$HOME/.config/hypr"
 mkdir -p "$HOME/.config/waybar"
 mkdir -p "$HOME/.config/picom"
-mkdir -p "$HOME/.config/ghostty"
+mkdir -p "$HOME/.config/alacritty"
 mkdir -p "$HOME/.config/rofi"
 
 # --- Stow packages ---
 echo "Stowing packages..."
 cd "$DOTFILES_DIR"
 
-PACKAGES="zsh git starship tmux nvim bin ghostty"
+PACKAGES="zsh git starship tmux nvim bin alacritty"
 
 for pkg in $PACKAGES; do
     echo "  Stowing $pkg..."
@@ -141,6 +141,23 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         arch)   ansible-playbook -i localhost, --connection=local "$DOTFILES_DIR/ansible/arch.yaml" ;;
         *)      echo "No playbook available for $OS" ;;
     esac
+fi
+
+# --- SoupaWhisper (voice dictation) ---
+SOUPAWHISPER_DIR="$HOME/dev/soupawhisper"
+if [ ! -d "$SOUPAWHISPER_DIR" ]; then
+    echo "Cloning soupawhisper..."
+    mkdir -p "$HOME/dev"
+    git clone https://github.com/ksred/soupawhisper.git "$SOUPAWHISPER_DIR"
+fi
+
+if command -v poetry &>/dev/null; then
+    echo "Installing soupawhisper dependencies..."
+    cd "$SOUPAWHISPER_DIR" && poetry install
+    cd "$DOTFILES_DIR"
+else
+    echo "Warning: poetry not found, skipping soupawhisper setup."
+    echo "  Install poetry and run: cd $SOUPAWHISPER_DIR && poetry install"
 fi
 
 # --- Make bin scripts executable ---

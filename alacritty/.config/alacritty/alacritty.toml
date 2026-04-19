@@ -1,0 +1,13 @@
+[general]
+import = ["~/.config/alacritty/catppuccin-mocha.toml"]
+
+[font]
+size = 13.0
+
+[window]
+decorations = "None"
+
+[keyboard]
+bindings = [
+    { key = "J", mods = "Control", chars = "\u000a" },
+]

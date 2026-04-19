@@ -21,6 +21,9 @@ exec --no-startup-id gnome-settings-daemon
 exec_always --no-startup-id picom --daemon
 exec --no-startup-id random-wallpaper
 
+# Voice dictation (soupawhisper)
+exec --no-startup-id /home/marad/.cache/pypoetry/virtualenvs/soupawhisper-4RuCu2wT-py3.12/bin/python /home/marad/dev/soupawhisper/dictate.py
+
 # Screen locking
 bindsym $mod+Control+l exec i3lock -c 888888
 
@@ -38,7 +41,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+q kill
@@ -179,6 +182,10 @@ default_floating_border pixel 0
 # --- Gaps ---
 gaps inner 20
 gaps outer 10
+
+# Toggle narrow mode on current workspace (adds big horizontal gaps)
+set $narrow 400
+bindsym $mod+n gaps horizontal current toggle $narrow
 
 # --- Bar ---
 bar {

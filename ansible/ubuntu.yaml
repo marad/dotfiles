@@ -32,10 +32,18 @@
           - swayidle
           - swaybg
           - wl-clipboard
+          - alacritty
           - rofi
           - playerctl
           - cliphist
           - xdg-desktop-portal-gtk
+          - alsa-utils
+          - libnotify-bin
+          - xdotool
+          - xclip
+          - wtype
+          - python3-pip
+          - pipx
         state: latest
       become: true
 
@@ -90,6 +98,11 @@
       ansible.builtin.shell:
         cmd: curl -s "https://get.sdkman.io" | bash
         creates: ~/.sdkman
+
+    - name: Install poetry
+      ansible.builtin.shell:
+        cmd: pipx install poetry
+        creates: ~/.local/bin/poetry
 
     - name: Install Hyprland
       become: true

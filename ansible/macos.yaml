@@ -32,7 +32,7 @@
       community.general.homebrew_cask:
         name:
           - font-jetbrains-mono-nerd-font
-          - ghostty
+          - alacritty
           - karabiner-elements
           - podman-desktop
           - gcloud-cli
