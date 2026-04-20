@@ -103,6 +103,7 @@ mkdir -p "$HOME/.config/waybar"
 mkdir -p "$HOME/.config/picom"
 mkdir -p "$HOME/.config/alacritty"
 mkdir -p "$HOME/.config/rofi"
+mkdir -p "$HOME/.config/systemd/user"
 
 # --- Stow packages ---
 echo "Stowing packages..."
@@ -128,6 +129,8 @@ else
     stow --restow --target="$HOME" rofi
     echo "  Stowing hyprland..."
     stow --restow --target="$HOME" hyprland
+    echo "  Stowing systemd..."
+    stow --restow --target="$HOME" systemd
 fi
 
 echo "All packages stowed."
@@ -143,6 +146,13 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     esac
 fi
 
+# --- Poetry (Python package manager) ---
+if ! command -v poetry &>/dev/null; then
+    echo "Installing poetry..."
+    curl -sSL https://install.python-poetry.org | python3 -
+    export PATH="$HOME/.local/bin:$PATH"
+fi
+
 # --- SoupaWhisper (voice dictation) ---
 SOUPAWHISPER_DIR="$HOME/dev/soupawhisper"
 if [ ! -d "$SOUPAWHISPER_DIR" ]; then
@@ -151,13 +161,15 @@ if [ ! -d "$SOUPAWHISPER_DIR" ]; then
     git clone https://github.com/ksred/soupawhisper.git "$SOUPAWHISPER_DIR"
 fi
 
-if command -v poetry &>/dev/null; then
-    echo "Installing soupawhisper dependencies..."
-    cd "$SOUPAWHISPER_DIR" && poetry install
-    cd "$DOTFILES_DIR"
-else
-    echo "Warning: poetry not found, skipping soupawhisper setup."
-    echo "  Install poetry and run: cd $SOUPAWHISPER_DIR && poetry install"
+echo "Installing soupawhisper dependencies..."
+cd "$SOUPAWHISPER_DIR" && poetry install
+cd "$DOTFILES_DIR"
+
+# Enable soupawhisper systemd service (Linux only)
+if [ "$OS" != "macos" ]; then
+    echo "Enabling soupawhisper systemd service..."
+    systemctl --user daemon-reload
+    systemctl --user enable soupawhisper.service
 fi
 
 # --- Make bin scripts executable ---

@@ -21,9 +21,6 @@ exec --no-startup-id gnome-settings-daemon
 exec_always --no-startup-id picom --daemon
 exec --no-startup-id random-wallpaper
 
-# Voice dictation (soupawhisper)
-exec --no-startup-id /home/marad/.cache/pypoetry/virtualenvs/soupawhisper-4RuCu2wT-py3.12/bin/python /home/marad/dev/soupawhisper/dictate.py
-
 # Screen locking
 bindsym $mod+Control+l exec i3lock -c 888888
 
