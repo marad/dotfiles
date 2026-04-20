@@ -52,13 +52,13 @@ if not pcall(require, "lazy") then
   vim.cmd.quit()
 end
 
-vim.loader.enable()
-
 require("hotpot")
+
+vim.loader.enable()
 require "lazy_setup"
 require "polish"
 
-require "settings"
+vim.opt.exrc = true
 
 -- Configure Viro
 
