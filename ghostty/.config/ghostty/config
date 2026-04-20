@@ -2,3 +2,6 @@ gtk-titlebar = false
 window-decoration = server
 
 keybind = ctrl+j=text:\x0a
+
+# Machine-specific overrides (optional — missing file is not an error)
+config-file = ?local.conf
