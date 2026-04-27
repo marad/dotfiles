@@ -16,5 +16,23 @@ return {
         neovide_floating_blur_amount_y = 0.0,
       },
     },
+    mappings = {
+      -- Cmd+V paste in all modes
+      n = {
+        ["<D-v>"] = { '"+P', desc = "Paste from clipboard" },
+      },
+      v = {
+        ["<D-v>"] = { '"+P', desc = "Paste from clipboard" },
+      },
+      i = {
+        ["<D-v>"] = { '<C-r>+', desc = "Paste from clipboard" },
+      },
+      c = {
+        ["<D-v>"] = { '<C-r>+', desc = "Paste from clipboard" },
+      },
+      t = {
+        ["<D-v>"] = { '<C-\\><C-n>"+pi', desc = "Paste from clipboard" },
+      },
+    },
   },
 }
