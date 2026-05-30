@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Rebuild the i3 tiling layout so window gaps and positions are recomputed.
+#
+# After a suspend/resume cycle the GPU can briefly drop and re-add outputs
+# (common with nvidia). i3 evacuates and re-tiles workspaces on every output
+# change, and sometimes leaves windows with frozen geometry: missing inner
+# gaps, wrong edge gaps, or stale stacking. A plain "i3-msg restart" does NOT
+# fix this — it restores the saved tree verbatim. Moving each workspace's
+# contents out to a scratch workspace and back forces i3 to re-tile from
+# scratch, which restores the configured gaps and layout.
+#
+# Safe to run any time. Bound to $mod+Shift+g and triggered on resume by the
+# system-sleep hook (see system-sleep/i3-resume-reflow in the dotfiles repo).
+set -euo pipefail
+
+command -v i3-msg >/dev/null 2>&1 || exit 0
+
+# Re-assert monitor geometry first, if a machine-local helper exists.
+# setup-monitors.sh is machine-specific (not tracked in dotfiles), so this is
+# best-effort and skipped on machines without it.
+if command -v setup-monitors.sh >/dev/null 2>&1; then
+    setup-monitors.sh || true
+    sleep 1
+fi
+
+# Re-read the config first. This re-applies the global gaps and clears any
+# stray per-workspace gap overrides (delta != 0) that a resume can leave
+# behind. It does NOT fix frozen window geometry — the move loop below does.
+i3-msg reload >/dev/null 2>&1 || true
+sleep 0.3
+
+# Note: i3 forbids moving to workspaces whose name starts with "__" (they are
+# reserved as i3-internal), so the scratch workspace must use a plain name.
+TMP="reflow_tmp"
+
+ws_names() {
+    i3-msg -t get_workspaces | python3 -c \
+        'import sys,json; print("\n".join(w["name"] for w in json.load(sys.stdin)))'
+}
+
+focused="$(i3-msg -t get_workspaces | python3 -c \
+    'import sys,json; print(next((w["name"] for w in json.load(sys.stdin) if w["focused"]), ""))')"
+
+while IFS= read -r ws; do
+    [ -z "$ws" ] && continue
+    [ "$ws" = "$TMP" ] && continue
+    # Empty workspaces match nothing, so this is a harmless no-op for them.
+    i3-msg "[workspace=\"$ws\"] move container to workspace \"$TMP\"" >/dev/null
+    i3-msg "[workspace=\"$TMP\"] move container to workspace \"$ws\"" >/dev/null
+done < <(ws_names)
+
+# Restore the originally focused workspace.
+[ -n "$focused" ] && i3-msg "workspace \"$focused\"" >/dev/null 2>&1 || true

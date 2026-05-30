@@ -172,6 +172,16 @@ if [ "$OS" != "macos" ]; then
     systemctl --user enable soupawhisper.service
 fi
 
+# --- i3 resume-reflow hook (Linux only) ---
+# Rebuilds the i3 layout on resume so a suspend/resume display flap does not
+# leave windows with missing gaps or stale stacking (see system-sleep/ and
+# bin/bin/i3-reflow-all).
+if [ "$OS" != "macos" ]; then
+    echo "Installing i3 resume-reflow system-sleep hook (requires sudo)..."
+    sudo install -m 755 "$DOTFILES_DIR/system-sleep/i3-resume-reflow" \
+        /usr/lib/systemd/system-sleep/i3-resume-reflow
+fi
+
 # --- Make bin scripts executable ---
 chmod +x "$HOME/bin/"* 2>/dev/null || true
 
