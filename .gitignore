@@ -1,1 +1,5 @@
 .DS_Store
+
+# Lokalny, prywatny kontekst Claude — generowany z claude/CLAUDE.local.md.example
+claude/.claude/CLAUDE.local.md
+CLAUDE.local.md

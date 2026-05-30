@@ -66,6 +66,17 @@ else
     echo "~/.gitconfig.local already exists, skipping git email setup."
 fi
 
+# --- Claude private context ---
+# CLAUDE.md is public (stowed); the sensitive bits live in ~/.claude/CLAUDE.local.md,
+# which CLAUDE.md imports but which is never committed. Seed it from the template.
+if [ ! -f "$HOME/.claude/CLAUDE.local.md" ]; then
+    mkdir -p "$HOME/.claude"
+    cp "$DOTFILES_DIR/claude/CLAUDE.local.md.example" "$HOME/.claude/CLAUDE.local.md"
+    echo "Created ~/.claude/CLAUDE.local.md from template — edit it with your private context."
+else
+    echo "~/.claude/CLAUDE.local.md already exists, skipping."
+fi
+
 # --- Backup existing configs (only real files, skip symlinks) ---
 backup_if_exists() {
     local target="$1"
@@ -86,6 +97,7 @@ backup_if_exists "$HOME/.gitignore_global"
 backup_if_exists "$HOME/.tmux.conf"
 backup_if_exists "$HOME/.config/starship.toml"
 backup_if_exists "$HOME/.config/nvim"
+backup_if_exists "$HOME/.claude/CLAUDE.md"
 
 if [ "$OS" == "macos" ]; then
     backup_if_exists "$HOME/.config/karabiner"
@@ -104,12 +116,15 @@ mkdir -p "$HOME/.config/picom"
 mkdir -p "$HOME/.config/alacritty"
 mkdir -p "$HOME/.config/rofi"
 mkdir -p "$HOME/.config/systemd/user"
+# Ensure ~/.claude exists so stow links the single CLAUDE.md file instead of
+# folding (symlinking) the whole directory into the repo.
+mkdir -p "$HOME/.claude"
 
 # --- Stow packages ---
 echo "Stowing packages..."
 cd "$DOTFILES_DIR"
 
-PACKAGES="zsh git starship tmux nvim bin alacritty"
+PACKAGES="zsh git starship tmux nvim bin alacritty claude"
 
 for pkg in $PACKAGES; do
     echo "  Stowing $pkg..."
@@ -196,5 +211,6 @@ echo "  ~/.zshrc.local      - Machine-specific shell config"
 echo "  ~/.gitconfig.local  - Git email and credentials (already created if prompted)"
 echo "  ~/.config/i3/local.conf  - i3 machine-specific config (monitor setup, etc.)"
 echo "  ~/.config/hypr/local.conf - Hyprland machine-specific config (monitors, etc.)"
+echo "  ~/.claude/CLAUDE.local.md - Private/company context for Claude (created from template)"
 echo ""
 echo "Restart your shell or run: source ~/.zshrc"

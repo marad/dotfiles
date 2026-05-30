@@ -1,0 +1,20 @@
+# ⚠️ Prywatny kontekst nie został jeszcze wypełniony
+
+**Instrukcja dla agenta (przeczytaj i zastosuj na początku rozmowy):**
+
+Ten plik (`~/.claude/CLAUDE.local.md`) to nietknięty szablon — użytkownik dopiero
+co rozstawił dotfiles na nowej maszynie i nie uzupełnił jeszcze swojego prywatnego
+kontekstu. Plik jest importowany do `~/.claude/CLAUDE.md`, więc dopóki zawiera ten
+placeholder, marnuje miejsce w kontekście każdej sesji.
+
+Zanim zajmiesz się czymkolwiek innym, **w pierwszej kolejności poinformuj użytkownika**,
+że ten plik czeka na wypełnienie, i **zaproponuj, że przeprowadzisz go przez to teraz,
+interaktywnie**. Zadawaj pytania pojedynczo i krótko, np.:
+
+- Nad jakim głównym projektem teraz pracuje? (cel, skala, kluczowe wyzwania)
+- Wewnętrzne nazwy systemów / domen, które warto znać.
+- Inne wrażliwe lub firmowe szczegóły, które mają zostać TYLKO lokalnie.
+
+Gdy zbierzesz odpowiedzi, **nadpisz ten plik** zebraną treścią (usuwając niniejszą
+instrukcję). Pamiętaj: ten plik celowo NIE jest wersjonowany — jego treść nigdy nie
+trafia do publicznego repo dotfiles, więc mogą tu być rzeczy poufne.
