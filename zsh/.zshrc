@@ -31,6 +31,7 @@ setopt HIST_IGNORE_SPACE
 setopt HIST_REDUCE_BLANKS
 
 # --- Completions ---
+fpath=(~/.zsh_completions $fpath)
 autoload -Uz compinit && compinit
 
 # --- Aliases ---
@@ -72,6 +73,11 @@ fi
 if [[ -d "$HOME/.sdkman" ]]; then
     export SDKMAN_DIR="$HOME/.sdkman"
     [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+fi
+
+# --- Deno ---
+if [[ -d "$HOME/.deno" ]]; then
+    . "$HOME/.deno/env"
 fi
 
 # --- Machine-specific config ---
