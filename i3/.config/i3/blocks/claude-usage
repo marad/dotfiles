@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+#
+# i3blocks block: Claude Code rate-limit usage.
+#
+# Shows utilization of the two unified rate-limit windows that `/usage`
+# reports in Claude Code:
+#   - 5h  : the rolling 5-hour "session" window
+#   - 7d  : the rolling weekly window
+#
+# The numbers are not stored locally; they live in the response headers of
+# the Anthropic API. We read the OAuth access token that Claude Code keeps
+# in ~/.claude/.credentials.json and issue one minimal request (1 output
+# token) to read the `anthropic-ratelimit-unified-*` headers. Results are
+# cached for $CLAUDE_USAGE_TTL seconds so the bar does not hammer the API.
+#
+# Configuration (environment variables):
+#   CLAUDE_USAGE_TTL    seconds between live refreshes      (default 120)
+#   CLAUDE_USAGE_LABEL  text prefix shown in the bar         (default "CC")
+#   CLAUDE_CREDENTIALS  path to the credentials file         (default ~/.claude/.credentials.json)
+#   CLAUDE_USAGE_WARN   utilization fraction for yellow      (default 0.7)
+#   CLAUDE_USAGE_CRIT   utilization fraction for red         (default 0.9)
+#
+# Output follows the i3blocks protocol: full_text, short_text, color.
+
+set -uo pipefail
+
+CRED="${CLAUDE_CREDENTIALS:-$HOME/.claude/.credentials.json}"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/i3-claude-status"
+CACHE="$CACHE_DIR/usage.env"
+TTL="${CLAUDE_USAGE_TTL:-120}"
+LABEL="${CLAUDE_USAGE_LABEL:-CC}"
+WARN="${CLAUDE_USAGE_WARN:-0.7}"
+CRIT="${CLAUDE_USAGE_CRIT:-0.9}"
+
+COLOR_OK="${CLAUDE_USAGE_COLOR_OK:-#A0A0A0}"
+COLOR_WARN="${CLAUDE_USAGE_COLOR_WARN:-#E5C07B}"
+COLOR_CRIT="${CLAUDE_USAGE_COLOR_CRIT:-#E06C75}"
+COLOR_STALE="${CLAUDE_USAGE_COLOR_STALE:-#606060}"
+
+mkdir -p "$CACHE_DIR"
+now=$(date +%s)
+
+# Cached values (empty until first successful fetch).
+FETCHED=0; U5=""; R5=""; U7=""; R7=""; ST=""
+if [[ -f "$CACHE" ]]; then
+  # shellcheck disable=SC1090
+  source "$CACHE"
+fi
+
+fetch_usage() {
+  local token headers
+  token=$(jq -r '.claudeAiOauth.accessToken // empty' "$CRED" 2>/dev/null) || return 1
+  [[ -n "$token" ]] || return 1
+
+  headers=$(curl -sS --max-time 8 -D - -o /dev/null \
+    https://api.anthropic.com/v1/messages \
+    -H "Authorization: Bearer $token" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "anthropic-beta: oauth-2025-04-20,claude-code-20250219" \
+    -H "content-type: application/json" \
+    -d '{"model":"claude-haiku-4-5-20251001","max_tokens":1,"system":"You are Claude Code, Anthropic'\''s official CLI for Claude.","messages":[{"role":"user","content":"."}]}' \
+    2>/dev/null) || return 1
+
+  local h
+  h() { grep -i "^anthropic-ratelimit-unified-$1:" <<<"$headers" | tail -1 | tr -d '\r' | awk '{print $2}'; }
+  local n5 nr5 n7 nr7 nst
+  n5=$(h 5h-utilization); nr5=$(h 5h-reset)
+  n7=$(h 7d-utilization); nr7=$(h 7d-reset)
+  nst=$(h status)
+
+  # Require at least one utilization value, otherwise treat as failure.
+  [[ -n "$n5$n7" ]] || return 1
+
+  U5="$n5"; R5="$nr5"; U7="$n7"; R7="$nr7"; ST="$nst"; FETCHED="$now"
+  cat >"$CACHE" <<EOF
+FETCHED=$FETCHED
+U5=$U5
+R5=$R5
+U7=$U7
+R7=$R7
+ST=$ST
+EOF
+  return 0
+}
+
+# Refresh only if the cache is older than the TTL.
+stale=0
+if (( now - FETCHED >= TTL )); then
+  if ! fetch_usage; then
+    # Fetch failed: keep showing cached data (dimmed) if we have any.
+    [[ -n "$U5$U7" ]] && stale=1
+  fi
+fi
+
+# --- formatting helpers ---------------------------------------------------
+
+pct() { # fraction -> integer percent, or "?" when empty
+  awk -v v="${1:-}" 'BEGIN{ if (v=="") print "?"; else printf "%d", v*100 + 0.5 }'
+}
+
+reset_fmt() { # epoch -> "HH:MM" if within a day, else weekday
+  local t="${1:-}"
+  [[ -z "$t" ]] && { printf '?'; return; }
+  local diff=$(( t - now )); (( diff < 0 )) && diff=0
+  if (( diff < 86400 )); then date -d "@$t" +%H:%M
+  else date -d "@$t" +%a; fi
+}
+
+frac_max() { # echo the larger of two (possibly empty) fractions
+  awk -v a="${1:-0}" -v b="${2:-0}" 'BEGIN{ if(a=="")a=0; if(b=="")b=0; print (a>b?a:b) }'
+}
+
+# --- no data at all -------------------------------------------------------
+
+if [[ -z "$U5$U7" ]]; then
+  echo "$LABEL n/d"
+  echo "$LABEL"
+  echo "$COLOR_STALE"
+  exit 0
+fi
+
+# --- render ---------------------------------------------------------------
+
+p5=$(pct "$U5"); p7=$(pct "$U7")
+t5=$(reset_fmt "$R5"); t7=$(reset_fmt "$R7")
+mark=""; (( stale )) && mark="·"   # trailing dot marks cached/stale data
+
+full="$LABEL${mark} 5h ${p5}% (${t5}) · 7d ${p7}% (${t7})"
+short="$LABEL ${p5}%/${p7}%"
+
+# Color from the worst window; "rejected" status forces red.
+worst=$(frac_max "$U5" "$U7")
+color="$COLOR_OK"
+if [[ "$ST" == "rejected" ]] || awk -v w="$worst" -v c="$CRIT" 'BEGIN{exit !(w>=c)}'; then
+  color="$COLOR_CRIT"
+elif awk -v w="$worst" -v c="$WARN" 'BEGIN{exit !(w>=c)}'; then
+  color="$COLOR_WARN"
+fi
+(( stale )) && color="$COLOR_STALE"
+
+echo "$full"
+echo "$short"
+echo "$color"
