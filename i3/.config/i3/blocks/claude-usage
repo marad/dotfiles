@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 #
-# i3blocks block: Claude Code rate-limit usage.
+# i3blocks block: Claude Code rate-limit usage, as graphical progress bars.
 #
 # Shows utilization of the two unified rate-limit windows that `/usage`
 # reports in Claude Code:
 #   - 5h  : the rolling 5-hour "session" window
 #   - 7d  : the rolling weekly window
+#
+# Each window is drawn as a solid bar: the coloured fill is how much of the
+# limit is used, and a vertical marker line shows how far the time window
+# itself has elapsed (start -> reset). Fill behind the marker = burning the
+# budget slower than the clock; fill ahead of the marker = burning faster.
 #
 # The numbers are not stored locally; they live in the response headers of
 # the Anthropic API. We read the OAuth access token that Claude Code keeps
@@ -13,12 +18,15 @@
 # token) to read the `anthropic-ratelimit-unified-*` headers. Results are
 # cached for $CLAUDE_USAGE_TTL seconds so the bar does not hammer the API.
 #
+# Requires `markup=pango` on this i3blocks block (for the coloured bars).
+#
 # Configuration (environment variables):
-#   CLAUDE_USAGE_TTL    seconds between live refreshes      (default 120)
-#   CLAUDE_USAGE_LABEL  text prefix shown in the bar         (default "CC")
-#   CLAUDE_CREDENTIALS  path to the credentials file         (default ~/.claude/.credentials.json)
-#   CLAUDE_USAGE_WARN   utilization fraction for yellow      (default 0.7)
-#   CLAUDE_USAGE_CRIT   utilization fraction for red         (default 0.9)
+#   CLAUDE_USAGE_TTL        seconds between live refreshes   (default 120)
+#   CLAUDE_USAGE_LABEL      text prefix shown in the bar      (default "CC")
+#   CLAUDE_USAGE_BAR_WIDTH  bar width in cells                (default 8)
+#   CLAUDE_CREDENTIALS      path to the credentials file      (default ~/.claude/.credentials.json)
+#   CLAUDE_USAGE_WARN       utilization fraction for yellow   (default 0.7)
+#   CLAUDE_USAGE_CRIT       utilization fraction for red       (default 0.9)
 #
 # Output follows the i3blocks protocol: full_text, short_text, color.
 
@@ -31,11 +39,20 @@ TTL="${CLAUDE_USAGE_TTL:-120}"
 LABEL="${CLAUDE_USAGE_LABEL:-CC}"
 WARN="${CLAUDE_USAGE_WARN:-0.7}"
 CRIT="${CLAUDE_USAGE_CRIT:-0.9}"
+BAR_WIDTH="${CLAUDE_USAGE_BAR_WIDTH:-8}"
 
-COLOR_OK="${CLAUDE_USAGE_COLOR_OK:-#A0A0A0}"
-COLOR_WARN="${CLAUDE_USAGE_COLOR_WARN:-#E5C07B}"
-COLOR_CRIT="${CLAUDE_USAGE_COLOR_CRIT:-#E06C75}"
-COLOR_STALE="${CLAUDE_USAGE_COLOR_STALE:-#606060}"
+# Window lengths in seconds (used to place the elapsed-time marker).
+WIN_5H="${CLAUDE_USAGE_WIN_5H:-18000}"     # 5 hours
+WIN_7D="${CLAUDE_USAGE_WIN_7D:-604800}"    # 7 days
+
+# Colours.
+FILL_OK="${CLAUDE_USAGE_FILL_OK:-#98C379}"     # green   (low usage)
+FILL_WARN="${CLAUDE_USAGE_FILL_WARN:-#E5C07B}" # yellow  (>= WARN)
+FILL_CRIT="${CLAUDE_USAGE_FILL_CRIT:-#E06C75}" # red     (>= CRIT / rejected)
+TRACK="${CLAUDE_USAGE_TRACK:-#3A3F4B}"         # empty part of the bar
+MARKER="${CLAUDE_USAGE_MARKER:-#61AFEF}"       # elapsed-time marker line
+TEXT="${CLAUDE_USAGE_TEXT:-#ABB2BF}"           # labels / default text
+STALE="${CLAUDE_USAGE_STALE:-#606060}"         # dimmed when data is stale
 
 mkdir -p "$CACHE_DIR"
 now=$(date +%s)
@@ -94,20 +111,47 @@ fi
 
 # --- formatting helpers ---------------------------------------------------
 
-pct() { # fraction -> integer percent, or "?" when empty
-  awk -v v="${1:-}" 'BEGIN{ if (v=="") print "?"; else printf "%d", v*100 + 0.5 }'
+pct() { # fraction -> integer percent
+  awk -v v="${1:-0}" 'BEGIN{ if (v=="") v=0; printf "%d", v*100 + 0.5 }'
 }
 
-reset_fmt() { # epoch -> "HH:MM" if within a day, else weekday
-  local t="${1:-}"
-  [[ -z "$t" ]] && { printf '?'; return; }
-  local diff=$(( t - now )); (( diff < 0 )) && diff=0
-  if (( diff < 86400 )); then date -d "@$t" +%H:%M
-  else date -d "@$t" +%a; fi
+fill_color() { # utilization fraction -> colour (rejected status forces red)
+  local u="${1:-0}"; [[ -z "$u" ]] && u=0
+  if [[ "$ST" == "rejected" ]] || awk -v w="$u" -v c="$CRIT" 'BEGIN{exit !(w>=c)}'; then
+    printf '%s' "$FILL_CRIT"
+  elif awk -v w="$u" -v c="$WARN" 'BEGIN{exit !(w>=c)}'; then
+    printf '%s' "$FILL_WARN"
+  else
+    printf '%s' "$FILL_OK"
+  fi
 }
 
-frac_max() { # echo the larger of two (possibly empty) fractions
-  awk -v a="${1:-0}" -v b="${2:-0}" 'BEGIN{ if(a=="")a=0; if(b=="")b=0; print (a>b?a:b) }'
+elapsed_frac() { # reset_epoch, window_length -> fraction of window already gone
+  awk -v r="${1:-}" -v len="${2:-1}" -v now="$now" 'BEGIN{
+    if (r=="") { print 0; exit }
+    rem = r - now; if (rem < 0) rem = 0; if (rem > len) rem = len;
+    print (len - rem) / len;
+  }'
+}
+
+# Build a pango progress bar with a vertical elapsed-time marker.
+#   $1 utilization fraction, $2 elapsed fraction, $3 fill colour
+make_bar() {
+  local util="${1:-0}" elapsed="${2:-0}" fill="$3"
+  [[ -z "$util" ]] && util=0
+  awk -v u="$util" -v e="$elapsed" -v w="$BAR_WIDTH" \
+      -v fc="$fill" -v ec="$TRACK" -v mc="$MARKER" 'BEGIN{
+    if (u=="") u=0; if (e=="") e=0;
+    f = int(u*w + 0.5); if (f>w) f=w; if (f<0) f=0;
+    mk = int(e*w);       if (mk>=w) mk=w-1; if (mk<0) mk=0;
+    for (i=0; i<w; i++) {
+      bg = (i<f) ? fc : ec;
+      if (i==mk)
+        printf "<span background=\"%s\" foreground=\"%s\">▏</span>", bg, mc;
+      else
+        printf "<span background=\"%s\"> </span>", bg;
+    }
+  }'
 }
 
 # --- no data at all -------------------------------------------------------
@@ -115,29 +159,22 @@ frac_max() { # echo the larger of two (possibly empty) fractions
 if [[ -z "$U5$U7" ]]; then
   echo "$LABEL n/d"
   echo "$LABEL"
-  echo "$COLOR_STALE"
+  echo "$STALE"
   exit 0
 fi
 
 # --- render ---------------------------------------------------------------
 
 p5=$(pct "$U5"); p7=$(pct "$U7")
-t5=$(reset_fmt "$R5"); t7=$(reset_fmt "$R7")
+fc5=$(fill_color "$U5"); fc7=$(fill_color "$U7")
+e5=$(elapsed_frac "$R5" "$WIN_5H"); e7=$(elapsed_frac "$R7" "$WIN_7D")
+bar5=$(make_bar "$U5" "$e5" "$fc5"); bar7=$(make_bar "$U7" "$e7" "$fc7")
 mark=""; (( stale )) && mark="·"   # trailing dot marks cached/stale data
 
-full="$LABEL${mark} 5h ${p5}% (${t5}) · 7d ${p7}% (${t7})"
+full=$(printf '%s%s 5h %s <span foreground="%s">%d%%</span>  7d %s <span foreground="%s">%d%%</span>' \
+  "$LABEL" "$mark" "$bar5" "$fc5" "$p5" "$bar7" "$fc7" "$p7")
 short="$LABEL ${p5}%/${p7}%"
-
-# Color from the worst window; "rejected" status forces red.
-worst=$(frac_max "$U5" "$U7")
-color="$COLOR_OK"
-if [[ "$ST" == "rejected" ]] || awk -v w="$worst" -v c="$CRIT" 'BEGIN{exit !(w>=c)}'; then
-  color="$COLOR_CRIT"
-elif awk -v w="$worst" -v c="$WARN" 'BEGIN{exit !(w>=c)}'; then
-  color="$COLOR_WARN"
-fi
-(( stale )) && color="$COLOR_STALE"
 
 echo "$full"
 echo "$short"
-echo "$color"
+(( stale )) && echo "$STALE" || echo "$TEXT"
