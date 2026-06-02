@@ -36,6 +36,7 @@
           - karabiner-elements
           - podman-desktop
           - gcloud-cli
+          - meetingbar
         state: present
 
     - name: Install vinote
