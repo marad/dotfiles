@@ -55,10 +55,10 @@ if [ ! -f "$HOME/.gitconfig.local" ]; then
 
 [credential "https://github.com"]
     helper =
-    helper = !$(command -v gh) auth git-credential
+    helper = !gh auth git-credential
 [credential "https://gist.github.com"]
     helper =
-    helper = !$(command -v gh) auth git-credential
+    helper = !gh auth git-credential
 EOF
         echo "Created ~/.gitconfig.local with email: $git_email"
     fi
