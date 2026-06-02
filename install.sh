@@ -113,7 +113,6 @@ mkdir -p "$HOME/.config/i3"
 mkdir -p "$HOME/.config/hypr"
 mkdir -p "$HOME/.config/waybar"
 mkdir -p "$HOME/.config/picom"
-mkdir -p "$HOME/.config/alacritty"
 mkdir -p "$HOME/.config/rofi"
 mkdir -p "$HOME/.config/systemd/user"
 # Ensure ~/.claude exists so stow links the single CLAUDE.md file instead of
@@ -124,7 +123,7 @@ mkdir -p "$HOME/.claude"
 echo "Stowing packages..."
 cd "$DOTFILES_DIR"
 
-PACKAGES="zsh git starship tmux nvim bin alacritty claude"
+PACKAGES="zsh git starship tmux nvim bin claude"
 
 for pkg in $PACKAGES; do
     echo "  Stowing $pkg..."
@@ -136,6 +135,9 @@ if [ "$OS" == "macos" ]; then
     echo "  Stowing karabiner..."
     stow --restow --target="$HOME" karabiner
 else
+    mkdir -p "$HOME/.config/alacritty"
+    echo "  Stowing alacritty..."
+    stow --restow --target="$HOME" alacritty
     echo "  Stowing i3..."
     stow --restow --target="$HOME" i3
     echo "  Stowing picom..."
