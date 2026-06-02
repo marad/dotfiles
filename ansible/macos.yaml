@@ -41,3 +41,162 @@
       ansible.builtin.shell:
         cmd: go install github.com/marad/vinote/cmd/vn@latest
         creates: ~/go/bin/vn
+
+    # --- macOS system preferences (defaults) ---
+    # Reproducible system settings. Each entry is idempotent; the handlers
+    # below restart Dock/Finder/WindowManager so changes apply immediately.
+    - name: Dock — auto-hide
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: autohide
+        type: bool
+        value: true
+      notify: restart Dock
+
+    - name: Dock — remove auto-hide delay
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: autohide-delay
+        type: float
+        value: 0
+      notify: restart Dock
+
+    - name: Dock — do not show recent apps
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: show-recents
+        type: bool
+        value: false
+      notify: restart Dock
+
+    - name: Stage Manager — enabled
+      community.general.osx_defaults:
+        domain: com.apple.WindowManager
+        key: GloballyEnabled
+        type: bool
+        value: true
+      notify: restart WindowManager
+
+    - name: Stage Manager — do not show desktop when clicking wallpaper
+      community.general.osx_defaults:
+        domain: com.apple.WindowManager
+        key: EnableStandardClickToShowDesktop
+        type: bool
+        value: false
+      notify: restart WindowManager
+
+    - name: Dock — tile size
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: tilesize
+        type: int
+        value: 47
+      notify: restart Dock
+
+    - name: Dock — scale minimize effect
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: mineffect
+        type: string
+        value: scale
+      notify: restart Dock
+
+    - name: Dock — bottom-right hot corner is Quick Note
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: wvous-br-corner
+        type: int
+        value: 14
+      notify: restart Dock
+
+    - name: Dock — bottom-right hot corner no modifier
+      community.general.osx_defaults:
+        domain: com.apple.dock
+        key: wvous-br-modifier
+        type: int
+        value: 0
+      notify: restart Dock
+
+    - name: Finder — show all file extensions
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: AppleShowAllExtensions
+        type: bool
+        value: true
+      notify: restart Finder
+
+    - name: Finder — show path bar
+      community.general.osx_defaults:
+        domain: com.apple.finder
+        key: ShowPathbar
+        type: bool
+        value: true
+      notify: restart Finder
+
+    - name: Finder — default to list view
+      community.general.osx_defaults:
+        domain: com.apple.finder
+        key: FXPreferredViewStyle
+        type: string
+        value: Nlsv
+      notify: restart Finder
+
+    - name: Scrolling — disable natural scroll direction
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: com.apple.swipescrolldirection
+        type: bool
+        value: false
+
+    - name: Text — disable automatic spelling correction
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: NSAutomaticSpellingCorrectionEnabled
+        type: bool
+        value: false
+
+    - name: Text — disable automatic capitalization
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: NSAutomaticCapitalizationEnabled
+        type: bool
+        value: false
+
+    - name: Keyboard — fast key repeat
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: KeyRepeat
+        type: int
+        value: 2
+
+    - name: Keyboard — short delay until repeat
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: InitialKeyRepeat
+        type: int
+        value: 15
+
+    - name: Screenshots — capture to clipboard instead of files
+      community.general.osx_defaults:
+        domain: com.apple.screencapture
+        key: target
+        type: string
+        value: clipboard
+      notify: restart SystemUIServer
+
+  handlers:
+    - name: restart Dock
+      ansible.builtin.command: killall Dock
+      failed_when: false
+
+    - name: restart Finder
+      ansible.builtin.command: killall Finder
+      failed_when: false
+
+    - name: restart WindowManager
+      ansible.builtin.command: killall WindowManager
+      failed_when: false
+
+    - name: restart SystemUIServer
+      ansible.builtin.command: killall SystemUIServer
+      failed_when: false
