@@ -42,6 +42,15 @@
         cmd: go install github.com/marad/vinote/cmd/vn@latest
         creates: ~/go/bin/vn
 
+    - name: Auto-commit notes repository hourly
+      ansible.builtin.cron:
+        name: Auto-commit notes repository
+        minute: "0"
+        job: >-
+          cd $HOME/notes && git pull && git add -A && git diff-index --quiet HEAD
+          || (git commit -m "Auto-commit: $(date '+\%Y-\%m-\%d \%H:\%M')" && git push)
+          >> $HOME/notes-auto-commit.log 2>&1
+
     # --- macOS system preferences (defaults) ---
     # Reproducible system settings. Each entry is idempotent; the handlers
     # below restart Dock/Finder/WindowManager so changes apply immediately.
