@@ -26,6 +26,7 @@
           - ical-buddy
           - podman-compose
           - zoxide
+          - rtk
         state: present
 
     - name: Install Homebrew cask packages
