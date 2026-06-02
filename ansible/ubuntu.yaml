@@ -110,6 +110,15 @@
         cmd: ../scripts/install_hyprland.sh
         creates: /usr/bin/Hyprland
 
+    - name: Install rtk (token-optimizing CLI proxy)
+      ansible.builtin.shell:
+        cmd: >-
+          mkdir -p "$HOME/.local/bin" &&
+          curl -fsSL https://github.com/rtk-ai/rtk/releases/latest/download/rtk-x86_64-unknown-linux-musl.tar.gz
+          | tar xz -C "$HOME/.local/bin" rtk &&
+          chmod +x "$HOME/.local/bin/rtk"
+        creates: ~/.local/bin/rtk
+
     - name: Set default shell to zsh
       become: true
       ansible.builtin.user:
