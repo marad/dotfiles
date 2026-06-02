@@ -173,6 +173,15 @@ if ! command -v poetry &>/dev/null; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# --- Notes repository ---
+# The hourly auto-commit cron (see ansible/*.yaml) operates on ~/notes, so the
+# repo must exist. Cloned over SSH because the cron also pushes.
+NOTES_DIR="$HOME/notes"
+if [ ! -d "$NOTES_DIR" ]; then
+    echo "Cloning notes..."
+    git clone git@github.com:marad/notes.git "$NOTES_DIR"
+fi
+
 # --- SoupaWhisper (voice dictation) ---
 SOUPAWHISPER_DIR="$HOME/dev/soupawhisper"
 if [ ! -d "$SOUPAWHISPER_DIR" ]; then
