@@ -1,3 +1,5 @@
+theme = Catppuccin Latte
+
 gtk-titlebar = false
 window-decoration = server
 

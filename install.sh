@@ -132,6 +132,9 @@ done
 
 # Platform-specific packages
 if [ "$OS" == "macos" ]; then
+    mkdir -p "$HOME/.config/ghostty"
+    echo "  Stowing ghostty..."
+    stow --restow --target="$HOME" ghostty
     echo "  Stowing karabiner..."
     stow --restow --target="$HOME" karabiner
 else

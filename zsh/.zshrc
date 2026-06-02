@@ -8,7 +8,13 @@ esac
 
 # --- Homebrew (macOS only) ---
 if [[ "$OS" == "macos" ]]; then
-    eval "$($HOME/homebrew/bin/brew shellenv)"
+    # Apple Silicon: /opt/homebrew, Intel: /usr/local
+    for brew_prefix in /opt/homebrew /usr/local "$HOME/homebrew"; do
+        if [[ -x "$brew_prefix/bin/brew" ]]; then
+            eval "$("$brew_prefix/bin/brew" shellenv)"
+            break
+        fi
+    done
 fi
 
 # --- PATH ---
