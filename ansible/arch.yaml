@@ -52,6 +52,7 @@
         name: Auto-commit notes repository
         minute: "0"
         job: >-
-          cd $HOME/notes && git pull && git add -A && git diff-index --quiet HEAD
-          || (git commit -m "Auto-commit: $(date '+\%Y-\%m-\%d \%H:\%M')" && git push)
+          { cd $HOME/notes && git add -A
+          && (git diff-index --quiet HEAD || git commit -m "Auto-commit: $(date '+\%Y-\%m-\%d \%H:\%M')")
+          && git pull --rebase --autostash && git push; }
           >> $HOME/notes-auto-commit.log 2>&1
