@@ -43,6 +43,7 @@
           - gcloud-cli
           - meetingbar
           - claude-usage-tracker
+          - google-drive
         state: present
 
     - name: Install vinote
