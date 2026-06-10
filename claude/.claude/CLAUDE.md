@@ -41,3 +41,5 @@ Poniższy import dociąga lokalny, niewersjonowany plik z wrażliwymi szczegół
 podczas `install.sh` i nie trafia do repozytorium.
 
 @~/.claude/CLAUDE.local.md
+
+@RTK.md
