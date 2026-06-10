@@ -190,8 +190,37 @@ if [ ! -d "$SOUPAWHISPER_DIR" ]; then
     git clone https://github.com/ksred/soupawhisper.git "$SOUPAWHISPER_DIR"
 fi
 
-echo "Installing soupawhisper dependencies..."
-cd "$SOUPAWHISPER_DIR" && poetry install
+# onnxruntime (pulled in via faster-whisper) ships prebuilt wheels only for
+# Python 3.10-3.13, so the venv must not be created with a newer interpreter
+# (e.g. Homebrew's default python3, which is already 3.14).
+find_soupawhisper_python() {
+    local ver
+    for ver in 3.13 3.12 3.11 3.10; do
+        if command -v "python$ver" &>/dev/null; then
+            echo "python$ver"
+            return 0
+        fi
+    done
+    return 1
+}
+
+if ! SOUPAWHISPER_PYTHON=$(find_soupawhisper_python); then
+    echo "No Python 3.10-3.13 found (required by soupawhisper's onnxruntime). Installing 3.13..."
+    case "$OS" in
+        macos)  brew install python@3.13 ;;
+        ubuntu) sudo apt install -y python3.13 python3.13-venv ;;
+        *)
+            echo "Install Python 3.13 manually (e.g. from AUR) and re-run."
+            exit 1
+            ;;
+    esac
+    SOUPAWHISPER_PYTHON=$(find_soupawhisper_python)
+fi
+
+echo "Installing soupawhisper dependencies (using $SOUPAWHISPER_PYTHON)..."
+cd "$SOUPAWHISPER_DIR"
+poetry env use "$SOUPAWHISPER_PYTHON"
+poetry install
 cd "$DOTFILES_DIR"
 
 # Enable soupawhisper systemd service (Linux only)
