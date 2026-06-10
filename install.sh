@@ -183,11 +183,13 @@ if [ ! -d "$NOTES_DIR" ]; then
 fi
 
 # --- SoupaWhisper (voice dictation) ---
+# Cloned from our fork, which adds macOS support (sox/pbcopy/osascript
+# instead of arecord/xclip/xdotool); upstream is ksred/soupawhisper.
 SOUPAWHISPER_DIR="$HOME/dev/soupawhisper"
 if [ ! -d "$SOUPAWHISPER_DIR" ]; then
     echo "Cloning soupawhisper..."
     mkdir -p "$HOME/dev"
-    git clone https://github.com/ksred/soupawhisper.git "$SOUPAWHISPER_DIR"
+    git clone https://github.com/marad/soupawhisper.git "$SOUPAWHISPER_DIR"
 fi
 
 # onnxruntime (pulled in via faster-whisper) ships prebuilt wheels only for
