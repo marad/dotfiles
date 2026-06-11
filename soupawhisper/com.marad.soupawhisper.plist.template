@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.marad.soupawhisper</string>
+    <key>ProgramArguments</key>
+    <array>
+        <!-- __PYTHON__ is filled in by install.sh: the poetry venv path
+             contains a per-machine hash and python version -->
+        <string>__PYTHON__</string>
+        <string>__HOME__/dev/soupawhisper/dictate.py</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>__HOME__/dev/soupawhisper</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- sox's `rec` lives in /opt/homebrew/bin; launchd's default PATH won't find it -->
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/bin:/bin</string>
+        <!-- stdout is block-buffered when redirected to a file; keep logs live -->
+        <key>PYTHONUNBUFFERED</key>
+        <string>1</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>__HOME__/Library/Logs/soupawhisper.log</string>
+    <key>StandardErrorPath</key>
+    <string>__HOME__/Library/Logs/soupawhisper.log</string>
+</dict>
+</plist>

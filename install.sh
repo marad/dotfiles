@@ -236,11 +236,23 @@ poetry env use "$SOUPAWHISPER_PYTHON"
 poetry install
 cd "$DOTFILES_DIR"
 
-# Enable soupawhisper systemd service (Linux only)
+# Autostart: systemd service on Linux, LaunchAgent on macOS
 if [ "$OS" != "macos" ]; then
     echo "Enabling soupawhisper systemd service..."
     systemctl --user daemon-reload
     systemctl --user enable soupawhisper.service
+else
+    echo "Installing soupawhisper LaunchAgent..."
+    SOUPAWHISPER_PLIST="$HOME/Library/LaunchAgents/com.marad.soupawhisper.plist"
+    # The venv path contains a per-machine hash and python version
+    SOUPAWHISPER_VENV_PYTHON=$(cd "$SOUPAWHISPER_DIR" && poetry env info --executable)
+    mkdir -p "$HOME/Library/LaunchAgents"
+    sed -e "s|__PYTHON__|$SOUPAWHISPER_VENV_PYTHON|g" \
+        -e "s|__HOME__|$HOME|g" \
+        "$DOTFILES_DIR/soupawhisper/com.marad.soupawhisper.plist.template" \
+        > "$SOUPAWHISPER_PLIST"
+    launchctl unload "$SOUPAWHISPER_PLIST" 2>/dev/null || true
+    launchctl load "$SOUPAWHISPER_PLIST"
 fi
 
 # --- i3 resume-reflow hook (Linux only) ---
