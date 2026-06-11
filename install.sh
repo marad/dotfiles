@@ -219,6 +219,17 @@ if ! SOUPAWHISPER_PYTHON=$(find_soupawhisper_python); then
     SOUPAWHISPER_PYTHON=$(find_soupawhisper_python)
 fi
 
+# Seed the config from the template (copied, not stowed: the local copy may
+# accumulate private vocabulary that must not land in this public repo)
+SOUPAWHISPER_CONFIG="$HOME/.config/soupawhisper/config.ini"
+if [ ! -f "$SOUPAWHISPER_CONFIG" ]; then
+    mkdir -p "$(dirname "$SOUPAWHISPER_CONFIG")"
+    cp "$DOTFILES_DIR/soupawhisper/config.ini.example" "$SOUPAWHISPER_CONFIG"
+    echo "Created $SOUPAWHISPER_CONFIG from template."
+else
+    echo "$SOUPAWHISPER_CONFIG already exists, skipping."
+fi
+
 echo "Installing soupawhisper dependencies (using $SOUPAWHISPER_PYTHON)..."
 cd "$SOUPAWHISPER_DIR"
 poetry env use "$SOUPAWHISPER_PYTHON"
@@ -257,5 +268,6 @@ echo "  ~/.gitconfig.local  - Git email and credentials (already created if prom
 echo "  ~/.config/i3/local.conf  - i3 machine-specific config (monitor setup, etc.)"
 echo "  ~/.config/hypr/local.conf - Hyprland machine-specific config (monitors, etc.)"
 echo "  ~/.claude/CLAUDE.local.md - Private/company context for Claude (created from template)"
+echo "  ~/.config/soupawhisper/config.ini - Dictation config; add private vocabulary here (created from template)"
 echo ""
 echo "Restart your shell or run: source ~/.zshrc"

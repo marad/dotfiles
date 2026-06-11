@@ -1,0 +1,45 @@
+[whisper]
+# Model size: tiny, base, small, medium, large-v3 (or a full HF repo path).
+# On Apple Silicon (mlx-whisper, GPU) large-v3 transcribes in well under a
+# second; on CPU (faster-whisper) prefer small/medium.
+model = large-v3
+
+# Transcription language (empty = auto-detect)
+language = pl
+
+# Device for faster-whisper (Linux only): cpu or cuda (cuda requires cuDNN).
+# Ignored on macOS, where mlx-whisper always runs on the GPU via Metal.
+device = cpu
+
+# Compute type for faster-whisper (Linux only): int8 for CPU, float16 for GPU
+compute_type = int8
+
+# Comma-separated domain terms (project names, jargon) to bias spelling.
+# NOTE: this template is public — add private/company terms only in the
+# local copy (~/.config/soupawhisper/config.ini), which is not tracked.
+vocabulary = ChiLang, chicc, Claude, Claude Code, Grok, ChatGPT, OpenAI, Anthropic, Gemini, Copilot, DeepSeek, Llama, Mistral, MCP, LLM, GitHub, issue, issues, pull request
+
+[hotkey]
+# Key to hold for recording. Karabiner (also in these dotfiles) maps the
+# § key to f13 on macOS for push-to-talk.
+key = f13
+
+[behavior]
+# Type text into active input field
+auto_type = true
+
+# Show desktop notification
+notifications = true
+
+[replacements]
+# Deterministic transcript fixes: matched case-insensitively from a word
+# boundary, only the matched prefix is replaced so inflected suffixes
+# survive ("Heilangiem" -> "ChiLangiem").
+# ChiLang is pronounced "hi-lang" (Greek chi) — Whisper can't spell it.
+heelang = ChiLang
+heilang = ChiLang
+hilang = ChiLang
+hi-lang = ChiLang
+hej-lang = ChiLang
+hejlang = ChiLang
+chilang = ChiLang
