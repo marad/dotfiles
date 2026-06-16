@@ -31,6 +31,10 @@ auto_type = true
 # Show desktop notification
 notifications = true
 
+# Restore the previous clipboard contents after auto-typing
+# (only applies when auto_type = true; ignored otherwise)
+restore_clipboard = true
+
 [replacements]
 # Deterministic transcript fixes: matched case-insensitively from a word
 # boundary, only the matched prefix is replaced so inflected suffixes
