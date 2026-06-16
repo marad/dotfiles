@@ -35,6 +35,18 @@
 - Opus magnum: **ChiLang** — autorski język. Chi **kompiluje się do Lua**; kompilator **chicc** jest przepisywany w samym Chi (self-hosting, https://github.com/chi-lang/chicc). Standalone exeki powstają przez wrapper w C z osadzonym **LuaJIT**, pakujący skompilowany program Chi.
 - Dostępny jest skill `chi-language` z przewodnikiem po składni i kwirkach Chi — warto z niego korzystać przy kodzie w tym języku.
 
+# Repozytorium notatek (osobista baza wiedzy)
+
+Plain-markdown notatki w `~/notes` (edytowane w Neovim + wtyczka `marad/vinote`;
+katalog instalowany przez dotfiles, więc jest na każdym komputerze). Repo ma
+własny `CLAUDE.md` (importuje `AGENTS.md`) z konwencjami: tematy, spotkania,
+pomysły, weekly, osoby, struktura katalogów.
+
+**Reguła:** gdy użytkownik mówi „zapisz to w notatkach" (lub podobne) —
+niezależnie od katalogu, w którym odpalona jest sesja — najpierw przeczytaj
+`~/notes/CLAUDE.md`, dobierz właściwą konwencję wg typu zapisywanej rzeczy,
+dopiero potem twórz/edytuj plik w tym repo.
+
 # Kontekst prywatny
 
 Poniższy import dociąga lokalny, niewersjonowany plik z wrażliwymi szczegółami
