@@ -16,6 +16,7 @@
           - libfontconfig-dev
           - build-essential
           - cmake
+          - golang-go
           - tree
           - gh
           - ripgrep

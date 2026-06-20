@@ -4,8 +4,10 @@
     - name: Install required packages
       pacman:
         name:
+          # --- core CLI tooling ---
           - stow
           - zsh
+          - curl
           - xsel
           - neovim
           - tmux
@@ -13,16 +15,52 @@
           - eza
           - ripgrep
           - bat
+          - fd
           - starship
           - unzip
+          - zip
+          - tree
           - git-delta
           - github-cli
+          - zoxide
+          # --- build toolchain (native deps) ---
+          - base-devel
+          - cmake
+          # --- go (needed to build vinote below) ---
+          - go
+          # --- fonts ---
           - fontconfig
           - ttf-jetbrains-mono-nerd
-          - zoxide
+          # --- python ---
+          - python-pip
+          - python-pipx
+          # --- terminal / launcher ---
           - alacritty
           - rofi
+          # --- i3 (X11) ---
           - i3blocks
+          - picom
+          - feh
+          - xdotool
+          - xclip
+          # --- Hyprland (Wayland) ---
+          # On Arch these are stock packages, so there is no need to build
+          # Hyprland from source the way ubuntu.yaml does.
+          - hyprland
+          - waybar
+          - grim
+          - slurp
+          - swaylock
+          - swayidle
+          - swaybg
+          - wl-clipboard
+          - cliphist
+          - wtype
+          - playerctl
+          - xdg-desktop-portal-gtk
+          # --- audio / notifications ---
+          - alsa-utils
+          - libnotify
         state: latest
         update_cache: yes
       become: true
@@ -31,6 +69,30 @@
       ansible.builtin.shell:
         cmd: go install github.com/marad/vinote/cmd/vn@latest
         creates: ~/go/bin/vn
+
+    - name: Install node version manager
+      ansible.builtin.shell:
+        cmd: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+        creates: ~/.nvm
+
+    - name: Install latest nodejs with NVM
+      ansible.builtin.shell:
+        cmd: bash -c 'source ~/.nvm/nvm.sh && nvm install node'
+        creates: ~/.npm
+
+    - name: Install tldr command
+      ansible.builtin.shell:
+        cmd: bash -c 'source ~/.nvm/nvm.sh && npm install -g tldr'
+
+    - name: Install sdkman
+      ansible.builtin.shell:
+        cmd: curl -s "https://get.sdkman.io" | bash
+        creates: ~/.sdkman
+
+    - name: Install poetry
+      ansible.builtin.shell:
+        cmd: pipx install poetry
+        creates: ~/.local/bin/poetry
 
     - name: Install rtk (token-optimizing CLI proxy)
       ansible.builtin.shell:
