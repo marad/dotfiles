@@ -19,6 +19,7 @@
           - tree
           - gh
           - ripgrep
+          - jq
           - eza
           - bat
           - zoxide

@@ -1,21 +1,73 @@
 #!/bin/bash
-# Download a random image from Unsplash and set it as wallpaper using feh.
-# Uses picsum.photos which serves Unsplash images.
+# Download a random image and set it as wallpaper using feh.
+# Tries several sources in order; the first that yields a real image wins.
+# Never overwrites a working wallpaper with a broken/error response.
 
 set -euo pipefail
 
 WALLPAPER_DIR="$HOME/.cache/wallpaper"
 WALLPAPER_PATH="$WALLPAPER_DIR/current.jpg"
+TMP_PATH="$WALLPAPER_DIR/.download.tmp"
 
 mkdir -p "$WALLPAPER_DIR"
 
-# Wait for network to be available (up to 30 seconds)
-for i in $(seq 1 30); do
-    curl -s --head --max-time 2 "https://picsum.photos" > /dev/null && break
+# Wait for network to be available (up to 30 seconds).
+for _ in $(seq 1 30); do
+    curl -s --head --max-time 2 "https://www.google.com/generate_204" > /dev/null && break
     sleep 1
 done
 
-# picsum.photos max is 3840 wide - use that for multi-monitor setups
-curl -sL "https://picsum.photos/3840/2160" -o "$WALLPAPER_PATH"
+# True only if $1 is an actual image file (not an HTML/JSON error page).
+is_image() {
+    [ -s "$1" ] && file --mime-type -b "$1" | grep -q '^image/'
+}
 
-feh --bg-fill "$WALLPAPER_PATH"
+# Download $1 into TMP_PATH. -f makes curl fail on HTTP errors (e.g. 522).
+fetch() {
+    curl -fsL --max-time 30 "$1" -o "$TMP_PATH"
+}
+
+# --- Sources, in priority order. Each prints a URL or fails. ---
+
+# Wallhaven: curated wallpapers, random, at least 4K-ish.
+src_wallhaven() {
+    curl -fsL --max-time 15 \
+        "https://wallhaven.cc/api/v1/search?sorting=random&atleast=3840x2160" \
+        | jq -er '.data[0].path'
+}
+
+# Bing daily image in UHD.
+src_bing() {
+    local base
+    base=$(curl -fsL --max-time 15 \
+        "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US" \
+        | jq -er '.images[0].urlbase')
+    echo "https://www.bing.com${base}_UHD.jpg"
+}
+
+# LoremFlickr: random photo at a fixed resolution.
+src_loremflickr() {
+    echo "https://loremflickr.com/3840/2160"
+}
+
+# Picsum (Unsplash-backed); kept as a last resort.
+src_picsum() {
+    echo "https://picsum.photos/3840/2160"
+}
+
+for src in src_wallhaven src_bing src_loremflickr src_picsum; do
+    url=$("$src" 2>/dev/null) || { echo "random-wallpaper: $src unavailable" >&2; continue; }
+    if fetch "$url" && is_image "$TMP_PATH"; then
+        mv -f "$TMP_PATH" "$WALLPAPER_PATH"
+        feh --bg-fill "$WALLPAPER_PATH"
+        echo "random-wallpaper: set from $src ($url)"
+        exit 0
+    fi
+    echo "random-wallpaper: $src returned no usable image" >&2
+    rm -f "$TMP_PATH"
+done
+
+echo "random-wallpaper: all sources failed; keeping previous wallpaper" >&2
+# Re-apply the last good wallpaper if we have one, so a relogin still has a bg.
+[ -f "$WALLPAPER_PATH" ] && feh --bg-fill "$WALLPAPER_PATH"
+exit 1
