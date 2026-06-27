@@ -1,9 +1,13 @@
 - name: Arch Configuration
   hosts: localhost
   tasks:
-    - name: Install required packages
+    - name: Upgrade system packages
       pacman:
         upgrade: true
+      become: true
+
+    - name: Install required packages
+      pacman:
         name:
           # --- core CLI tooling ---
           - stow
