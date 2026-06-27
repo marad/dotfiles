@@ -3,6 +3,7 @@
   tasks:
     - name: Install required packages
       pacman:
+        upgrade: true
         name:
           # --- core CLI tooling ---
           - stow
