@@ -47,6 +47,16 @@ niezależnie od katalogu, w którym odpalona jest sesja — najpierw przeczytaj
 `~/notes/CLAUDE.md`, dobierz właściwą konwencję wg typu zapisywanej rzeczy,
 dopiero potem twórz/edytuj plik w tym repo.
 
+# Analiza repozytoriów — aktualność branchy
+
+- **Przed każdą analizą kodu** sprawdź, czy badane repozytorium jest na
+  najświeższej wersji `master`/`main` (np. `git fetch` + `git status`,
+  porównanie z `origin`). Zbyt wiele razy analiza poszła na przestarzałym
+  branchu i wnioski wychodziły błędne.
+- Jeśli repo jest za zdalnym (behind) albo siedzimy na bocznym branchu —
+  zasygnalizuj to użytkownikowi przed wyciąganiem wniosków, zamiast po cichu
+  analizować nieaktualny stan.
+
 # Kontekst prywatny
 
 Poniższy import dociąga lokalny, niewersjonowany plik z wrażliwymi szczegółami
