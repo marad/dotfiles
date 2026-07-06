@@ -52,13 +52,6 @@ if [ ! -f "$HOME/.gitconfig.local" ]; then
         cat > "$HOME/.gitconfig.local" <<EOF
 [user]
     email = $git_email
-
-[credential "https://github.com"]
-    helper =
-    helper = !gh auth git-credential
-[credential "https://gist.github.com"]
-    helper =
-    helper = !gh auth git-credential
 EOF
         echo "Created ~/.gitconfig.local with email: $git_email"
     fi
@@ -189,11 +182,12 @@ fi
 
 # --- Notes repository ---
 # The hourly auto-commit cron (see ansible/*.yaml) operates on ~/notes, so the
-# repo must exist. Cloned over SSH because the cron also pushes.
+# repo must exist. Cloned over HTTPS so the cron's push reuses the gh CLI
+# credential helper (see ~/.gitconfig.local) — no per-machine SSH key needed.
 NOTES_DIR="$HOME/notes"
 if [ ! -d "$NOTES_DIR" ]; then
     echo "Cloning notes..."
-    git clone git@github.com:marad/notes.git "$NOTES_DIR"
+    git clone https://github.com/marad/notes.git "$NOTES_DIR"
 fi
 
 # --- SoupaWhisper (voice dictation) ---
