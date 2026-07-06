@@ -35,6 +35,13 @@
         name: hamed-elfayome/claude-usage
         state: present
 
+    # Homebrew now refuses formulae/casks from untrusted third-party taps
+    # unless the tap is explicitly trusted (see https://docs.brew.sh/Tap-Trust).
+    - name: Trust hamed-elfayome/claude-usage tap
+      ansible.builtin.command: brew trust hamed-elfayome/claude-usage
+      register: brew_trust
+      changed_when: "'Already trusted' not in brew_trust.stdout"
+
     - name: Install Homebrew cask packages
       community.general.homebrew_cask:
         name:
