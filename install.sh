@@ -159,7 +159,21 @@ echo "All packages stowed."
 read -p "Run Ansible playbook for $OS? [y/N] " -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     case "$OS" in
-        macos)  ansible-playbook -i localhost, --connection=local "$DOTFILES_DIR/ansible/macos.yaml" ;;
+        macos)
+            # Casks like karabiner-elements install a .pkg via sudo. Ansible runs
+            # without a terminal, so brew's sudo can't prompt for a password. Feed
+            # it an askpass helper — Homebrew adds `sudo -A` automatically when
+            # SUDO_ASKPASS is set (Library/Homebrew/system_command.rb).
+            read -rsp "Enter your macOS login password (for Homebrew casks that need sudo): " sudo_password; echo
+            PW_FILE="$(mktemp)"; ASKPASS_HELPER="$(mktemp)"
+            chmod 600 "$PW_FILE" "$ASKPASS_HELPER"
+            printf '%s\n' "$sudo_password" > "$PW_FILE"
+            printf '#!/bin/bash\ncat %q\n' "$PW_FILE" > "$ASKPASS_HELPER"
+            chmod 700 "$ASKPASS_HELPER"
+            trap 'rm -f "$PW_FILE" "$ASKPASS_HELPER"' EXIT
+            unset sudo_password
+            SUDO_ASKPASS="$ASKPASS_HELPER" ansible-playbook -i localhost, --connection=local "$DOTFILES_DIR/ansible/macos.yaml"
+            ;;
         ubuntu) ansible-playbook -i localhost, --connection=local -K "$DOTFILES_DIR/ansible/ubuntu.yaml" ;;
         arch)   ansible-playbook -i localhost, --connection=local -K "$DOTFILES_DIR/ansible/arch.yaml" ;;
         *)      echo "No playbook available for $OS" ;;
