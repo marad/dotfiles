@@ -21,6 +21,7 @@
           - ripgrep
           - bat
           - fd
+          - jq
           - starship
           - unzip
           - zip
