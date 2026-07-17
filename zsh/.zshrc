@@ -48,6 +48,7 @@ alias cat="bat"
 alias ssha='eval $(ssh-agent) && ssh-add'
 alias cc='claude --effort high'
 alias ccy='claude --effort high --dangerously-skip-permissions'
+alias devtime='herdr --remote marad-devbox'
 
 # Linux clipboard aliases
 if [[ "$OS" == "linux" ]]; then
@@ -91,3 +92,6 @@ fi
 
 # Added by LM Studio CLI tool (lms)
 export PATH="$PATH:/home/marad/.lmstudio/bin"
+
+# Pi
+export PATH="/home/marad/.local/share/pi-node/node-v22.23.1-linux-x64/bin:$PATH"
