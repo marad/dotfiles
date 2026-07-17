@@ -273,6 +273,21 @@ if [ "$OS" != "macos" ]; then
         /usr/lib/systemd/system-sleep/i3-resume-reflow
 fi
 
+# --- i3 machine-specific config (Linux only) ---
+# The main i3 config ends with `include ~/.config/i3/local.conf`; that file holds
+# per-machine bits (monitor xrandr setup, workspace-to-output pins) and is not
+# tracked. Seed it from the template so a fresh machine still runs its monitor
+# setup at i3 startup. Copied, not stowed: each machine keeps its own edits.
+if [ "$OS" != "macos" ]; then
+    I3_LOCAL_CONF="$HOME/.config/i3/local.conf"
+    if [ ! -f "$I3_LOCAL_CONF" ]; then
+        cp "$DOTFILES_DIR/i3/.config/i3/local.conf.example" "$I3_LOCAL_CONF"
+        echo "Created $I3_LOCAL_CONF from template — edit it with this machine's monitor setup."
+    else
+        echo "$I3_LOCAL_CONF already exists, skipping."
+    fi
+fi
+
 # --- Make bin scripts executable ---
 chmod +x "$HOME/bin/"* 2>/dev/null || true
 

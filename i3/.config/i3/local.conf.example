@@ -1,0 +1,21 @@
+# Machine-specific i3 config (not tracked in dotfiles).
+#
+# The main config does `include ~/.config/i3/local.conf` at the end, so anything
+# here is layered on top per machine. install.sh seeds this file from
+# local.conf.example only if it does not already exist, so your edits are safe.
+#
+# Typical use: monitor layout and per-output workspace assignments. These are
+# inherently machine-specific (different displays, different names), so the
+# examples below are commented out — uncomment and adapt to the machine.
+
+# --- Monitor setup ---
+# Point this at a machine-local ~/.local/bin/setup-monitors.sh that runs the
+# right xrandr command for this machine's displays. Runs once at i3 startup.
+# exec --no-startup-id setup-monitors.sh
+
+# --- Workspace output assignments ---
+# Pin specific workspaces to a specific output (find names with `xrandr`).
+# workspace 7 output DP-4
+# workspace 8 output DP-4
+# workspace 9 output DP-4
+# workspace 10 output DP-4
