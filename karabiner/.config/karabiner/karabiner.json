@@ -73,6 +73,10 @@
                     "to": [{ "key_code": "f13" }]
                 },
                 {
+                    "from": { "key_code": "pause" },
+                    "to": [{ "key_code": "f13" }]
+                },
+                {
                     "from": { "key_code": "caps_lock" },
                     "to": [{ "key_code": "left_control" }]
                 },
