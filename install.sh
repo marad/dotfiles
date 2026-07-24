@@ -148,6 +148,11 @@ fi
 
 echo "All packages stowed."
 
+# --- Poprawka Pi: ignorowanie klawiszy funkcyjnych protokołu Kitty ---
+if command -v pi &>/dev/null; then
+    bash "$DOTFILES_DIR/scripts/patch_pi_function_keys.sh"
+fi
+
 # --- Ansible (optional) ---
 read -p "Run Ansible playbook for $OS? [y/N] " -r
 if [[ $REPLY =~ ^[Yy]$ ]]; then
