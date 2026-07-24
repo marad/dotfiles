@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+# i3blocks: wykorzystanie limitów subskrypcji OpenAI/Codex.
+# Dane pochodzą z tego samego endpointu, którego używa Codex CLI, i są
+# przechowywane w cache, żeby nie odpytywać OpenAI przy każdym odświeżeniu paska.
+# Najpierw używane jest OAuth z Pi, a ~/.codex/auth.json służy jako fallback.
+
+set -uo pipefail
+
+PI_AUTH="${OPENAI_USAGE_PI_AUTH:-${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/auth.json}"
+CODEX_AUTH="${OPENAI_USAGE_AUTH:-$HOME/.codex/auth.json}"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/i3-openai-status"
+CACHE="$CACHE_DIR/usage.json"
+TTL="${OPENAI_USAGE_TTL:-120}"
+LABEL="${OPENAI_USAGE_LABEL:-OA}"
+BAR_WIDTH="${OPENAI_USAGE_BAR_WIDTH:-8}"
+WARN="${OPENAI_USAGE_WARN:-70}"
+CRIT="${OPENAI_USAGE_CRIT:-90}"
+
+FILL_OK="${OPENAI_USAGE_FILL_OK:-#98C379}"
+FILL_WARN="${OPENAI_USAGE_FILL_WARN:-#E5C07B}"
+FILL_CRIT="${OPENAI_USAGE_FILL_CRIT:-#E06C75}"
+TRACK="${OPENAI_USAGE_TRACK:-#3A3F4B}"
+MARKER="${OPENAI_USAGE_MARKER:-#61AFEF}"
+TEXT="${OPENAI_USAGE_TEXT:-#ABB2BF}"
+STALE="${OPENAI_USAGE_STALE:-#606060}"
+
+mkdir -p "$CACHE_DIR"
+chmod 700 "$CACHE_DIR"
+now=$(date +%s)
+fetched=$(stat -c %Y "$CACHE" 2>/dev/null || echo 0)
+stale=0
+
+fetch_with_credentials() {
+  local token="$1" account="$2" tmp
+  [[ -n "$token" && -n "$account" ]] || return 1
+  tmp=$(mktemp "$CACHE.tmp.XXXXXX") || return 1
+
+  if curl -fsS --max-time 8 https://chatgpt.com/backend-api/wham/usage \
+      -H "Authorization: Bearer $token" \
+      -H "ChatGPT-Account-Id: $account" \
+      -H 'Accept: application/json' 2>/dev/null \
+    | jq -e '{rate_limit: {limit_reached: (.rate_limit.limit_reached // false), primary_window: (.rate_limit.primary_window // null), secondary_window: (.rate_limit.secondary_window // null)}} | select(.rate_limit.primary_window.used_percent != null or .rate_limit.secondary_window.used_percent != null)' >"$tmp"; then
+    chmod 600 "$tmp"
+    mv "$tmp" "$CACHE"
+    return 0
+  fi
+
+  rm -f "$tmp"
+  return 1
+}
+
+fetch_usage() {
+  local token account
+  token=$(jq -r '.["openai-codex"].access // empty' "$PI_AUTH" 2>/dev/null) || token=""
+  account=$(jq -r '.["openai-codex"].accountId // empty' "$PI_AUTH" 2>/dev/null) || account=""
+  fetch_with_credentials "$token" "$account" && return 0
+
+  token=$(jq -r '.tokens.access_token // empty' "$CODEX_AUTH" 2>/dev/null) || token=""
+  account=$(jq -r '.tokens.account_id // empty' "$CODEX_AUTH" 2>/dev/null) || account=""
+  fetch_with_credentials "$token" "$account"
+}
+
+if (( now - fetched >= TTL )); then
+  fetch_usage || { [[ -f "$CACHE" ]] && stale=1; }
+fi
+
+if [[ ! -f "$CACHE" ]]; then
+  echo "$LABEL n/d"
+  echo "$LABEL"
+  echo "$STALE"
+  exit 0
+fi
+
+limit_reached=$(jq -r '.rate_limit.limit_reached // false' "$CACHE")
+
+fill_color() {
+  local used="$1"
+  if [[ "$limit_reached" == true ]] || awk -v u="$used" -v c="$CRIT" 'BEGIN { exit !(u >= c) }'; then
+    printf '%s' "$FILL_CRIT"
+  elif awk -v u="$used" -v w="$WARN" 'BEGIN { exit !(u >= w) }'; then
+    printf '%s' "$FILL_WARN"
+  else
+    printf '%s' "$FILL_OK"
+  fi
+}
+
+window_label() {
+  local seconds="$1"
+  if (( seconds % 604800 == 0 )); then
+    printf '%dd' "$((seconds / 604800 * 7))"
+  elif (( seconds % 3600 == 0 )); then
+    printf '%dh' "$((seconds / 3600))"
+  elif (( seconds % 60 == 0 )); then
+    printf '%dm' "$((seconds / 60))"
+  else
+    printf '%ss' "$seconds"
+  fi
+}
+
+elapsed_frac() {
+  awk -v reset="$1" -v len="$2" -v now="$now" 'BEGIN {
+    if (reset <= 0 || len <= 0) { print -1; exit }
+    remaining = reset - now
+    if (remaining < 0) remaining = 0
+    if (remaining > len) remaining = len
+    print (len - remaining) / len
+  }'
+}
+
+make_bar() {
+  local used="$1" elapsed="$2" fill="$3"
+  awk -v u="$used" -v e="$elapsed" -v w="$BAR_WIDTH" \
+      -v fc="$fill" -v ec="$TRACK" -v mc="$MARKER" 'BEGIN {
+    filled = int(u / 100 * w + 0.5)
+    if (filled > w) filled = w
+    if (filled < 0) filled = 0
+    marker = int(e * w)
+    if (marker >= w) marker = w - 1
+    for (i = 0; i < w; i++) {
+      background = i < filled ? fc : ec
+      if (e >= 0 && i == marker)
+        printf "<span background=\"%s\" foreground=\"%s\">▏</span>", background, mc
+      else
+        printf "<span background=\"%s\"> </span>", background
+    }
+  }'
+}
+
+full="$LABEL"; short="$LABEL"; windows=0
+for window in primary_window secondary_window; do
+  used=$(jq -r ".rate_limit.$window.used_percent // empty" "$CACHE")
+  [[ -n "$used" ]] || continue
+  length=$(jq -r ".rate_limit.$window.limit_window_seconds // 0" "$CACHE")
+  reset=$(jq -r ".rate_limit.$window.reset_at // 0" "$CACHE")
+  percent=$(awk -v u="$used" 'BEGIN { printf "%d", u + 0.5 }')
+  color=$(fill_color "$used")
+  name=$(window_label "$length")
+  bar=$(make_bar "$used" "$(elapsed_frac "$reset" "$length")" "$color")
+  full+=$(printf ' %s %s <span foreground="%s">%d%%</span>' "$name" "$bar" "$color" "$percent")
+  short+=$(printf '%s%d%%' "$([[ $windows -eq 0 ]] && echo ' ' || echo '/')" "$percent")
+  ((windows += 1))
+done
+
+if (( windows == 0 )); then
+  echo "$LABEL n/d"
+  echo "$LABEL"
+  echo "$STALE"
+  exit 0
+fi
+
+(( stale )) && full="${LABEL}·${full#"$LABEL"}"
+echo "$full"
+echo "$short"
+(( stale )) && echo "$STALE" || echo "$TEXT"
