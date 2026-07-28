@@ -66,4 +66,4 @@ podczas `install.sh` i nie trafia do repozytorium.
 
 @~/.claude/CLAUDE.local.md
 
-@RTK.md
+@~/.claude/RTK.md
