@@ -19,6 +19,7 @@ fi
 
 # --- PATH ---
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$PATH"
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 if [[ "$OS" == "linux" ]]; then
     export PATH="/opt/nvim-linux-x86_64/bin:$PATH"
 fi
