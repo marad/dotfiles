@@ -5,5 +5,10 @@ window-decoration = server
 
 keybind = ctrl+j=text:\x0a
 
+# Default is discrete:3, which triples every mouse-wheel notch. Karabiner's
+# drag-to-scroll emits discrete notches too, so it inherits the same x3 and
+# scrolls far more here than in other apps.
+mouse-scroll-multiplier = precision:1,discrete:1
+
 # Machine-specific overrides (optional — missing file is not an error)
 config-file = ?local.conf

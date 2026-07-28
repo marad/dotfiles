@@ -1,0 +1,71 @@
+{
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.3",
+  "schemes" : [
+    {
+      "buttons" : {
+        "autoScroll" : {
+          "enabled" : true,
+          "mode" : "toggle",
+          "speed" : 1,
+          "trigger" : {
+            "button" : 2
+          }
+        },
+        "mappings" : [
+          {
+            "action" : "missionControl",
+            "button" : 3,
+            "command" : false,
+            "control" : false,
+            "option" : false,
+            "shift" : false
+          }
+        ]
+      },
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0x27da",
+          "productName" : "Karabiner DriverKit VirtualHIDPointing 1.8.0",
+          "serialNumber" : "pqrs.org:Karabiner-DriverKit-VirtualHIDPointing",
+          "vendorID" : "0x16c0"
+        }
+      },
+      "pointer" : {
+        "acceleration" : 1,
+        "redirectsToScroll" : false,
+        "speed" : 0.061
+      },
+      "scrolling" : {
+        "acceleration" : {
+          "horizontal" : 1,
+          "vertical" : 0.4
+        },
+        "distance" : {
+          "horizontal" : "36px",
+          "vertical" : "auto"
+        },
+        "modifiers" : {
+          "vertical" : {
+            "command" : {
+              "type" : "zoom"
+            },
+            "shift" : {
+              "type" : "pinchZoom"
+            }
+          }
+        },
+        "reverse" : {
+          "vertical" : true
+        },
+        "smoothed" : {
+          "enabled" : false
+        },
+        "speed" : {
+          "horizontal" : 0,
+          "vertical" : 10
+        }
+      }
+    }
+  ]
+}

@@ -62,9 +62,51 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "description": "Hold mouse forward button and move the mouse to scroll (swipe-to-scroll). Short click still sends forward.",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "pointing_button": "button5",
+                                    "modifiers": { "optional": ["any"] }
+                                },
+                                "to": [{ "set_variable": { "name": "swipe_scroll", "value": 1 } }],
+                                "to_after_key_up": [{ "set_variable": { "name": "swipe_scroll", "value": 0 } }],
+                                "to_if_alone": [{ "pointing_button": "button5" }],
+                                "parameters": { "basic.to_if_alone_timeout_milliseconds": 250 }
+                            },
+                            {
+                                "type": "mouse_motion_to_scroll",
+                                "from": { "modifiers": { "optional": ["any"] } },
+                                "options": {
+                                    "momentum_scroll_enabled": true,
+                                    "speed_multiplier": 0.6,
+                                    "recent_time_duration_milliseconds": 40,
+                                    "direction_lock_threshold": 20
+                                },
+                                "conditions": [
+                                    { "type": "variable_if", "name": "swipe_scroll", "value": 1 }
+                                ]
+                            }
+                        ]
                     }
                 ]
             },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 45091,
+                        "vendor_id": 1133
+                    },
+                    "ignore": false,
+                    "mouse_flip_vertical_wheel": true,
+                    "mouse_flip_horizontal_wheel": true
+                }
+            ],
             "name": "Default profile",
             "selected": true,
             "simple_modifications": [

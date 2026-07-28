@@ -47,6 +47,7 @@
         name:
           - font-jetbrains-mono-nerd-font
           - karabiner-elements
+          - linearmouse
           - podman-desktop
           - gcloud-cli
           - meetingbar
@@ -174,6 +175,17 @@
         key: com.apple.swipescrolldirection
         type: bool
         value: false
+
+    # -1 turns off the scroll acceleration curve, so a scroll wheel notch (and
+    # Karabiner's mouse_motion_to_scroll, which posts wheel events through the
+    # virtual HID device) always scrolls the same amount instead of ramping up
+    # with speed. Needs a logout to take effect; running apps keep the old curve.
+    - name: Scrolling - disable scroll wheel acceleration
+      community.general.osx_defaults:
+        domain: NSGlobalDomain
+        key: com.apple.scrollwheel.scaling
+        type: float
+        value: -1
 
     - name: Text — disable automatic spelling correction
       community.general.osx_defaults:

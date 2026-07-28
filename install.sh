@@ -94,6 +94,7 @@ backup_if_exists "$HOME/.claude/CLAUDE.md"
 
 if [ "$OS" == "macos" ]; then
     backup_if_exists "$HOME/.config/karabiner"
+    backup_if_exists "$HOME/.config/linearmouse"
 else
     backup_if_exists "$HOME/.config/i3"
     backup_if_exists "$HOME/.config/hypr"
@@ -130,6 +131,12 @@ if [ "$OS" == "macos" ]; then
     stow --restow --target="$HOME" ghostty
     echo "  Stowing karabiner..."
     stow --restow --target="$HOME" karabiner
+    # No mkdir for these two: stow symlinks the whole directory. Karabiner and
+    # LinearMouse both save their config by writing a temp file and renaming it
+    # over the old one, which would replace a per-file symlink with a real file.
+    # Linking the directory keeps their writes inside the repo.
+    echo "  Stowing linearmouse..."
+    stow --restow --target="$HOME" linearmouse
 else
     mkdir -p "$HOME/.config/alacritty"
     echo "  Stowing alacritty..."
