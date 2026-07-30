@@ -3,6 +3,11 @@ theme = Catppuccin Latte
 gtk-titlebar = false
 window-decoration = server
 
+# Default is transparent, which makes WindowServer composite the titlebar
+# region every frame. Streaming agent output redraws continuously, so that
+# per-frame cost shows up as UI jank.
+macos-titlebar-style = native
+
 keybind = ctrl+j=text:\x0a
 
 # Default is discrete:3, which triples every mouse-wheel notch. Karabiner's
