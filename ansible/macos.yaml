@@ -64,8 +64,11 @@
       ansible.builtin.cron:
         name: Auto-commit notes repository
         minute: "0"
+        # PATH must include Homebrew: the git credential helper for github.com
+        # is `!gh auth git-credential`, and cron's default PATH has no `gh`,
+        # so pull/push fail with "could not read Username".
         job: >-
-          { cd $HOME/notes && git add -A
+          { export PATH=/opt/homebrew/bin:$PATH; cd $HOME/notes && git add -A
           && (git diff-index --quiet HEAD || git commit -m "Auto-commit: $(date '+\%Y-\%m-\%d \%H:\%M')")
           && git pull --rebase --autostash && git push; }
           >> $HOME/notes-auto-commit.log 2>&1
