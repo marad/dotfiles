@@ -1,0 +1,23 @@
+#!/bin/sh
+# Commit and sync the ~/notes repo. Driven hourly by the
+# com.marad.notes-autocommit LaunchAgent.
+#
+# Why a LaunchAgent and not cron: the git credential helper for github.com is
+# `!gh auth git-credential`, and gh keeps its token in the login keychain.
+# A cron job runs outside the user's GUI session and cannot read that keychain,
+# so gh reports "token is invalid" and push dies with "could not read
+# Username". launchd runs this in the user session, where the keychain works.
+set -e
+
+cd "$HOME/notes"
+
+echo "=== notes-autocommit $(date '+%Y-%m-%d %H:%M:%S')"
+
+git add -A
+git diff-index --quiet HEAD || git commit -m "Auto-commit: $(date '+%Y-%m-%d %H:%M')"
+
+# Merge instead of rebase: several machines auto-commit into this repo. Rebasing
+# a long local run onto the remote replays every single commit through the same
+# conflicts, while a merge resolves them once.
+git pull --no-rebase --autostash
+git push

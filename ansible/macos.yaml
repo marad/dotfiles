@@ -60,18 +60,57 @@
         cmd: go install github.com/marad/vinote/cmd/vn@latest
         creates: ~/go/bin/vn
 
-    - name: Auto-commit notes repository hourly
+    # The notes repo syncs through a LaunchAgent rather than cron. gh is the git
+    # credential helper for github.com and keeps its token in the login
+    # keychain, which a cron job cannot read: gh then reports the token as
+    # invalid and every push dies with "could not read Username". launchd runs
+    # the job inside the user session, where the keychain is available.
+    - name: Remove the old notes auto-commit cron job
       ansible.builtin.cron:
         name: Auto-commit notes repository
-        minute: "0"
-        # PATH must include Homebrew: the git credential helper for github.com
-        # is `!gh auth git-credential`, and cron's default PATH has no `gh`,
-        # so pull/push fail with "could not read Username".
-        job: >-
-          { export PATH=/opt/homebrew/bin:$PATH; cd $HOME/notes && git add -A
-          && (git diff-index --quiet HEAD || git commit -m "Auto-commit: $(date '+\%Y-\%m-\%d \%H:\%M')")
-          && git pull --rebase --autostash && git push; }
-          >> $HOME/notes-auto-commit.log 2>&1
+        state: absent
+
+    - name: Install notes auto-commit LaunchAgent
+      ansible.builtin.copy:
+        dest: "{{ ansible_env.HOME }}/Library/LaunchAgents/com.marad.notes-autocommit.plist"
+        mode: "0644"
+        content: |
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>Label</key>
+              <string>com.marad.notes-autocommit</string>
+              <key>ProgramArguments</key>
+              <array>
+                  <string>{{ ansible_env.HOME }}/bin/notes-autocommit</string>
+              </array>
+              <key>StartInterval</key>
+              <integer>3600</integer>
+              <key>RunAtLoad</key>
+              <true/>
+              <key>EnvironmentVariables</key>
+              <dict>
+                  <!-- git and gh live in /opt/homebrew/bin; launchd's default PATH won't find them -->
+                  <key>PATH</key>
+                  <string>/opt/homebrew/bin:/usr/bin:/bin</string>
+              </dict>
+              <key>StandardOutPath</key>
+              <string>{{ ansible_env.HOME }}/notes-auto-commit.log</string>
+              <key>StandardErrorPath</key>
+              <string>{{ ansible_env.HOME }}/notes-auto-commit.log</string>
+          </dict>
+          </plist>
+      register: notes_autocommit_plist
+
+    - name: Reload notes auto-commit LaunchAgent
+      ansible.builtin.shell:
+        cmd: >-
+          launchctl unload {{ plist | quote }} 2>/dev/null;
+          launchctl load {{ plist | quote }}
+      vars:
+        plist: "{{ ansible_env.HOME }}/Library/LaunchAgents/com.marad.notes-autocommit.plist"
+      when: notes_autocommit_plist.changed
 
     # --- macOS system preferences (defaults) ---
     # Reproducible system settings. Each entry is idempotent; the handlers

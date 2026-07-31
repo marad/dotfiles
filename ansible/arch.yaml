@@ -119,8 +119,6 @@
       ansible.builtin.cron:
         name: Auto-commit notes repository
         minute: "0"
-        job: >-
-          { cd $HOME/notes && git add -A
-          && (git diff-index --quiet HEAD || git commit -m "Auto-commit: $(date '+\%Y-\%m-\%d \%H:\%M')")
-          && git pull --rebase --autostash && git push; }
-          >> $HOME/notes-auto-commit.log 2>&1
+        # Logic lives in bin/bin/notes-autocommit, shared with the macOS
+        # LaunchAgent that replaced cron there.
+        job: $HOME/bin/notes-autocommit >> $HOME/notes-auto-commit.log 2>&1
