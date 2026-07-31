@@ -13,7 +13,7 @@
         },
         "mappings" : [
           {
-            "action" : "missionControl",
+            "action" : "auto",
             "button" : 3,
             "command" : false,
             "control" : false,
