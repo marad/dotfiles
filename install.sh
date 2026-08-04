@@ -109,9 +109,10 @@ mkdir -p "$HOME/.config/waybar"
 mkdir -p "$HOME/.config/picom"
 mkdir -p "$HOME/.config/rofi"
 mkdir -p "$HOME/.config/systemd/user"
-# Ensure ~/.claude exists so stow links the single CLAUDE.md file instead of
-# folding (symlinking) the whole directory into the repo.
-mkdir -p "$HOME/.claude"
+# Ensure ~/.claude and ~/.claude/hooks exist so stow links individual files
+# instead of folding (symlinking) the whole directory into the repo. Claude Code
+# writes its own state into both, so they must stay real directories.
+mkdir -p "$HOME/.claude/hooks"
 
 # --- Stow packages ---
 echo "Stowing packages..."
@@ -316,5 +317,9 @@ echo "  ~/.config/i3/local.conf  - i3 machine-specific config (monitor setup, et
 echo "  ~/.config/hypr/local.conf - Hyprland machine-specific config (monitors, etc.)"
 echo "  ~/.claude/CLAUDE.local.md - Private/company context for Claude (created from template)"
 echo "  ~/.config/soupawhisper/config.ini - Dictation config; add private vocabulary here (created from template)"
+echo ""
+echo "Claude Code statusline (context usage) is not wired automatically."
+echo "Add to ~/.claude/settings.json:"
+echo '  "statusLine": { "type": "command", "command": "bash ~/.claude/hooks/statusline.sh" }'
 echo ""
 echo "Restart your shell or run: source ~/.zshrc"
