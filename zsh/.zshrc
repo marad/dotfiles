@@ -49,7 +49,7 @@ alias cat="bat"
 alias ssha='eval $(ssh-agent) && ssh-add'
 alias cc='claude --effort high'
 alias ccy='claude --effort high --dangerously-skip-permissions'
-alias devtime='herdr --remote marad-devbox'
+alias devtime='herdr --remote  192.168.1.182'
 
 # Linux clipboard aliases
 if [[ "$OS" == "linux" ]]; then
@@ -96,3 +96,7 @@ export PATH="$PATH:/home/marad/.lmstudio/bin"
 
 # Pi
 export PATH="/home/marad/.local/share/pi-node/node-v22.23.1-linux-x64/bin:$PATH"
+
+# >>> Codex installer >>>
+export PATH="/home/marad/.local/bin:$PATH"
+# <<< Codex installer <<<

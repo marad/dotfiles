@@ -286,6 +286,22 @@ if [ "$OS" != "macos" ]; then
         /usr/lib/systemd/system-sleep/i3-resume-reflow
 fi
 
+# --- Caps Lock as Control (Linux only) ---
+# i3's `setxkbmap -option ctrl:nocaps` runs once at startup, which is racy: every
+# keyboard attached afterwards (wireless keyboards, USB hubs, headsets) makes X
+# rebuild the keymap from the device's udev properties, wiping the option. Those
+# properties come from /etc/default/keyboard (see 64-xorg-xkb.rules), so setting
+# it there is what actually survives hotplug. Wayland/Hyprland uses kb_options.
+if [ "$OS" != "macos" ] && [ -f /etc/default/keyboard ] &&
+    ! grep -q '^XKBOPTIONS=.*ctrl:nocaps' /etc/default/keyboard; then
+    echo "Setting Caps Lock as Control in /etc/default/keyboard (requires sudo)..."
+    if grep -q '^XKBOPTIONS=' /etc/default/keyboard; then
+        sudo sed -i 's/^XKBOPTIONS=.*/XKBOPTIONS="ctrl:nocaps"/' /etc/default/keyboard
+    else
+        echo 'XKBOPTIONS="ctrl:nocaps"' | sudo tee -a /etc/default/keyboard >/dev/null
+    fi
+fi
+
 # --- i3 machine-specific config (Linux only) ---
 # The main i3 config ends with `include ~/.config/i3/local.conf`; that file holds
 # per-machine bits (monitor xrandr setup, workspace-to-output pins) and is not
