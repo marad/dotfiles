@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Run a splot workflow in the current directory: `adw chisel` runs
+# ~/dev/splot/workflows/chisel.py. The venv comes from splot's uv project
+# (--project keeps cwd intact, so the workflow operates on the repo you're in).
+set -euo pipefail
+
+SPLOT="$HOME/dev/splot"
+
+list_workflows() {
+  ls "$SPLOT/workflows"/*.py | xargs -n1 basename | grep -v '^__' | sed 's/\.py$//;s/^/  /'
+}
+
+if [ $# -eq 0 ]; then
+  { echo "usage: adw <workflow> [args...]"; echo "available workflows:"; list_workflows; } >&2
+  exit 1
+fi
+
+name="$1"; shift
+script="$SPLOT/workflows/$name.py"
+if [ ! -f "$script" ]; then
+  { echo "adw: no workflow '$name', available:"; list_workflows; } >&2
+  exit 1
+fi
+
+exec uv run --project "$SPLOT" python "$script" "$@"
