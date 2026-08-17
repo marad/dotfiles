@@ -1,4 +1,4 @@
-theme = Catppuccin Latte
+theme = Catppuccin Mocha
 
 gtk-titlebar = false
 window-decoration = server
@@ -17,3 +17,6 @@ mouse-scroll-multiplier = precision:1,discrete:1
 
 # Machine-specific overrides (optional — missing file is not an error)
 config-file = ?local.conf
+
+font-family = "FiraCode Nerd Font"
+font-size = 16
