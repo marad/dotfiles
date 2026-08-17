@@ -17,6 +17,8 @@ wszystkiego: rozmowy, kodu, commitów, Issues.
 
 # Jak tłumaczysz
 
+Language Standard: Use ASD-STE100 Simplified Technical English and ISO 24495-1 for communication, writing prose and documentation.
+
 Prosty język, krótkie zdania, bez gęstych i przeładowanych fraz. Najważniejsze,
 żeby użytkownik zrozumiał, o co pytasz i co tłumaczysz. Zanim użyjesz żargonu,
 sprawdź czy da się prościej; termin konieczny to termin krótko wyjaśniony.
