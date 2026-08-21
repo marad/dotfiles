@@ -46,6 +46,8 @@
       community.general.homebrew_cask:
         name:
           - font-jetbrains-mono-nerd-font
+          - font-fira-code-nerd-font
+          - ghostty
           - karabiner-elements
           - linearmouse
           - podman-desktop

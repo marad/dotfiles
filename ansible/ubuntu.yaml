@@ -20,12 +20,14 @@
           - tree
           - gh
           - ripgrep
+          - fd-find
           - jq
           - eza
           - bat
           - zoxide
           - git-delta
           - feh
+          - picom
           - i3blocks
           - waybar
           - grim
@@ -46,8 +48,35 @@
           - wtype
           - python3-pip
           - pipx
+          # ansible.builtin.cron needs the crontab binary
+          - cron
         state: latest
+        update_cache: yes
       become: true
+
+    # Arch has the ttf-*-nerd packages and macOS the casks; Ubuntu does not
+    # package nerd fonts, so take the release zips.
+    - name: Install nerd fonts
+      ansible.builtin.shell:
+        cmd: >-
+          curl -fsSL -o /tmp/{{ item }}.zip
+          https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip &&
+          unzip -o /tmp/{{ item }}.zip -d ~/.local/share/fonts/{{ item }} &&
+          rm /tmp/{{ item }}.zip &&
+          fc-cache -f
+        creates: ~/.local/share/fonts/{{ item }}
+      loop:
+        - JetBrainsMono
+        - FiraCode
+
+    # Ghostty is not in the Ubuntu repos; this is the .deb build the upstream
+    # docs point to. On Arch it is a stock package.
+    - name: Install ghostty
+      become: true
+      ansible.builtin.shell:
+        cmd: curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh | bash
+        chdir: /tmp
+        creates: /usr/bin/ghostty
 
     - name: Install starship prompt
       ansible.builtin.shell:
@@ -97,11 +126,11 @@
     - name: Install latest nodejs with NVM
       ansible.builtin.shell:
         cmd: bash -c 'source ~/.nvm/nvm.sh && nvm install node'
-        creates: ~/.npm
+        creates: ~/.nvm/versions/node
 
     - name: Install tldr command
       ansible.builtin.shell:
-        cmd: bash -c 'source ~/.nvm/nvm.sh && npm install -g tldr'
+        cmd: bash -c 'source ~/.nvm/nvm.sh && nvm use node && npm install -g tldr'
 
     - name: Install sdkman
       ansible.builtin.shell:

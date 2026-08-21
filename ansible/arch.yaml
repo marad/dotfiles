@@ -29,6 +29,8 @@
           - git-delta
           - github-cli
           - zoxide
+          # --- cron (ansible.builtin.cron needs the crontab binary) ---
+          - cronie
           # --- build toolchain (native deps) ---
           - base-devel
           - cmake
@@ -37,11 +39,13 @@
           # --- fonts ---
           - fontconfig
           - ttf-jetbrains-mono-nerd
+          - ttf-firacode-nerd
           # --- python ---
           - python-pip
           - python-pipx
           # --- terminal / launcher ---
           - alacritty
+          - ghostty
           - rofi
           # --- i3 (X11) ---
           - i3blocks
@@ -84,11 +88,11 @@
     - name: Install latest nodejs with NVM
       ansible.builtin.shell:
         cmd: bash -c 'source ~/.nvm/nvm.sh && nvm install node'
-        creates: ~/.npm
+        creates: ~/.nvm/versions/node
 
     - name: Install tldr command
       ansible.builtin.shell:
-        cmd: bash -c 'source ~/.nvm/nvm.sh && npm install -g tldr'
+        cmd: bash -c 'source ~/.nvm/nvm.sh && nvm use node && npm install -g tldr'
 
     - name: Install sdkman
       ansible.builtin.shell:
@@ -114,6 +118,13 @@
       ansible.builtin.user:
         name: "{{ ansible_user_id }}"
         shell: /usr/bin/zsh
+
+    - name: Enable cronie service
+      become: true
+      ansible.builtin.systemd_service:
+        name: cronie
+        enabled: true
+        state: started
 
     - name: Auto-commit notes repository hourly
       ansible.builtin.cron:

@@ -142,6 +142,9 @@ else
     mkdir -p "$HOME/.config/alacritty"
     echo "  Stowing alacritty..."
     stow --restow --target="$HOME" alacritty
+    mkdir -p "$HOME/.config/ghostty"
+    echo "  Stowing ghostty..."
+    stow --restow --target="$HOME" ghostty
     echo "  Stowing i3..."
     stow --restow --target="$HOME" i3
     echo "  Stowing picom..."
