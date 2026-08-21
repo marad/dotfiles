@@ -1,9 +1,14 @@
 format = '''
-$directory$git_branch$battery$memory_usage$package$time$cmd_duration
+$hostname$directory$git_branch$battery$memory_usage$package$time$cmd_duration
 $character'''
 
 scan_timeout = 10
 add_newline = false
+
+[hostname]
+ssh_only = true
+format = '\[[$hostname]($style)\] '
+style = 'bold yellow'
 
 [directory]
 use_os_path_sep = false
