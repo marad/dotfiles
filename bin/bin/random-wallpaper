@@ -29,6 +29,22 @@ fetch() {
 
 # --- Sources, in priority order. Each prints a URL or fails. ---
 
+# Unsplash: needs a free access key in ~/.config/unsplash/access_key.
+# Override the search term with UNSPLASH_QUERY=... in the environment.
+UNSPLASH_QUERY="${UNSPLASH_QUERY:-landscape wallpaper}"
+src_unsplash() {
+    local key json
+    key=$(tr -d '[:space:]' < "$HOME/.config/unsplash/access_key" 2>/dev/null) || return 1
+    [ -n "$key" ] || return 1
+    json=$(curl -fsL --max-time 15 -H "Authorization: Client-ID $key" \
+        --get --data-urlencode "query=$UNSPLASH_QUERY" \
+        "https://api.unsplash.com/photos/random?orientation=landscape&content_filter=high") || return 1
+    # Unsplash API guidelines: ping the download endpoint when a photo is used.
+    curl -fsL --max-time 10 -o /dev/null -H "Authorization: Client-ID $key" \
+        "$(echo "$json" | jq -r '.links.download_location')" || true
+    echo "$json" | jq -er '.urls.raw + "&w=3840&fm=jpg&q=85"'
+}
+
 # Wallhaven: curated wallpapers, random, at least 4K-ish.
 src_wallhaven() {
     curl -fsL --max-time 15 \
@@ -55,7 +71,7 @@ src_picsum() {
     echo "https://picsum.photos/3840/2160"
 }
 
-for src in src_wallhaven src_bing src_loremflickr src_picsum; do
+for src in src_unsplash src_wallhaven src_bing src_loremflickr src_picsum; do
     url=$("$src" 2>/dev/null) || { echo "random-wallpaper: $src unavailable" >&2; continue; }
     if fetch "$url" && is_image "$TMP_PATH"; then
         mv -f "$TMP_PATH" "$WALLPAPER_PATH"
