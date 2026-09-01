@@ -34,6 +34,11 @@
           # --- build toolchain (native deps) ---
           - base-devel
           - cmake
+          # X11 headers for the Tk build in scripts/install_tcl.sh
+          - libx11
+          - libxext
+          - libxft
+          - libxss
           # --- go (needed to build vinote below) ---
           - go
           # --- fonts ---
@@ -74,6 +79,14 @@
         state: latest
         update_cache: yes
       become: true
+
+    # The Arch repos only have Tcl/Tk 8.6; the script builds the latest upstream
+    # release. Shared with ubuntu.yaml.
+    - name: Install Tcl/Tk
+      become: true
+      ansible.builtin.script:
+        cmd: ../scripts/install_tcl.sh
+        creates: /usr/local/bin/wish9.0
 
     - name: Install vinote
       ansible.builtin.shell:

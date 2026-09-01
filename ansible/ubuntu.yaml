@@ -15,6 +15,11 @@
           - fontconfig
           - libfontconfig-dev
           - build-essential
+          # X11 headers for the Tk build in scripts/install_tcl.sh
+          - libx11-dev
+          - libxext-dev
+          - libxft-dev
+          - libxss-dev
           - cmake
           - golang-go
           - tree
@@ -117,6 +122,13 @@
       ansible.builtin.script:
         cmd: ../scripts/install_nvim.sh
         creates: /opt/nvim-linux-x86_64
+
+    # apt only has Tcl/Tk 8.6; the script builds the latest upstream release.
+    - name: Install Tcl/Tk
+      become: true
+      ansible.builtin.script:
+        cmd: ../scripts/install_tcl.sh
+        creates: /usr/local/bin/wish9.0
 
     - name: Install node version manager
       ansible.builtin.shell:

@@ -28,6 +28,8 @@
           - podman-compose
           - zoxide
           - rtk
+          # Tcl 9 (plus Tk); Linux builds it from source, see scripts/install_tcl.sh
+          - tcl-tk
         state: present
 
     - name: Tap hamed-elfayome/claude-usage (Claude Usage Tracker)
