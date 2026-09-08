@@ -23,6 +23,11 @@ if command -v setup-monitors.sh >/dev/null 2>&1; then
     sleep 1
 fi
 
+# picom (nvidia) can keep the screen size it saw at startup and render the
+# whole desktop offset inside the framebuffer, leaving a black band where the
+# old geometry did not reach. SIGUSR1 makes it re-read the current geometry.
+pkill -USR1 -x picom 2>/dev/null || true
+
 # Re-read the config first. This re-applies the global gaps and clears any
 # stray per-workspace gap overrides (delta != 0) that a resume can leave
 # behind. It does NOT fix frozen window geometry — the move loop below does.
