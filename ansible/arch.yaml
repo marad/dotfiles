@@ -28,6 +28,7 @@
           - tree
           - git-delta
           - github-cli
+          - podman
           - zoxide
           # --- cron (ansible.builtin.cron needs the crontab binary) ---
           - cronie

@@ -118,12 +118,20 @@ mkdir -p "$HOME/.claude/hooks"
 echo "Stowing packages..."
 cd "$DOTFILES_DIR"
 
-PACKAGES="zsh git starship tmux nvim bin claude"
+PACKAGES="zsh git starship tmux nvim claude"
 
 for pkg in $PACKAGES; do
     echo "  Stowing $pkg..."
     stow --restow --target="$HOME" "$pkg"
 done
+
+# Keep ~/bin real so other repos can manage their own commands there.
+if [ -L "$HOME/bin" ] && [ "$(cd -P "$HOME/bin" && pwd)" = "$DOTFILES_DIR/bin/bin" ]; then
+    rm "$HOME/bin"
+    mkdir -p "$HOME/bin"
+fi
+echo "  Stowing bin..."
+stow --no-folding --restow --target="$HOME" bin
 
 # Platform-specific packages
 if [ "$OS" == "macos" ]; then
@@ -187,6 +195,59 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         arch)   ansible-playbook -i localhost, --connection=local -K "$DOTFILES_DIR/ansible/arch.yaml" ;;
         *)      echo "No playbook available for $OS" ;;
     esac
+fi
+
+# --- Workflows and adw ---
+WORKFLOWS_DIR="$HOME/dev/workflows"
+if ! git -C "$WORKFLOWS_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    if [ -e "$WORKFLOWS_DIR" ]; then
+        echo "$WORKFLOWS_DIR exists but is not a git repository." >&2
+        exit 1
+    fi
+    mkdir -p "$HOME/dev"
+    git clone https://github.com/marad/workflows.git "$WORKFLOWS_DIR"
+fi
+
+if [ -f "$HOME/.nvm/nvm.sh" ]; then
+    . "$HOME/.nvm/nvm.sh"
+    nvm use node >/dev/null 2>&1 || true
+fi
+if ! command -v node &>/dev/null; then
+    if [ "$OS" == "macos" ]; then
+        check_command node
+    else
+        if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+            . "$HOME/.nvm/nvm.sh"
+        fi
+        nvm install node
+    fi
+fi
+check_command podman
+
+if [ ! -f "$HOME/.codex/auth.json" ] && [ ! -f "$WORKFLOWS_DIR/.sandcastle/codex-auth.json" ]; then
+    echo "Run 'codex login' and then './install.sh' to finish workflows setup."
+else
+    if [ "$OS" == "macos" ]; then
+        podman_machines="$(podman machine list --format '{{.Name}} {{.Running}}')"
+        if [ -z "$podman_machines" ]; then
+            podman machine init --now
+        elif ! printf '%s\n' "$podman_machines" | awk '$2 == "true" { found = 1 } END { exit !found }'; then
+            podman_machine="$(printf '%s\n' "$podman_machines" | awk 'NR == 1 { print $1 }')"
+            podman machine start "$podman_machine"
+        fi
+    fi
+
+    if [ -x "$WORKFLOWS_DIR/node_modules/.bin/tsx" ] &&
+       [ -f "$WORKFLOWS_DIR/.sandcastle/.env" ] &&
+       [ -f "$WORKFLOWS_DIR/.sandcastle/codex-auth.json" ] &&
+       [ -L "$HOME/bin/adw" ] &&
+       [ "$(readlink "$HOME/bin/adw")" = "$WORKFLOWS_DIR/adw" ] &&
+       podman image exists sandcastle:workflows >/dev/null 2>&1; then
+        echo "Workflows already set up."
+    else
+        "$WORKFLOWS_DIR/setup"
+    fi
 fi
 
 # --- Poetry (Python package manager) ---

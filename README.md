@@ -17,6 +17,9 @@ The installer will:
 4. Back up any existing configs to `~/.dotfiles-backup/<timestamp>/`
 5. Symlink all config packages via Stow
 6. Optionally run the Ansible playbook for your OS
+7. Clone `workflows` to `~/dev/workflows` and set up its `adw` command
+
+On a new system, run `codex login` before `./install.sh` so the workflows setup can build its container image.
 
 ## Structure
 
@@ -47,5 +50,6 @@ Each top-level directory is a Stow package:
 
 ```bash
 cd ~/dev/dotfiles
-stow --restow --target=$HOME zsh git starship tmux nvim bin
+stow --restow --target=$HOME zsh git starship tmux nvim
+stow --no-folding --restow --target=$HOME bin
 ```

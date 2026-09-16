@@ -24,6 +24,7 @@
           - golang-go
           - tree
           - gh
+          - podman
           - ripgrep
           - fd-find
           - jq

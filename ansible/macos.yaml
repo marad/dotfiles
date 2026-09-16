@@ -24,6 +24,7 @@
           - go
           - git-delta
           - node
+          - podman
           - ical-buddy
           - podman-compose
           - zoxide
