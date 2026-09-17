@@ -1,0 +1,94 @@
+#!/bin/bash
+set -euo pipefail
+umask 077
+
+if [ "$#" -gt 1 ]; then
+    echo "Usage: sync-agent-instructions [target-home]" >&2
+    exit 2
+fi
+target_home="${1:-$HOME}"
+case "$target_home" in
+    /*) ;;
+    *) echo "target-home must be an absolute path" >&2; exit 2 ;;
+esac
+
+# Resolve both per-file Stow links and a symlinked ~/bin directory.
+script_path="${BASH_SOURCE[0]}"
+while [ -L "$script_path" ]; do
+    script_dir="$(cd "$(dirname "$script_path")" && pwd -P)"
+    script_path="$(readlink "$script_path")"
+    case "$script_path" in
+        /*) ;;
+        *) script_path="$script_dir/$script_path" ;;
+    esac
+done
+script_dir="$(cd "$(dirname "$script_path")" && pwd -P)"
+dotfiles_dir="$(cd "$script_dir/../.." && pwd -P)"
+source_dir="$dotfiles_dir/agent-instructions"
+apps=(claude codex pi)
+targets=("$target_home/.claude/CLAUDE.md" "$target_home/.codex/AGENTS.md" "$target_home/.pi/agent/AGENTS.md")
+
+for source in common claude codex pi; do
+    if [ ! -f "$source_dir/$source.md" ]; then
+        echo "Missing source: $source_dir/$source.md" >&2
+        exit 1
+    fi
+done
+for target in "${targets[@]}"; do
+    if [ -e "$target" ] && [ ! -f "$target" ]; then
+        echo "Not a regular file: $target" >&2
+        exit 1
+    fi
+done
+for override in "$target_home/.codex/AGENTS.override.md" "$target_home/.pi/agent/AGENTS.override.md"; do
+    if [ -e "$override" ]; then
+        echo "Global instructions are shadowed by $override; resolve it before syncing." >&2
+        exit 1
+    fi
+done
+
+staging_dir="$(mktemp -d "${TMPDIR:-/tmp}/agent-instructions.XXXXXX")"
+output_temp=""
+trap 'rm -f "$staging_dir/claude" "$staging_dir/codex" "$staging_dir/pi"; rmdir "$staging_dir"; if [ -n "$output_temp" ]; then rm -f "$output_temp"; fi' EXIT
+
+# Render everything before touching an installed file. Private text stays outside Git.
+for app in "${apps[@]}"; do
+    {
+        printf '<!-- Edytuj agent-instructions/{common,%s}.md w dotfiles; sync-agent-instructions -->\n\n' "$app"
+        cat "$source_dir/common.md"
+        if [ -s "$source_dir/$app.md" ]; then
+            printf '\n'
+            cat "$source_dir/$app.md"
+        fi
+        if [ -s "$target_home/.claude/CLAUDE.local.md" ]; then
+            printf '\n'
+            cat "$target_home/.claude/CLAUDE.local.md"
+        fi
+    } > "$staging_dir/$app"
+done
+
+backup_dir=""
+for index in "${!apps[@]}"; do
+    app="${apps[$index]}"
+    target="${targets[$index]}"
+    if cmp -s "$staging_dir/$app" "$target"; then
+        echo "Unchanged: $target"
+        continue
+    fi
+    if [ -f "$target" ]; then
+        if [ -z "$backup_dir" ]; then
+            mkdir -p "$target_home/.dotfiles-backup"
+            backup_dir="$(mktemp -d "$target_home/.dotfiles-backup/agent-instructions.XXXXXX")"
+        fi
+        cp -pL "$target" "$backup_dir/$app.md"
+    fi
+    mkdir -p "$(dirname "$target")"
+    output_temp="$(mktemp "$(dirname "$target")/.agent-instructions.XXXXXX")"
+    cp "$staging_dir/$app" "$output_temp"
+    mv -f "$output_temp" "$target"
+    output_temp=""
+    echo "Updated: $target"
+done
+if [ -n "$backup_dir" ]; then
+    echo "Previous files: $backup_dir"
+fi

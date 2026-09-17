@@ -59,9 +59,9 @@ else
     echo "~/.gitconfig.local already exists, skipping git email setup."
 fi
 
-# --- Claude private context ---
-# CLAUDE.md is public (stowed); the sensitive bits live in ~/.claude/CLAUDE.local.md,
-# which CLAUDE.md imports but which is never committed. Seed it from the template.
+# --- Shared private agent context ---
+# Keep the existing local path; sync-agent-instructions includes it in all three
+# generated global files outside the repository.
 if [ ! -f "$HOME/.claude/CLAUDE.local.md" ]; then
     mkdir -p "$HOME/.claude"
     cp "$DOTFILES_DIR/claude/CLAUDE.local.md.example" "$HOME/.claude/CLAUDE.local.md"
@@ -90,7 +90,6 @@ backup_if_exists "$HOME/.gitignore_global"
 backup_if_exists "$HOME/.tmux.conf"
 backup_if_exists "$HOME/.config/starship.toml"
 backup_if_exists "$HOME/.config/nvim"
-backup_if_exists "$HOME/.claude/CLAUDE.md"
 
 if [ "$OS" == "macos" ]; then
     backup_if_exists "$HOME/.config/karabiner"
@@ -166,6 +165,9 @@ else
 fi
 
 echo "All packages stowed."
+
+# --- Global agent instructions (generated locally, including private context) ---
+bash "$DOTFILES_DIR/bin/bin/sync-agent-instructions"
 
 # --- Poprawka Pi: ignorowanie klawiszy funkcyjnych protokołu Kitty ---
 if command -v pi &>/dev/null; then
@@ -395,7 +397,7 @@ echo "  ~/.zshrc.local      - Machine-specific shell config"
 echo "  ~/.gitconfig.local  - Git email and credentials (already created if prompted)"
 echo "  ~/.config/i3/local.conf  - i3 machine-specific config (monitor setup, etc.)"
 echo "  ~/.config/hypr/local.conf - Hyprland machine-specific config (monitors, etc.)"
-echo "  ~/.claude/CLAUDE.local.md - Private/company context for Claude (created from template)"
+echo "  ~/.claude/CLAUDE.local.md - Shared private/company context; run sync-agent-instructions after editing"
 echo "  ~/.config/soupawhisper/config.ini - Dictation config; add private vocabulary here (created from template)"
 echo ""
 echo "Claude Code statusline (context usage) is not wired automatically."
