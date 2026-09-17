@@ -1,1 +1,2 @@
-/Users/marcin.radoszewski/notes/scripts/spec-review.sh
+#!/bin/sh
+exec "$HOME/notes/scripts/spec-review.sh" "$@"
