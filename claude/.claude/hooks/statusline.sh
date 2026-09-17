@@ -1,6 +1,6 @@
 #!/bin/bash
 # Statusline: model, context usage, git branch, folder, session id.
-# e.g. "Opus 5 | 24.6k (5%) | transfer | notes | 2cf1c38a-b49d-..."
+# e.g. "Opus 5 (hi) | 24.6k (5%) | transfer | notes | 2cf1c38a-b49d-..."
 # Input: Claude Code statusline JSON on stdin.
 
 INPUT=$(cat)
@@ -8,7 +8,12 @@ INPUT=$(cat)
 # One jq call, one line per field; blank lines keep the field order intact.
 { read -r MODEL; read -r CTX; read -r DIR; read -r SESSION; } <<EOF
 $(printf '%s' "$INPUT" | jq -r '
-  (.model.display_name // .model.id // ""),
+  ( (.model.display_name // .model.id // "") as $m
+    | { low: "lo", medium: "md", high: "hi", xhigh: "xh", max: "mx", ultra: "ul" }
+      [.effort.level // ""] as $e
+    | if $m == "" then ""
+      elif $e == null then $m
+      else $m + " (" + $e + ")" end ),
   ( (.context_window // {}) as $c
     | (($c.total_input_tokens // 0) + ($c.total_output_tokens // 0)) as $t
     | ($c.used_percentage // 0) as $p

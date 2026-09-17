@@ -47,7 +47,8 @@ alias ll="eza --icons --git -lah"
 alias grep="rg"
 alias cat="bat"
 alias ssha='eval $(ssh-agent) && ssh-add'
-alias cc='claude --effort high'
+alias cc='claude --model opus --effort xhigh'
+alias ccf='claude --model claude-fable-5-1 --effort xhigh'
 alias ccy='claude --effort high --dangerously-skip-permissions'
 alias devtime='herdr --remote  192.168.1.182'
 
@@ -100,3 +101,4 @@ export PATH="/home/marad/.local/share/pi-node/node-v22.23.1-linux-x64/bin:$PATH"
 # >>> Codex installer >>>
 export PATH="/home/marad/.local/bin:$PATH"
 # <<< Codex installer <<<
+export PATH="${PATH}:$HOME/.adp/adp-cli"
