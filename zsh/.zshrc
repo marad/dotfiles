@@ -101,4 +101,3 @@ export PATH="/home/marad/.local/share/pi-node/node-v22.23.1-linux-x64/bin:$PATH"
 # >>> Codex installer >>>
 export PATH="/home/marad/.local/bin:$PATH"
 # <<< Codex installer <<<
-export PATH="${PATH}:$HOME/.adp/adp-cli"
