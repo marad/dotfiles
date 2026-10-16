@@ -49,6 +49,7 @@ alias cat="bat"
 alias ssha='eval $(ssh-agent) && ssh-add'
 alias cc='claude --model opus --effort xhigh'
 alias ccf='claude --model claude-fable-5-1 --effort xhigh'
+alias codex='codex -c model=gpt-6.1-sol -c model_reasoning_effort=xhigh'
 alias ccy='claude --effort high --dangerously-skip-permissions'
 alias devtime='herdr --remote  192.168.1.182'
 
