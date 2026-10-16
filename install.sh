@@ -225,6 +225,12 @@ if ! command -v node &>/dev/null; then
         nvm install node
     fi
 fi
+
+echo "Installing the official Herdr skill (v0.7.5)..."
+npx --yes skills@latest add \
+    https://raw.githubusercontent.com/herdrdev/herdr/v0.7.5/SKILL.md \
+    --global --agent claude-code codex pi --yes
+
 check_command podman
 
 if [ ! -f "$HOME/.codex/auth.json" ] && [ ! -f "$WORKFLOWS_DIR/.sandcastle/codex-auth.json" ]; then
