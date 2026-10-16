@@ -17,7 +17,7 @@ compute_type = int8
 # Comma-separated domain terms (project names, jargon) to bias spelling.
 # NOTE: this template is public — add private/company terms only in the
 # local copy (~/.config/soupawhisper/config.ini), which is not tracked.
-vocabulary = ChiLang, chicc, Claude, Claude Code, Grok, ChatGPT, OpenAI, Anthropic, Gemini, Copilot, DeepSeek, Llama, Mistral, MCP, LLM, GitHub, issue, issues, pull request
+vocabulary = ChiLang, chicc, Claude, Claude Code, Grok, ChatGPT, OpenAI, Anthropic, Gemini, Copilot, DeepSeek, Llama, Mistral, MCP, LLM, GitHub, issue, issues, pull request, herdr
 
 [hotkey]
 # Key to hold for recording. Karabiner (also in these dotfiles) maps the
@@ -47,3 +47,4 @@ hi-lang = ChiLang
 hej-lang = ChiLang
 hejlang = ChiLang
 chilang = ChiLang
+herder = herdr
