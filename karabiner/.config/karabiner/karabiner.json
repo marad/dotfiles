@@ -4,7 +4,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Built-in MacBook keyboard modifier remaps (right cmd/opt swap, fn, left modifiers)",
+                        "description": "Built-in MacBook and MX Keys Mini modifier remaps (cmd/opt swap; fn on built-in only)",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -14,7 +14,13 @@
                                 },
                                 "to": [{ "key_code": "right_option" }],
                                 "conditions": [
-                                    { "type": "device_if", "identifiers": [{ "is_built_in_keyboard": true }] }
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 1133, "product_id": 45929 }
+                                        ]
+                                    }
                                 ]
                             },
                             {
@@ -25,7 +31,13 @@
                                 },
                                 "to": [{ "key_code": "right_command" }],
                                 "conditions": [
-                                    { "type": "device_if", "identifiers": [{ "is_built_in_keyboard": true }] }
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 1133, "product_id": 45929 }
+                                        ]
+                                    }
                                 ]
                             },
                             {
@@ -47,7 +59,13 @@
                                 },
                                 "to": [{ "key_code": "left_option" }],
                                 "conditions": [
-                                    { "type": "device_if", "identifiers": [{ "is_built_in_keyboard": true }] }
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 1133, "product_id": 45929 }
+                                        ]
+                                    }
                                 ]
                             },
                             {
@@ -58,7 +76,13 @@
                                 },
                                 "to": [{ "key_code": "left_command" }],
                                 "conditions": [
-                                    { "type": "device_if", "identifiers": [{ "is_built_in_keyboard": true }] }
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            { "is_built_in_keyboard": true },
+                                            { "vendor_id": 1133, "product_id": 45929 }
+                                        ]
+                                    }
                                 ]
                             }
                         ]
