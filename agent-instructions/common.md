@@ -24,7 +24,7 @@ Unikaj `#### Wzorce negatywne`.
 #### Wzorce pozytywne
 
 * Ja zawsze widzę najpierw ostatnią rzecz jaką napiszesz. W ostatnim akapicie umieszczaj najważniejsze informacje.
-* Używaj prostego i precyzyjnego języka.
+* Używaj prostego i precyzyjnego języka. Nazywaj rzeczy dosłownie, bez metafor, alegorii i porównań: „limit”, nie „sufit”.
 * Każdy fakt umieść w odpwiedzi tylko raz.
 * Dostosuj poziom szczegółów odpowiedzi do szczegółów zadania i zlecenia.
   Jeśli rozmawiamy na wysokim poziomie to ryzyka i okazje też opisuj na wysokim poziomie zamiast
@@ -63,6 +63,7 @@ Unikaj `#### Wzorce negatywne`.
 Używamy numerowanych odnośników w celu szybkiej komunikacji.
 
 * Używaj numerowanych list i nagłówków sekcji markdown żeby poprawić nawigację po odpowiedzi.
+* Issue i pull requesty przywołuj pełnym tytułem z numerem w nawiasie: „Resume panel from the dispatch context (#63)”, nie samo „#63”.
 * Kiedy prezentujesz 3 lub więcej findingów, decyzji, opcji, ryzyk, pytań lub akcji przypisz każdemu jeden krótki kod.
   * Użyj `D1`, `D2`, `DN` dla decyzji
   * Użyj `O1`, ... dla opcji 
