@@ -44,6 +44,7 @@ check_command() {
 
 check_command stow
 check_command ansible
+check_command jq
 
 # --- Git email ---
 if [ ! -f "$HOME/.gitconfig.local" ]; then
@@ -168,6 +169,19 @@ echo "All packages stowed."
 
 # --- Global agent instructions (generated locally, including private context) ---
 bash "$DOTFILES_DIR/bin/bin/sync-agent-instructions"
+
+# --- Claude Code settings ---
+# Claude Code rewrites settings.json itself, so merge these keys instead of stowing the file.
+# The allow rule covers a bare `gh pr merge`; a chained command still goes to the
+# auto mode classifier, which needs its own allow entry.
+claude_settings="$HOME/.claude/settings.json"
+claude_merge_rule='PR Merge: Merging a GitHub pull request with `gh pr merge`, alone or chained with other commands, is pre-authorized by the user, who does not require a human approval before the merge. This clears Merge Without Review and Unrequested Commit in a Connected App for the merge itself; other commands in the chain, the `--admin` review/check bypass and the content rules are judged as usual.'
+[ -f "$claude_settings" ] || echo '{}' > "$claude_settings"
+# Replace by prefix, so an edited rule does not leave its old version behind.
+jq --arg perm 'Bash(gh pr merge *)' --arg rule "$claude_merge_rule" '
+    .permissions.allow = ((.permissions.allow // []) | if any(.[]; . == $perm) then . else . + [$perm] end)
+    | .autoMode.allow = ((.autoMode.allow // ["$defaults"]) | map(select(startswith("PR Merge:") | not)) + [$rule])
+' "$claude_settings" > "$claude_settings.tmp" && mv "$claude_settings.tmp" "$claude_settings"
 
 # --- Poprawka Pi: ignorowanie klawiszy funkcyjnych protokołu Kitty ---
 if command -v pi &>/dev/null; then
