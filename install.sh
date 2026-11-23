@@ -289,6 +289,22 @@ if [ ! -d "$NOTES_DIR" ]; then
     git clone https://github.com/marad/notes.git "$NOTES_DIR"
 fi
 
+# --- pixoo-calendar-sender (calendar snapshots for the Pixoo display) ---
+# The key file ~/.config/pixoo-calendar-sender/key.json is per-machine and comes
+# from Bitwarden; it never goes into this repo.
+if ! command -v pixoo-calendar-sender &>/dev/null; then
+    echo "Installing pixoo-calendar-sender..."
+    case "$(uname -s):$(uname -m)" in
+        Darwin:arm64) pixoo_target=aarch64-apple-darwin ;;
+        Darwin:x86_64) pixoo_target=x86_64-apple-darwin ;;
+        *) pixoo_target=x86_64-unknown-linux-gnu ;;
+    esac
+    mkdir -p "$HOME/.local/bin"
+    gh release download --repo marad/pixoo-calendar-sender \
+        --pattern "pixoo-calendar-sender-$pixoo_target.tar.gz" --output - |
+        tar -xz -C "$HOME/.local/bin" pixoo-calendar-sender
+fi
+
 # --- SoupaWhisper (voice dictation) ---
 # Cloned from our fork, which adds macOS support (sox/pbcopy/osascript
 # instead of arecord/xclip/xdotool); upstream is ksred/soupawhisper.
